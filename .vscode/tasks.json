@@ -4,5 +4,5 @@
     "windows": {
         "command": "explorer.exe"
     },
-    "args": ["staff.html"]
+    "args": ["login.html"]
 }
