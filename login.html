@@ -3,16 +3,19 @@
     <head>
         <title>Cedus</title>
         <link rel="stylesheet" href="../../GitHub/Cedus/login.css" type="text/css" />
+        <script src = "login.js"></script>
     </head>
     <body>
         <div class="split left">
             <div class="centered">
               <img src="text logo.png" width = "200" heigh = "200">
-              <input type="text" placeholder="Username" name="username" required>  
-              <input type="password" placeholder="Password" name="password" required>  
-              <br>
-              <input type="checkbox" checked="checked"> REMEMBER ME 
-              <button type="submit">LOGIN</button>   
+              <form name="loginform" action="{% url 'login' %}">{% csrf_token %}
+                <input type="text" placeholder="Username" name="username" required>  
+                <input type="password" placeholder="Password" name="password" required>  
+                <br>
+                <input type="submit" id = "sub" value = "LOGIN">
+              </form>
+              
             </div>
           </div>
           

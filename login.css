@@ -38,7 +38,7 @@ body{
     text-align: center;
 }
 
-button {   
+input[type=submit]{   
     background-color: #2484a4;   
     width: 100%;  
     color: white;   
