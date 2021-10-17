@@ -1,6 +1,6 @@
 $('#sub').click(function (e) {
-    var username = $("input#username").val();
-    var password = $("input#password").val(); 
+    var username = $.trim$("input#username").val();
+    var password = $.trim$("input#password").val(); 
 
     $.ajax({
         url : "{% 'login' %}",

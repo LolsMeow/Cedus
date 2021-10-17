@@ -6,10 +6,12 @@
         <script src = "login.js"></script>
     </head>
     <body>
+
         <div class="split left">
             <div class="centered">
               <img src="text logo.png" width = "200" heigh = "200">
-              <form name="loginform" action="{% url 'login' %}">
+
+              <form method="POST" action="{% url 'login' %}">{% csrf_token %}
                 <input type="text" placeholder="Username" name="username" required>  
                 <input type="password" placeholder="Password" name="password" required>  
                 <br>
@@ -18,7 +20,7 @@
               
             </div>
           </div>
-          
+  
           <div class="split right">
             <div class="middle">
                 <img src="Cedus Icon Whie.png" width = "500" heigh = "500">
