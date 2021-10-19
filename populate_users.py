@@ -1,17 +1,12 @@
-import decimal
 import os
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cedus.settings')
 
 import django
-
 django.setup()
 
+import decimal
 import random
-from decimal import Decimal
-
 from patient.models import *
-
 from faker import Faker
 
 fakegen = Faker()

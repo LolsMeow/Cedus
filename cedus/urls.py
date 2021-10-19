@@ -21,4 +21,5 @@ from dashboard import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('search/<int:find_user_id>', views.get_info),
+    path('search/<int:find_user_id>/profile/', views.profile)
 ]
