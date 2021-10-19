@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+  height: 1200px; 
+}
+
+.left {
+  width: 400px;
+  background-color: white;
+}
+
+.right {
+  width: 1000px;
+  background-color: #5da6ac;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+h1 {
+	color: #5da6ac;
+	font-size: 36px;
+	text-align: center;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.content {
+	text-align: center;
+}
+
+input[type=textlogin] {
+  width: 350px;
+  border: none;
+  background-color: #f1f1f1;
+  font-size: 18px;
+  text-align: center;
+  height: 40px;
+}
+
+img {
+	margin: auto;
+	width: 150px;
+	height: auto;
+	padding-top: 200px;	
+}
+
+.colorimg {
+	filter: invert(67%) sepia(10%) saturate(1592%) hue-rotate(136deg) brightness(89%) contrast(83%);
+}
+
+h2 {
+	font-size: 18px;
+	padding-top: 20px;
+	padding-left: 20px;
+}
+
+.personaldetails {
+	background-color: white;
+	border-radius: 5px;
+}
+
+.personalfillin {
+	padding: 30px;
+}
+
+.insurancedetails {
+	background-color: white;
+	border-radius: 5px;
+}
+
+.insurancefillin {
+	padding: 30px;
+}
+
+.providerdetails {
+	background-color: white;
+	border-radius: 5px;
+}
+
+.providerfillin{
+	padding: 30px;
+}
+
+input[type=short] {
+  width: 200px;
+  border: none;
+  background-color: #f1f1f1;
+  font-size: 12px;
+  text-align: center;
+  height: 40px;
+}
+
+input[type=text] {
+  width: 350px;
+  border: none;
+  background-color: #f1f1f1;
+  font-size: 12px;
+  text-align: center;
+  height: 40px;
+}
+
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="column left">
+	<h1>Sign Up</h1>
+	<div class="content">
+		<form action="">
+			<input type="textlogin" id="fname" name="fname" placeholder="First Name"><br><br>
+			<input type="textlogin" id="lname" name="lname" placeholder="Last Name"><br><br>
+			<input type="textlogin" id="email" name="email" placeholder="Email Address"><br><br><br>
+			<input type="textlogin" id="newpass" name="newpass" placeholder="New Password"><br><br>
+			<input type="textlogin" id="repass" name="repass" placeholder="Rewrite New Password"><br>
+		</form>
+	<img src="Cedus Icon Whie.png" title="colorimg" class="colorimg">
+	</div>
+  </div>
+  <div class="column right">
+    <div class="personaldetails">
+	<h2>Personal Details</h2>
+		<div class="personalfillin">
+			<form action="">
+				<input type="short" id="dob" name="dob" placeholder="MM/DD/YYYY">&nbsp&nbsp<input type="short" id="dob" name="dob" placeholder="(###)-###-####"><br>
+				<p>
+				<input type="text" id="dob" name="dob" placeholder="Street Address">&nbsp&nbsp<input type="text" id="dob" name="dob" placeholder="City"><br>
+				<p>
+				<input type="text" id="dob" name="dob" placeholder="Apt,suite,unit,building,etc.">&nbsp&nbsp<input type="text" id="dob" name="dob" placeholder="State"><br>
+				<p>
+				<input type="text" id="dob" name="dob" placeholder="ZIP code"></p>
+			</form>
+		</div>
+	</div>
+	<div class="insurancedetails">
+	<h2>Insurance Details</h2>
+		<div class="insurancefillin">
+			<form action="">
+				<input type="text" id="dob" name="dob" placeholder="Name of Provider">&nbsp&nbsp<input type="text" id="dob" name="dob" placeholder="Name of Plan"><br>
+				<p>
+				<input type="text" id="dob" name="dob" placeholder="Rx BIN">&nbsp&nbsp<input type="text" id="dob" name="dob" placeholder="ID Number"><br>
+				<p>
+				<input type="text" id="dob" name="dob" placeholder="Rx PCN"><br>
+				<p>
+				<input type="text" id="dob" name="dob" placeholder="Rx Group"><br></p>
+				
+			</form>
+		</div>
+	</div>
+	<div class="providerdetails">
+	<h2>Provider Details</h2>
+		<div class="providerfillin">
+			<form action="">
+				<input type="text" id="dob" name="dob" placeholder="First Name of Provider">&nbsp&nbsp<input type="text" id="dob" name="dob" placeholder="(First Name Last Name)"><br>
+				<p>
+				<input type="text" id="dob" name="dob" placeholder="Last Name of Provider">&nbsp&nbsp<input type="text" id="dob" name="dob" placeholder="NPI Number"><br>
+				<p>
+				<input type="text" id="dob" name="dob" placeholder="NPI Number">&nbsp&nbsp<input type="text" id="dob" name="dob" placeholder="Title"><br></p>
+			</form>
+		</div>
+	</div>
+  </div>
+</div>
+
+</body>
+</html>
