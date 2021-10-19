@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from datetime import datetime
 from rest_framework import serializers
@@ -39,7 +40,7 @@ class Staff(models.Model):
 
 
 class Allergies(models.Model):
-    aller_id = models.IntegerField(primary_key=True)
+    aller_id = models.AutoField(primary_key=True)
     p_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
     # doc_id = models.Integerfield() #we'll pull this from API
     aller_to = models.CharField(max_length=100)
@@ -47,21 +48,21 @@ class Allergies(models.Model):
 
 
 class Vitals(models.Model):
-    vt_no = models.IntegerField(primary_key=True)
+    vt_no = models.AutoField(primary_key=True)
     p_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
     vt_date = models.DateField()
     vt_bloodgroup = models.CharField(max_length=100)
     vt_bp_sys = models.IntegerField()  # systole
     vt_bp_dia = models.IntegerField()  # diastole
     vt_wbc = models.IntegerField()
-    vt_rbc = models.IntegerField()
-    vt_height = models.DecimalField(max_digits=3, decimal_places=2)
-    vt_weight = models.DecimalField(max_digits=4, decimal_places=2)
-    vt_comments = models.CharField(max_length=100)
+    vt_rbc = models.DecimalField(max_digits=4, decimal_places=2)
+    vt_height = models.DecimalField(max_digits=5, decimal_places=2)
+    vt_weight = models.DecimalField(max_digits=6, decimal_places=2)
+    vt_comments = models.CharField(max_length=100,blank=True)
 
 
 class Vaccines(models.Model):
-    vac_id = models.IntegerField(primary_key=True)
+    vac_id = models.AutoField(primary_key=True)
     p_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
     # doc_id = models.IntegerField() #we'll pull this from API
     vac_date = models.DateField()
@@ -70,7 +71,7 @@ class Vaccines(models.Model):
 
 
 class Diagnosis(models.Model):
-    diagnosis_no = models.IntegerField(primary_key=True)
+    diagnosis_no = models.AutoField(primary_key=True)
     p_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
     # doc_id = models.IntegerField() #we'll pull this from API
     diagnosis_date = models.DateField()
@@ -79,7 +80,7 @@ class Diagnosis(models.Model):
 
 
 class Prescription(models.Model):
-    rx_no = models.IntegerField(primary_key=True)
+    rx_no = models.PositiveIntegerField(primary_key=True, validators=[MinValueValidator(11111)])
     diagnosis_no = models.ForeignKey(Diagnosis, on_delete=models.CASCADE)
     rx_date = models.DateField()
     rx_dosage = models.CharField(max_length=100)
@@ -88,7 +89,7 @@ class Prescription(models.Model):
 
 
 class Appointment(models.Model):
-    appointment_id = models.IntegerField(primary_key=True)
+    appointment_id = models.AutoField(primary_key=True)
     # doc_id = models.IntegerField() #we'll pull this from API
     appointment_date = models.DateField()
     p_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
@@ -97,7 +98,7 @@ class Appointment(models.Model):
 
 
 class Surgeries(models.Model):
-    surgery_id = models.IntegerField(primary_key=True)
+    surgery_id = models.AutoField(primary_key=True)
     p_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
     # doc_id = models.IntegerField() #we'll pull this from API
     surgery_date = models.DateField()
@@ -118,7 +119,7 @@ class Insurance(models.Model):
 
 
 class Bills(models.Model):
-    bill_id = models.IntegerField(primary_key=True)
+    bill_id = models.AutoField(primary_key=True)
     p_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doc_charges = models.DecimalField(max_digits=6, decimal_places=2)
     medi_charges = models.DecimalField(max_digits=6, decimal_places=2)
@@ -132,7 +133,7 @@ class Bills(models.Model):
 
 
 class Payment(models.Model):
-    pay_id = models.IntegerField(primary_key=True)
+    pay_id = models.AutoField(primary_key=True)
     bill_id = models.ForeignKey(Bills, on_delete=models.CASCADE)
     pay_date = models.DateField()
     pay_amount = models.DecimalField(max_digits=6, decimal_places=2)

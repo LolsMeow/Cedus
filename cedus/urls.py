@@ -16,13 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from dashboard import views
-from diagnosis import views
-from phys_orders import views
-from prescriptions import views
-from record import views
-from vaccines import views
-from vitals import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('search/<int:find_user_id>', views.get_info),
 ]
