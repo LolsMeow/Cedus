@@ -206,7 +206,7 @@ def make_profile(number_of_profiles):
 
 if __name__ == '__main__':
     role_check = input('Populating Script!:\n Did you remember to run save_roles.py? (y/n)')
-    if input == 'y':
+    if role_check == 'y':
         no = input('Number of Users you want to make: ')
         # number of users you want to make
         make_profile(int(no))
