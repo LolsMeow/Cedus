@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'record',
     'vaccines',
     'vitals',
+    'patient'
 
 
 ]
