@@ -16,7 +16,6 @@ class User_Cedus(models.Model):
     phone_num = models.CharField(max_length=100, blank=True)
     role_id = models.ForeignKey(User_Role, on_delete=models.CASCADE)
 
-
 class Patient(models.Model):
     p_id = models.IntegerField(default=1, primary_key=True)
     p_f_name = models.CharField(max_length=100, default='', blank=True)

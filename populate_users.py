@@ -65,6 +65,7 @@ def make_profile(number_of_profiles):
     for a in range(0, number_of_profiles):
         # user id generation
         fk_id = fakegen.random_number(digits=8, fix_len=True)
+        print(fk_id)
         # user email generation
         fk_email = fakegen.email()
         # user password generation
@@ -205,7 +206,7 @@ def make_profile(number_of_profiles):
 
 
 if __name__ == '__main__':
-    role_check = input('Populating Script!:\n Did you remember to run save_roles.py? (y/n)')
+    role_check = input('Populating Script!:\nDid you remember to run save_roles.py? (y/n):   ')
     if role_check == 'y':
         no = input('Number of Users you want to make: ')
         # number of users you want to make
