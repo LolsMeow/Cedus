@@ -57,7 +57,7 @@ class Vitals(models.Model):
     vt_rbc = models.DecimalField(max_digits=4, decimal_places=2)
     vt_height = models.DecimalField(max_digits=5, decimal_places=2)
     vt_weight = models.DecimalField(max_digits=6, decimal_places=2)
-    vt_comments = models.CharField(max_length=100,blank=True)
+    vt_comments = models.CharField(max_length=100, blank=True)
 
 
 class Vaccines(models.Model):
@@ -82,6 +82,7 @@ class Prescription(models.Model):
     rx_no = models.PositiveIntegerField(primary_key=True, validators=[MinValueValidator(11111)])
     diagnosis_no = models.ForeignKey(Diagnosis, on_delete=models.CASCADE)
     rx_date = models.DateField()
+    rx_name = models.CharField(max_length=100, blank=True)
     rx_dosage = models.CharField(max_length=100)
     rx_comments = models.CharField(max_length=100)
     user_id = models.ForeignKey(User_Cedus, on_delete=models.CASCADE)

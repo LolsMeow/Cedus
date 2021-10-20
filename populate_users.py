@@ -73,8 +73,14 @@ def gen_rx():
     file_read = csv.reader('drug.csv')
     drug_list = list(file_read)
 
-    token = fakegen.random_int(min=1, max=len(drug_list) - 1, step=1)
-    return drug_list[token]
+    items = []
+    with open('drugs.csv') as csvfile:
+        csvReader = csv.reader(csvfile)
+        for row in csvReader:
+            items.append(row[0])
+    token = fakegen.random_int(min=1, max=len(items) - 1, step=1)
+    drug = items[token]
+    return drug
 
 
 def gen_ins_co():
@@ -88,6 +94,7 @@ def make_profile(number_of_profiles):
     # default user role, everyone generated will be a patient
     fk_user_role = User_Role(role_id=1, role='Patient')
     fk_member_id = 11111111
+    fk_rx_no = 11111
 
     # loop to make profiles
     for a in range(0, number_of_profiles):
@@ -258,9 +265,11 @@ def make_profile(number_of_profiles):
                                         diagnosis_comment='No comment')
             diagnosis_entry.save()
 
-            rx_entry = Prescription(diagnosis_no=diagnosis_entry, rx_date=fk_date, rx_dosage='SIG', rx_comments='No '
-                                                                                                                'comment',
-                                    user_id=fk_user)
+            rx_entry = Prescription(rx_no=fk_rx_no, diagnosis_no=diagnosis_entry, rx_name=gen_rx(), rx_date=fk_date,
+                                    rx_dosage='SIG', rx_comments='No comment', user_id=fk_user)
+
+            rx_entry.save()
+            fk_rx_no += 1
 
         fk_copay = decimal.Decimal(str(round(random.uniform(0.00, 50.00), 2)))
         fk_ins = Insurance(ins_mem_id=fk_member_id, p_id=fk_patient, ins_name=gen_ins_co(), ins_copay=fk_copay,
@@ -268,6 +277,7 @@ def make_profile(number_of_profiles):
                                                                                                      'Dental, '
                                                                                                      'Vision')
         fk_ins.save()
+        fk_member_id += 1
 
 
 if __name__ == '__main__':
