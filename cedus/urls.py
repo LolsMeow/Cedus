@@ -16,10 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from dashboard import views
+from patient import models
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('search/<int:find_user_id>', views.get_info),
-    path('search/<int:find_user_id>/profile/', views.profile)
+    path('search/<int:find_user_id>/profile/', views.profile),
 ]

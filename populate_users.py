@@ -204,7 +204,7 @@ def make_profile(number_of_profiles):
 
             fk_vitals.save()
 
-
+            
 if __name__ == '__main__':
     role_check = input('Populating Script!:\nDid you remember to run save_roles.py? (y/n):   ')
     if role_check == 'y':
