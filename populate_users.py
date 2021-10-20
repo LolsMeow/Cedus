@@ -1,13 +1,16 @@
 import os
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cedus.settings')
 
 import django
+
 django.setup()
 
 import decimal
 import random
 from patient.models import *
 from faker import Faker
+import csv
 
 fakegen = Faker()
 
@@ -57,9 +60,34 @@ def gen_allergy(num_of_allergies):
     return list(allergy_list)
 
 
+def gen_diagnosis():
+    condition = ['Heart disease', 'depression', 'type 2 diabetes', 'arthritis', 'asthma', 'COPD', 'chronic kidney '
+                                                                                                  'disease']
+
+    token = fakegen.random_int(min=0, max=len(condition) - 1, step=1)
+
+    return condition[token]
+
+
+def gen_rx():
+    file_read = csv.reader('drug.csv')
+    drug_list = list(file_read)
+
+    token = fakegen.random_int(min=1, max=len(drug_list) - 1, step=1)
+    return drug_list[token]
+
+
+def gen_ins_co():
+    companies = ['Healthfirst', 'Medicaid', 'Medicare-PartD', 'Blue-Cross Blue-Shield', 'Cygna']
+    token = fakegen.random_int(min=0, max=len(companies) - 1, step=1)
+
+    return companies[token]
+
+
 def make_profile(number_of_profiles):
     # default user role, everyone generated will be a patient
     fk_user_role = User_Role(role_id=1, role='Patient')
+    fk_member_id = 11111111
 
     # loop to make profiles
     for a in range(0, number_of_profiles):
@@ -199,12 +227,49 @@ def make_profile(number_of_profiles):
             fk_weight = decimal.Decimal(str(round(random.uniform(100.00, 330.00), 2)))
 
             fk_vitals = Vitals(p_id=fk_patient, vt_date=fk_date, vt_bloodgroup=fk_blood_grp, vt_bp_sys=fk_sys,
-                                vt_bp_dia=fk_dia, vt_wbc=fk_wbc, vt_rbc=fk_rbc, vt_height=fk_height,
+                               vt_bp_dia=fk_dia, vt_wbc=fk_wbc, vt_rbc=fk_rbc, vt_height=fk_height,
                                vt_weight=fk_weight)
 
             fk_vitals.save()
 
-            
+        bcg_vac = Vaccines(p_id=fk_patient, vac_date=fakegen.date(), vac_type='BCG', vac_comment='Tuberculosis')
+        bcg_vac.save()
+
+        hep_b_vac = Vaccines(p_id=fk_patient, vac_date=fakegen.date(), vac_type='Hep B', vac_comment='Hepatitis B')
+        hep_b_vac.save()
+
+        polio_vac = Vaccines(p_id=fk_patient, vac_date=fakegen.date(), vac_type='Polio', vac_comment='Poliovirus')
+        polio_vac.save()
+
+        dtp_vac = Vaccines(p_id=fk_patient, vac_date=fakegen.date(), vac_type='DTP', vac_comment='Diphtheria, Tetanus, '
+                                                                                                 'Pertussis')
+        dtp_vac.save()
+
+        mmr_vac = Vaccines(p_id=fk_patient, vac_date=fakegen.date(), vac_type='MMR',
+                           vac_comment='Measles, Mumps, Rubella')
+        mmr_vac.save()
+
+        # make 20 diagnosis records
+        # make matching rx records
+        for d in range(0, 20):
+            fk_date = fakegen.date()
+            diagnosis_entry = Diagnosis(p_id=fk_patient, diagnosis_date=fk_date,
+                                        diagnosis_status=gen_diagnosis(),
+                                        diagnosis_comment='No comment')
+            diagnosis_entry.save()
+
+            rx_entry = Prescription(diagnosis_no=diagnosis_entry, rx_date=fk_date, rx_dosage='SIG', rx_comments='No '
+                                                                                                                'comment',
+                                    user_id=fk_user)
+
+        fk_copay = decimal.Decimal(str(round(random.uniform(0.00, 50.00), 2)))
+        fk_ins = Insurance(ins_mem_id=fk_member_id, p_id=fk_patient, ins_name=gen_ins_co(), ins_copay=fk_copay,
+                           ins_plan='Plan A', ins_rx_bin='RX69420', ins_rx_pcn='PCN99', ins_coverage='Medical, '
+                                                                                                     'Dental, '
+                                                                                                     'Vision')
+        fk_ins.save()
+
+
 if __name__ == '__main__':
     role_check = input('Populating Script!:\nDid you remember to run save_roles.py? (y/n):   ')
     if role_check == 'y':
