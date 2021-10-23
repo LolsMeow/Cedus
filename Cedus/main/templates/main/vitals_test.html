@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vitals</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Blood Type</th>
+            <th>Bloodpressure (Sys)</th>
+            <th>Bloodpressure (Dias)</th>
+            <th>WBC</th>
+            <th>RBC</th>
+            <th>Height</th>
+            <th>Weight</th>
+            <th>Comments</th>
+        </tr>
+
+        {% for item in export %}
+        <tr>
+            <td>{{ item.vt_date }}</td>
+            <td>{{ item.vt_bloodgroup }}</td>
+            <td>{{ item.vt_bp_sys }}</td>
+            <td>{{ item.vt_bp_dia }}</td>
+            <td>{{ item.vt_wbc }}</td>
+            <td>{{ item.vt_rbc }}</td>
+            <td>{{ item.vt_height }}</td>
+            <td>{{ item.vt_weight }}</td>
+            <td>{{ item.vt_comments }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vaccinations</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Comments</th>
+            <th></th>
+        </tr>
+
+        {% for item in vac_entry %}
+        <tr>
+            <td>{{ item.vac_date }}</td>
+            <td>{{ item.vac_type }}</td>
+            <td>{{ item.vac_comment }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

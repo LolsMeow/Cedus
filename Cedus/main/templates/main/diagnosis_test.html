@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagnosis</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Comments</th>
+        </tr>
+
+        {% for item in diag_entry %}
+        <tr>
+            <td>{{ item.diagnosis_date }}</td>
+            <td>{{ item.diagnosis_status }}</td>
+            <td>{{ item.diagnosis_comment }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

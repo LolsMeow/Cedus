@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prescriptions</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Rx Number</th>
+            <th>Date</th>
+            <th>Drug Name</th>
+            <th>Dosage</th>
+            <th>Instructions</th>
+            <th>Comments</th>
+            <th></th>
+        </tr>
+
+        {% for item in rx_entry %}
+        <tr>
+            <td>{{ item.rx_no }}</td>
+            <td>{{ item.rx_date }}</td>
+            <td>{{ item.rx_name }}</td>
+            <td>{{ item.rx_dosage }}</td>
+            <td>{{ item.rx_sig }}</td>
+            <td>{{ item.rx_comments }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

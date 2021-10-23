@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Records</title>
+</head>
+<body>
+    <h1>Surgeries</h1>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+        </tr>
+
+        {% for item in records_entry.surgeryData %}
+        <tr>
+            <td>{{ item.surgery_date }}</td>
+            <td>{{ item.surgery_surgery_description}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h1>Bills</h1>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Doctor Fee</th>
+            <th>Medical Fee</th>
+            <th>Room Charge</th>
+            <th>Surgery Charge</th>
+            <th>Admission Days</th>
+            <th>Nursing Charges</th>
+            <th>Advance</th>
+            <th>Test Charges</th>
+            <th>Tota</th>
+        </tr>
+
+        {% for item in records_entry.billData %}
+        <tr>
+            <td>{{ item.charge_date }}</td>
+            <td>{{ item.doc_charges }}</td>
+            <td>{{ item.medi_charges }}</td>
+            <td>{{ item.room_charges }}</td>
+            <td>{{ item.surgery_charges }}</td>
+            <td>{{ item.admission_days }}</td>
+            <td>{{ item.nursing_charges }}</td>
+            <td>{{ item.advance }}</td>
+            <td>{{ item.test_charges }}</td>
+            <td>{{ item.bill_amount }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h1>Payment</h1>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Copay</th>
+            <th>Bill Description</th>
+            <th>Location</th>
+        </tr>
+
+        {% for item in records_entry.payData %}
+        <tr>
+            <td>{{ item.pay_date }}</td>
+            <td>{{ item.pay_amount }}</td>
+            <td>{{ item.ins_copay }}</td>
+            <td>{{ item.pay_description }}</td>
+            <td>{{ item.pay_location }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
