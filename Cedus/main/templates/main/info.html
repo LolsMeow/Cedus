@@ -1,0 +1,21 @@
+{% extends "main/header.html" %}
+
+{% block content %}  
+
+{% load crispy_forms_tags %}   
+<head>
+</head>
+
+<body>
+    <div>
+        <div>
+            <form method = 'POST'>{% csrf_token %}
+                <h1>Additional Information</h1>
+                {{ information_form|crispy }} 
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

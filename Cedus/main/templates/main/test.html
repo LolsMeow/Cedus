@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        input:
+        margin:10px
+    </style>
+    <title>Patient Home</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <h1>Hi, {{ form.first_name.value }}</h1>
+            <ul class="sidebar-nav">
+                <li> <a href="{% url 'main:dashboard' %}">Profile</a></li>
+                <li> <a href="#">Vitals</a></li>
+                <li> <a href="#">Diagnosis</a></li>
+                <li> <a href="#">Physician's Orders</a></li>
+                <li> <a href="#">Prescriptions</a></li>
+                <li> <a href="#">Vaccines</a></li>
+                <li> <a href="#">Records</a></li>
+                <li> <a href="{% url 'main:auth_logout' %}">Logout</a></li>
+            </ul>
+        </div>
+        <div class="page-content-wrapper">
+            <div>
+                <div>
+                    <div>
+                        <form method = 'POST'>{% csrf_token %}
+                        {{ form|linebreaks }}
+                            <button type="submit">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
