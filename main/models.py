@@ -1,36 +1,27 @@
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
-from decimal import *
-
 
 class Patient(models.Model):
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=200)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    birth_date = models.DateField(default=datetime.date.today)
-    phone_number = models.CharField(max_length=50)
-    street_address = models.CharField(max_length=50)
-    apt = models.CharField(max_length=50)
-    city = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
-    zip_code = models.IntegerField()
+	birth_date = models.DateField(default=datetime.date.today)
+	phone_number = models.CharField(max_length=50)
+	street_address = models.CharField(max_length=50)
+	apt = models.CharField(max_length=50)
+	city = models.CharField(max_length=50)
+	state = models.CharField(max_length=50)
+	zip_code = models.IntegerField(blank = True, null = True)
 
-    provider_name = models.CharField(max_length=50)
-    plan_name = models.CharField(max_length=50)
-    rx_bin = models.IntegerField()
-    id_number = models.IntegerField()
-    rx_pcn = models.IntegerField()
-    rx_group = models.CharField(max_length=50)
+	provider_name = models.CharField(max_length=50)
+	plan_name = models.CharField(max_length=50)
+	rx_bin = models.IntegerField(blank = True, null = True)
+	id_number = models.IntegerField(blank = True, null = True)
+	rx_pcn = models.IntegerField(blank = True, null = True)
+	rx_group = models.CharField(max_length=50)
 
-    gender = models.CharField(max_length=10)  # Male, Female, Nonbinary
-    language = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-
+	def __str__(self):
+		return self.user.username
 
 class Insurance(models.Model):
     ins_mem_id = models.CharField(max_length=20, primary_key=True)  # patient's insurance member ID
