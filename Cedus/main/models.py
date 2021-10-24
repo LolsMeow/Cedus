@@ -7,7 +7,6 @@ from decimal import *
 class Patient(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=200)
 
@@ -26,7 +25,7 @@ class Patient(models.Model):
     rx_pcn = models.IntegerField()
     rx_group = models.CharField(max_length=50)
 
-    gender = models.CharField(max_length=10)  # Male, Female, Other
+    gender = models.CharField(max_length=10)  # Male, Female, Nonbinary
     language = models.CharField(max_length=50)
 
     def __str__(self):
@@ -44,6 +43,12 @@ class Insurance(models.Model):
     ins_rx_group = models.CharField(max_length=20)
     ins_coverage = models.CharField(max_length=100)
 
+
+
+class Allergies(models.Model):
+    aller_id = models.AutoField(primary_key=True)
+    aller_drug = models.CharField(max_length=20)
+    aller_severity = models.CharField(max_length=10)
 
 # Staff class
 class Staff(models.Model):
@@ -115,7 +120,7 @@ class Appointment(models.Model):
 class Bills(models.Model):
     bill_id = models.AutoField(primary_key=True)  # auto-iterating index as primary key
     u_name = models.CharField(max_length=50)  # search by patient
-    charge_dat = models.DateField()
+    charge_date = models.DateField()
     doc_charges = models.DecimalField(max_digits=6, decimal_places=2)
     medi_charges = models.DecimalField(max_digits=6, decimal_places=2)
     room_charges = models.DecimalField(max_digits=6, decimal_places=2)
