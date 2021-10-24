@@ -2,6 +2,7 @@ from django.db import models
 import datetime
 from django.contrib.auth.models import User
 
+
 class Patient(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -23,6 +24,7 @@ class Patient(models.Model):
 	def __str__(self):
 		return self.user.username
 
+
 class Insurance(models.Model):
     ins_mem_id = models.CharField(max_length=20, primary_key=True)  # patient's insurance member ID
     u_name = models.CharField(max_length=50)
@@ -33,7 +35,6 @@ class Insurance(models.Model):
     ins_rx_pcn = models.CharField(max_length=10)
     ins_rx_group = models.CharField(max_length=20)
     ins_coverage = models.CharField(max_length=100)
-
 
 
 class Allergies(models.Model):
