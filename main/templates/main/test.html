@@ -2,41 +2,116 @@
 <html>
 
 <head>
-    <style>
-        input:
-        margin:10px
-    </style>
     <title>Patient Home</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+body {font-family: 'Quicksand', sans-serif;background-color:#5da6ac; margin: 0;}
+
+/*Hi, Name*/
+h1 {
+	background-color: white;
+    width: 20%;
+    color: #5da6ac;
+	margin: 0;
+	padding: 50px 20px 20px;
+	text-align: center;
+}
+
+ul.sidebar-nav {
+	list-style-type: none;
+}
+
+/* Style the list sidebar-nav */
+.sidebar-nav {
+	float: left;
+	display: block;
+	background-color: white;
+	width: 20%;
+	height: 1024px;
+	padding-top: 30px;
+	margin: 0;
+	color: #5da6ac;
+}
+
+/* Style the buttons inside the sidebar-nav */
+a:link {
+	display: block;
+	background-color: white;
+	color: #5da6ac;
+	padding: 22px 0px;
+	width: 100%;
+	border: none;
+	outline: none;
+	text-align: left;
+	cursor: pointer;
+	transition: 0.3s;
+	font-size: 25px;
+	border-radius: 50px 0px 0px 50px;
+	text-decoration: none;
+}
+
+/* Change background color of tabs on hover */
+.sidebar-nav a:hover {
+	background-color: #5da6ac;
+	color: white;
+}
+
+/* Create an active/current "sidebar-nav button" class */
+.sidebar-nav a:active {
+	background-color: #5da6ac;
+	color: white;
+}
+
+.page-content-wrapper {
+	display: grid;
+	grid-template-columns: auto auto;
+	background-color: #5da6ac;
+	padding: 10px;
+    grid-gap: 10px;
+}
+.grid-item {
+	background-color: white;
+	padding: 20px;
+	font-size: 20px;
+	text-align: left;
+	border-radius: 5px;
+}
+
+label {
+	background-color: white;
+}
+input {
+	font-size: 20px;
+	background-color: #D7DFDF;
+}
+</style>
 </head>
 
 <body>
     <div id="wrapper">
         <div id="sidebar-wrapper">
-            <h1>Hi, {{ form.first_name.value }}</h1>
+            <h1>Hi, {{ form.instance.user.first_name }}</h1>
             <ul class="sidebar-nav">
-                <li> <a href="{% url 'main:dashboard' %}">Profile</a></li>
-                <li> <a href="#">Vitals</a></li>
-                <li> <a href="#">Diagnosis</a></li>
-                <li> <a href="#">Physician's Orders</a></li>
-                <li> <a href="#">Prescriptions</a></li>
-                <li> <a href="#">Vaccines</a></li>
-                <li> <a href="#">Records</a></li>
-                <li> <a href="{% url 'main:auth_logout' %}">Logout</a></li>
+                <li> <a href="{% url 'main:dashboard' %}"><i class="material-icons">dashboard&nbsp</i>Profile</a></li>
+                <li> <a href="#"><i class="material-icons">bloodtype&nbsp</i>Vitals</a></li>
+                <li> <a href="#"><i class="material-icons">assignment&nbsp</i>Diagnosis</a></li>
+                <li> <a href="#"><i class="material-icons">medication&nbsp</i>Physician's Orders</a></li>
+                <li> <a href="#"><i class="material-icons">healing&nbsp</i>Prescriptions</a></li>
+                <li> <a href="#"><i class="material-icons">health_and_safety&nbsp</i>Vaccines</a></li>
+                <li> <a href="#"><i class="material-icons">history&nbsp</i>Records</a></li>
+                <li> <a href="#"><i class="material-icons">history&nbsp</i>Appointments</a></li>
+                <li> <a href="{% url 'main:auth_logout' %}"><i class="material-icons">logout&nbsp</i>Logout</a></li>
             </ul>
         </div>
         <div class="page-content-wrapper">
-            <div>
-                <div>
-                    <div>
-                        <form method = 'POST'>{% csrf_token %}
-                        {{ form|linebreaks }}
-                            <button type="submit">Update</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+			{% block content %}
+
+            {% endblock %}
         </div>
     </div>
+
 </body>
 
 </html>
