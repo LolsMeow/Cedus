@@ -22,10 +22,10 @@ class Patient(models.Model):
     plan_name = models.CharField(max_length=50)
     rx_bin = models.IntegerField()
     id_number = models.IntegerField()
-    rx_pcn = models.IntegerField()
+    rx_pcn = models.CharField(max_length = 5)
     rx_group = models.CharField(max_length=50)
 
-    gender = models.CharField(max_length=10)  # Male, Female, Nonbinary
+    gender = models.CharField(max_length=10, blank=True)  # Male, Female, Nonbinary
     language = models.CharField(max_length=50)
 
     def __str__(self):
@@ -47,6 +47,7 @@ class Insurance(models.Model):
 
 class Allergies(models.Model):
     aller_id = models.AutoField(primary_key=True)
+    u_name = models.CharField(max_length=50, blank=True)
     aller_drug = models.CharField(max_length=20)
     aller_severity = models.CharField(max_length=10)
 

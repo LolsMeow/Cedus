@@ -133,14 +133,15 @@ def make_ins():
 #   [7] = apartment number
 #   [8] = city
 #   [9] = state (abbreviation)
-#  [10] = provider name (OVERLAP WITH INS)
-#  [11] = plan name (OVERLAP WITH INS)
-#  [12] = rx bin (OVERLAP WTIH INS)
-#  [13] = insurance id number (OVERLAP WITH INS)
-#  [14] = rx pcn (OVERLAP WITH INS)
-#  [15] = rx group (OVERLAP WTIH INS)
-#  [16] = gender - Male, Female, Nonbinary
-#  [17] = language
+#  [10] = zipcode
+#  [11] = provider name (OVERLAP WITH INS)
+#  [12] = plan name (OVERLAP WITH INS)
+#  [13] = rx bin (OVERLAP WTIH INS)
+#  [14] = insurance id number (OVERLAP WITH INS)
+#  [15] = rx pcn (OVERLAP WITH INS)
+#  [16] = rx group (OVERLAP WTIH INS)
+#  [17] = gender - Male, Female, Nonbinary
+#  [18] = language
 def make_pt(ins_obj):
     # gender determination 
     # 1 = male, 2 = female, 3 = Nonbinary
@@ -188,7 +189,7 @@ def make_pt(ins_obj):
     language = fakegen.language_name()
 
     return first_name, last_name, email, password, birth_date, phone_number, street_address, apt, city, state, \
-           zip_code, provider_name, plan_name, rx_bin, id_number, rx_pcn, rx_group
+           zip_code, provider_name, plan_name, rx_bin, id_number, rx_pcn, rx_group, gender, language
 
 ## Makes a single instance of an allergy record
 #   [0] aller_drug - drug or drug class patient is allergic to
@@ -199,6 +200,74 @@ def make_allergy():
 
     return aller_drug, aller_severity
 
+## Makes a single instance of a vitals record
+#   [0] vt_bloodgroup
+#   [1] vt_bp_sys (bloodpressure Systole)
+#   [2] vt_bp_dia (bloodpressure diastole)
+#   [3] vt_wbc (white blood cell count)
+#   [4] vt_rbc (red blood cell count)
+#   [5] vt_height
+#   [6] vt_weight
+#   [7] vt_comments
+def make_vital():
+    vt_bloodgroup =''
+    #decide blood group to reflect irl percentage of population
+    blood_grp_num = fakegen.random_int(min=0, max=99, step=1)
+    if 0 <= blood_grp_num <= 35:
+        vt_bloodgroup = 'O+'
+    elif 36 <= blood_grp_num <= 65:
+        vt_bloodgroup = 'A+'
+    elif 66 <= blood_grp_num <= 78:
+        vt_bloodgroup = 'O-'
+    elif 78 <= blood_grp_num <= 86:
+        vt_bloodgroup = 'A-'
+    elif 87 <= blood_grp_num <= 94:
+        vt_bloodgroup = 'B+'
+    elif 95 <= blood_grp_num <= 96:
+        vt_bloodgroup = 'B-'
+    elif 97 <= blood_grp_num <= 98:
+        vt_bloodgroup = 'AB+'
+    else:
+        vt_bloodgroup = 'AB-'
+
+    vt_bp_sys = 0
+    vt_bp_dia = 0
+
+    # deciding blood pressure based on percentage of population
+    b_pressure_type = fakegen.random_int(min=0, max=99, step=1)
+    if 0 <= b_pressure_type <= 46:
+        # hyper tension
+        vt_bp_sys = fakegen.random_int(min=130, max=200, step=1)
+        vt_bp_dia = fakegen.random_int(min=80, max=100, step=1)
+    elif 47 <= b_pressure_type <= 96:
+        # normal blood pressure
+        vt_bp_sys = fakegen.random_int(min=91, max=129, step=1)
+        vt_bp_dia = fakegen.random_int(min=61, max=79, step=1)
+    else:
+        # low blood pressure
+        vt_bp_sys = fakegen.random_int(min=70, max=90, step=1)
+        vt_bp_dia = fakegen.random_int(min=40, max=60, step=1)
+
+    vt_wbc = 0
+    vt_rbc = 0
+
+    #set blood cell counts
+    vt_wbc = fakegen.random_int(min=4500, max=11000, step=1)
+    #this is parts per million (10^6)
+    vt_rbc = decimal.Decimal(str(round(random.uniform(4.2, 6.1), 2)))
+
+    #height in feet
+    vt_height = decimal.Decimal(str(round(random.uniform(4.08, 6.50), 2)))
+
+    #weight in lbs
+    vt_weight = decimal.Decimal(str(round(random.uniform(100.00, 330.00), 2)))
+
+    #comments
+    vt_comments = fakegen.paragraph(nb_sentences=1),
+
+    return vt_bloodgroup, vt_bp_sys, vt_bp_dia, vt_wbc, vt_rbc, vt_height, vt_weight, vt_comments
+
+
 ## Makes a single instance of a diagnosis record
 #   [0] diagnosis_date
 #   [1] diagnosis_status
@@ -208,7 +277,7 @@ def make_diagnosis():
 
     diagnosis_status = pickoutofhat(condition,1,False)
 
-    diagnosis_comment = fake.paragraph(nb_sentences=2)
+    diagnosis_comment = fakegen.paragraph(nb_sentences=2)
 
     return diagnosis_date, diagnosis_status,diagnosis_comment
 
@@ -218,7 +287,7 @@ def make_diagnosis():
 #   [1] order_contents
 def make_phys_order():
     order_date = fakegen.date()
-    order_contents = fake.paragraph(nb_sentences=5)
+    order_contents = fakegen.paragraph(nb_sentences=5)
 
     return order_date, order_contents
 
@@ -290,6 +359,7 @@ def make_bill():
     medi_charges = decimal.Decimal(str(round(random.uniform(10.00, 150.00), 2)))
     admission_days = fakegen.random_int(min=1,max=10,step=1)
     inpatient_cost = admission_days * 35.00
+    surgery_charges = decimal.Decimal(str(round(random.uniform(500.00, 2000.00), 2)))
     room_charges = format(inpatient_cost, '.2f')
     nursing_cost = admission_days * 15.75
     nursing_charges = format(nursing_cost, '.2f')
@@ -318,8 +388,140 @@ def make_payment(location):
 
     return pay_date, pay_amount, ins_copay, pay_description, pay_location
 
+
+def populate(number_of_profiles):
+
+    ############ MAKING INSURANCE ############
+    #insurance array
+    this_ins = make_ins()
+
+    #make object
+    new_ins = models.Insurance(ins_mem_id=this_ins[0], u_name='test@test.com', ins_name=this_ins[1],
+                             ins_copay=this_ins[2], ins_plan=this_ins[3], ins_rx_bin=this_ins[4], ins_rx_pcn= this_ins[5], ins_rx_group=this_ins[6], ins_coverage=this_ins[7])
+
+
+    ############ MAKING PATIENT ############
+    #make patient object
+    this_pt = make_pt(this_ins)
+
+    #email that is used as username
+    USER_NAME = this_pt[3]
+
+    #change field in previous object
+    new_ins.u_name = USER_NAME
+
+    new_pt = models.Patient(first_name=this_pt[0], last_name=this_pt[1], email=this_pt[2], password=this_pt[3],
+                      birth_date=this_pt[4], phone_number=this_pt[5], street_address=this_pt[6], apt=this_pt[7],
+                            city=this_pt[8], state=this_pt[9], zip_code=this_pt[10], provider_name=this_pt[11], plan_name=this_pt[12], rx_bin=this_pt[13], id_number=this_pt[14], rx_pcn=this_pt[15], rx_group=this_pt[16], gender=this_pt[17], language=this_pt[18])
+
+    new_ins.save()
+    new_pt.save()
+
+
+    ############ MAKING ALLERGIES ############
+    #decide number of allergies by percent
+    allergy_token = fakegen.random_int(min=0, max=99, step=1)
+    num_of_allergy = 0
+    if 0 <= allergy_token <= 74:
+        num_of_allergy = 0
+    elif 75 <= allergy_token <= 90:
+        num_of_allergy = 1
+    elif 91 <= allergy_token <= 95:
+        num_of_allergy = 2
+    else:
+        num_of_allergy = 3
+
+
+    #loop through and make allergies
+    for a in range(0,num_of_allergy):
+        this_aller = make_allergy()
+        new_aller = models.Allergies(u_name= USER_NAME, aller_drug=this_aller[0], aller_severity=this_aller[1])
+
+        new_aller.save()
+
+
+    ############ MAKING VITALS ############
+    # generate number of vital readings
+    vital_token = fakegen.random_int(min=5, max=20, step=1)
+    for b in range(0, vital_token):
+        this_vital = make_vital()
+        new_vital = models.Vitals(u_name=USER_NAME, vt_bloodgroup=this_vital[0], vt_bp_sys=this_vital[1],
+                                     vt_bp_dia=this_vital[2], vt_wbc=this_vital[3], vt_rbc=this_vital[4],
+                                     vt_height=this_vital[5], vt_weight=this_vital[6], vt_comments=this_vital[7])
+        new_vital.save()
+
+
+    ############ MAKING DIAGNOSIS ############
+    diag_token = fakegen.random_int(min=3, max=20, step=1)
+    for c in range(0, diag_token):
+        this_diag = make_diagnosis()
+        new_diag = models.Diagnosis(u_name=USER_NAME, diagnosis_date=this_diag[0], diagnosis_status=this_diag[1],
+                                    diagnosis_comment=this_diag[2])
+
+        new_diag.save()
+
+
+    ############ MAKING PHYSICIAN'S ORDERS ############
+    phys_o_token = fakegen.random_int(min=0, max=10, step=1)
+    for d in range(0,phys_o_token):
+        this_phys = make_phys_order()
+        new_phys = models.Phys_Orders(u_name=USER_NAME, order_date=this_phys[0], order_contents=this_phys[1])
+
+        new_phys.save()
+
+
+    ############ MAKING PRESCRIPTIONS ############
+    rx_token = fakegen.random_int(min=2, max=20,step=1)
+    rx_num_ = 100000
+    for e in range(0,rx_token):
+        this_rx = make_rx_order()
+        new_rx = models.Prescription(u_name=USER_NAME, rx_no= rx_num_, rx_date=this_rx[0], rx_name=this_rx[1],
+                                     rx_dosage=this_rx[2], rx_sig=this_rx[3], rx_comments=this_rx[4])
+
+        rx_num_+= 1
+
+        new_rx.save()
+
+
+    ############ MAKING VACCINES ############
+    for f in range(0,len(vaccine_list)):
+        this_vac = make_vac_record(f)
+        new_vac = models.Vaccines(u_name=USER_NAME, vac_date=this_vac[0], vac_type=this_vac[1], vac_comment=this_vac[2])
+
+        new_vac.save()
+
+    ############ MAKING APPOINTMENTS ############
+    appt_token = fakegen.random_int(min=0, max=5, step=1)
+    for g in range(0,appt_token):
+        this_appt = make_appointment()
+        new_appt = models.Appointment(appointment_date=this_appt[0], u_name=USER_NAME, appointment_comments=this_appt[1])
+
+        new_appt.save()
+
+
+    ############ MAKING BILLS ############
+    bill_token = fakegen.random_int(min=0, max=10, step=1)
+    for h in range(0, bill_token):
+        this_bill = make_bill()
+        new_bill = models.Bills(u_name=USER_NAME, charge_date=this_bill[0], doc_charges=this_bill[1],
+                                medi_charges=this_bill[2], room_charges=this_bill[3], surgery_charges=this_bill[4],
+                                admission_days=this_bill[5], nursing_charges=this_bill[6], advance=this_bill[7],
+                                test_charges=this_bill[8], bill_amount=this_bill[9])
+
+        new_bill.save()
+
+
+    ############ MAKING PAYMENTS ############
+    pay_token = fakegen.random_int(min=0, max=10, step=1)
+    for j in range(0, pay_token):
+        this_pay = make_payment()
+        new_pay = models.Payment(u_name=USER_NAME, pay_date=this_pay[0], pay_amount=this_pay[1], ins_copay=this_pay[
+            2], pay_description=this_pay[3], pay_location=this_pay[4])
+
+        new_pay.save()
+
 if __name__ == '__main__':
     print('~~Patient Creation Script~~')
     num_of_pts = input('How many patients do you want to make?: ')
-    # make_patients(int(num_of_pts))
+    populate(int(num_of_pts))
     print('PATIENT CREATION COMPLETE! Made ' + num_of_pts + ' Users!')
