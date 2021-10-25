@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Physcian's Orders</title>
+</head>
+<table>
+    <tr>
+        <th>Order Num</th>
+        <th>Date</th>
+        <th>Orders</th>
+    </tr>
+    {% for item in poData %}
+    <tr>
+        <td>{{ item.order_no }}</td>
+        <td>{{ item.order_date }}</td>
+        <td>{{ item.order_contents }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<body>
+
+</body>
+</html>

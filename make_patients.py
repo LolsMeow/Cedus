@@ -9,6 +9,7 @@ django.setup()
 import decimal
 import random
 from main import models
+from main import views
 from faker import Faker
 from django.contrib.auth.models import User
 import csv
@@ -394,137 +395,139 @@ def make_payment(location):
 
 def populate(number_of_profiles):
 
+    for a in range(0, number_of_profiles):
+        #insurance array
+        this_ins = make_ins()
+        #patient array
+        this_pt = make_pt(this_ins)
+        #fix fields in both arrays
+        USER_NAME = str(this_pt[2])
+        print(USER_NAME)
+        #make user
+        user_ = User.objects.create_user(username=this_pt[2], email=this_pt[2], password= this_pt[3], first_name=this_pt[0],
+                         last_name=this_pt[1])
+
+        ############ MAKING INSURANCE ############
+        new_ins = models.Insurance(ins_mem_id=this_ins[0], u_name=USER_NAME, ins_name=this_ins[1],
+                                 ins_copay=this_ins[2], ins_plan=this_ins[3], ins_rx_bin=this_ins[4], ins_rx_pcn= this_ins[5], ins_rx_group=this_ins[6], ins_coverage=this_ins[7])
 
 
-    #insurance array
-    this_ins = make_ins()
-    #patient array
-    this_pt = make_pt(this_ins)
-    #fix fields in both arrays
-    USER_NAME = str(this_pt[3])
+        ############ MAKING PATIENT ############ #NOTE: gender=this_pt[17], language=this_pt[18] removed due to models
+        new_pt = models.Patient(user=user_, birth_date=this_pt[4], phone_number=this_pt[5], street_address=this_pt[6],
+                                apt=this_pt[7], city=this_pt[8], state=this_pt[9], zip_code=this_pt[10],
+                                provider_name=this_pt[11], plan_name=this_pt[12], rx_bin=this_pt[13], id_number=this_pt[
+                14], rx_pcn=this_pt[15], rx_group=this_pt[16])
 
-    #make user
-    user_ = User.objects.create_user(username=this_pt[2], email=this_pt[2], password= this_pt[3], first_name=this_pt[0],
-                     last_name=this_pt[1])
-
-    ############ MAKING INSURANCE ############
-    new_ins = models.Insurance(ins_mem_id=this_ins[0], u_name=USER_NAME, ins_name=this_ins[1],
-                             ins_copay=this_ins[2], ins_plan=this_ins[3], ins_rx_bin=this_ins[4], ins_rx_pcn= this_ins[5], ins_rx_group=this_ins[6], ins_coverage=this_ins[7])
+        new_ins.save()
+        new_pt.save()
 
 
-    ############ MAKING PATIENT ############ #NOTE: gender=this_pt[17], language=this_pt[18] removed due to models
-    new_pt = models.Patient(user=user_, birth_date=this_pt[4], phone_number=this_pt[5], street_address=this_pt[6],
-                            apt=this_pt[7], city=this_pt[8], state=this_pt[9], zip_code=this_pt[10],
-                            provider_name=this_pt[11], plan_name=this_pt[12], rx_bin=this_pt[13], id_number=this_pt[
-            14], rx_pcn=this_pt[15], rx_group=this_pt[16])
+        print(str(this_pt[0]) + ' ' + str(this_pt[1])+'  Pass: '+str(this_pt[3]))
 
-    new_ins.save()
-    new_pt.save()
-
-
-    print(str(this_pt[0]) + ' ' + str(this_pt[1]))
-
-    ############ MAKING ALLERGIES ############
-    #decide number of allergies by percent
-    allergy_token = fakegen.random_int(min=0, max=99, step=1)
-    num_of_allergy = 0
-    if 0 <= allergy_token <= 74:
+        ############ MAKING ALLERGIES ############
+        #decide number of allergies by percent
+        allergy_token = fakegen.random_int(min=0, max=99, step=1)
         num_of_allergy = 0
-    elif 75 <= allergy_token <= 90:
-        num_of_allergy = 1
-    elif 91 <= allergy_token <= 95:
-        num_of_allergy = 2
-    else:
-        num_of_allergy = 3
+        if 0 <= allergy_token <= 74:
+            num_of_allergy = 0
+        elif 75 <= allergy_token <= 90:
+            num_of_allergy = 1
+        elif 91 <= allergy_token <= 95:
+            num_of_allergy = 2
+        else:
+            num_of_allergy = 3
 
 
-    #loop through and make allergies
-    for a in range(0,num_of_allergy):
-        this_aller = make_allergy()
-        new_aller = models.Allergies(u_name= USER_NAME, aller_drug=this_aller[0], aller_severity=this_aller[1])
+        #loop through and make allergies
+        for a in range(0,num_of_allergy):
+            this_aller = make_allergy()
+            new_aller = models.Allergies(u_name= USER_NAME, aller_drug=this_aller[0], aller_severity=this_aller[1])
 
-        new_aller.save()
-
-
-    ############ MAKING VITALS ############
-    # generate number of vital readings
-    vital_token = fakegen.random_int(min=5, max=20, step=1)
-    for b in range(0, vital_token):
-        this_vital = make_vital()
-        new_vital = models.Vitals(u_name=USER_NAME, vt_date=this_vital[0], vt_bloodgroup=this_vital[1],
-                                  vt_bp_sys=this_vital[2], vt_bp_dia=this_vital[3], vt_wbc=this_vital[4],
-                                  vt_rbc=this_vital[5], vt_height=this_vital[6], vt_weight=this_vital[7],
-                                  vt_comments=this_vital[8])
-        new_vital.save()
-
-    ############ MAKING DIAGNOSIS ############
-    diag_token = fakegen.random_int(min=3, max=20, step=1)
-    for c in range(0, diag_token):
-        this_diag = make_diagnosis()
-        new_diag = models.Diagnosis(u_name=USER_NAME, diagnosis_date=this_diag[0], diagnosis_status=this_diag[1],
-                                    diagnosis_comment=this_diag[2])
-
-        new_diag.save()
+            new_aller.save()
 
 
-    ############ MAKING PHYSICIAN'S ORDERS ############
-    phys_o_token = fakegen.random_int(min=0, max=10, step=1)
-    for d in range(0,phys_o_token):
-        this_phys = make_phys_order()
-        new_phys = models.Phys_Orders(u_name=USER_NAME, order_date=this_phys[0], order_contents=this_phys[1])
+        ############ MAKING VITALS ############
+        # generate number of vital readings
+        vital_token = fakegen.random_int(min=5, max=20, step=1)
+        for b in range(0, vital_token):
+            this_vital = make_vital()
+            new_vital = models.Vitals(u_name=USER_NAME, vt_date=this_vital[0], vt_bloodgroup=this_vital[1],
+                                      vt_bp_sys=this_vital[2], vt_bp_dia=this_vital[3], vt_wbc=this_vital[4],
+                                      vt_rbc=this_vital[5], vt_height=this_vital[6], vt_weight=this_vital[7],
+                                      vt_comments=this_vital[8])
 
-        new_phys.save()
+            print(make_vital())
+            new_vital.save()
 
+        ############ MAKING DIAGNOSIS ############
+        diag_token = fakegen.random_int(min=3, max=20, step=1)
+        for c in range(0, diag_token):
+            this_diag = make_diagnosis()
+            new_diag = models.Diagnosis(u_name=USER_NAME, diagnosis_date=this_diag[0], diagnosis_status=this_diag[1],
+                                        diagnosis_comment=this_diag[2])
 
-    ############ MAKING PRESCRIPTIONS ############
-    rx_token = fakegen.random_int(min=2, max=20,step=1)
-    rx_num_ = 100000
-    for e in range(0,rx_token):
-        this_rx = make_rx_order()
-        new_rx = models.Prescription(u_name=USER_NAME, rx_no= rx_num_, rx_date=this_rx[0], rx_name=this_rx[1],
-                                     rx_dosage=this_rx[2], rx_sig=this_rx[3], rx_comments=this_rx[4])
-
-        rx_num_+= 1
-
-        new_rx.save()
-
-
-    ############ MAKING VACCINES ############
-    for f in range(0,len(vaccine_list)):
-        this_vac = make_vac_record(f)
-        new_vac = models.Vaccines(u_name=USER_NAME, vac_date=this_vac[0], vac_type=this_vac[1], vac_comment=this_vac[2])
-
-        new_vac.save()
-
-    ############ MAKING APPOINTMENTS ############
-    appt_token = fakegen.random_int(min=0, max=5, step=1)
-    for g in range(0,appt_token):
-        this_appt = make_appointment()
-        new_appt = models.Appointment(appointment_date=this_appt[0], u_name=USER_NAME, appointment_comments=this_appt[1])
-
-        new_appt.save()
+            new_diag.save()
 
 
-    ############ MAKING BILLS ############
-    bill_token = fakegen.random_int(min=0, max=10, step=1)
-    for h in range(0, bill_token):
-        this_bill = make_bill()
-        new_bill = models.Bills(u_name=USER_NAME, charge_date=this_bill[0], doc_charges=this_bill[1],
-                                medi_charges=this_bill[2], room_charges=this_bill[3], surgery_charges=this_bill[4],
-                                admission_days=this_bill[5], nursing_charges=this_bill[6], advance=this_bill[7],
-                                test_charges=this_bill[8], bill_amount=this_bill[9])
+        ############ MAKING PHYSICIAN'S ORDERS ############
+        phys_o_token = fakegen.random_int(min=0, max=10, step=1)
+        for d in range(0,phys_o_token):
+            this_phys = make_phys_order()
+            new_phys = models.Phys_Orders(u_name=USER_NAME, order_date=this_phys[0], order_contents=this_phys[1])
 
-        new_bill.save()
+            new_phys.save()
 
 
-    ############ MAKING PAYMENTS ############
-    pay_token = fakegen.random_int(min=0, max=10, step=1)
-    for j in range(0, pay_token):
-        this_pay = make_payment('Long Island Jewish')
-        new_pay = models.Payment(u_name=USER_NAME, pay_date=this_pay[0], pay_amount=this_pay[1], ins_copay=this_pay[
-            2], pay_description=this_pay[3], pay_location=this_pay[4])
+        ############ MAKING PRESCRIPTIONS ############
+        rx_token = fakegen.random_int(min=2, max=20,step=1)
+        rx_num_ = 100000
 
-        new_pay.save()
+        for e in range(0,rx_token):
+            this_rx = make_rx_order()
+            new_rx = models.Prescription(u_name=USER_NAME, rx_no= rx_num_, rx_date=this_rx[0], rx_name=this_rx[1],
+                                         rx_dosage=this_rx[2], rx_sig=this_rx[3], rx_comments=this_rx[4])
+
+            rx_num_+= 1
+
+            new_rx.save()
+
+
+        ############ MAKING VACCINES ############
+        for f in range(0,len(vaccine_list)):
+            this_vac = make_vac_record(f)
+            new_vac = models.Vaccines(u_name=USER_NAME, vac_date=this_vac[0], vac_type=this_vac[1], vac_comment=this_vac[2])
+
+            new_vac.save()
+
+        ############ MAKING APPOINTMENTS ############
+        appt_token = fakegen.random_int(min=0, max=5, step=1)
+        for g in range(0,appt_token):
+            this_appt = make_appointment()
+            new_appt = models.Appointment(appointment_date=this_appt[0], u_name=USER_NAME, appointment_comments=this_appt[1])
+
+            new_appt.save()
+
+
+        ############ MAKING BILLS ############
+        bill_token = fakegen.random_int(min=0, max=10, step=1)
+        for h in range(0, bill_token):
+            this_bill = make_bill()
+            new_bill = models.Bills(u_name=USER_NAME, charge_date=this_bill[0], doc_charges=this_bill[1],
+                                    medi_charges=this_bill[2], room_charges=this_bill[3], surgery_charges=this_bill[4],
+                                    admission_days=this_bill[5], nursing_charges=this_bill[6], advance=this_bill[7],
+                                    test_charges=this_bill[8], bill_amount=this_bill[9])
+
+            new_bill.save()
+
+
+        ############ MAKING PAYMENTS ############
+        pay_token = fakegen.random_int(min=0, max=10, step=1)
+        for j in range(0, pay_token):
+            this_pay = make_payment('Long Island Jewish')
+            new_pay = models.Payment(u_name=USER_NAME, pay_date=this_pay[0], pay_amount=this_pay[1], ins_copay=this_pay[
+                2], pay_description=this_pay[3], pay_location=this_pay[4])
+
+            new_pay.save()
 
 if __name__ == '__main__':
     print('~~Patient Creation Script~~')

@@ -10,7 +10,7 @@ from .models import *
 def register_request(request):
     if request.method == "POST":
         form = register(request.POST)
-        patient_form = PatientForm(request.POST)
+        patient_form = PatientForm(request.POST) #blank patient object
         print(form)
         if form.is_valid() and patient_form.is_valid():
             user = form.save()
@@ -93,6 +93,40 @@ def dashboard(request):
             return render(request, 'main/dashboard.html', locals())
     return render(request, 'main/dashboard.html', locals())
 
+def vitals_view(request, user_):
+    if request.method == 'GET':
+        vital_data = Vitals.objects.all().filter(u_name=user_)
+        export = {'vitalData': vital_data}
+        return render(request, 'main/vitals_test.html', export)
 
+def diag_view(request, user_):
+    if request.method == 'GET':
+        diag_data = Diagnosis.objects.all().filter(u_name=user_)
+        export = {'diagData': diag_data}
+        return render(request, 'main/diag_test.html', export)
 
+def rx_view(request, user_):
+    if request.method == 'GET':
+        rx_data = Prescription.objects.all().filter(u_name=user_)
+        export = {'rxData': rx_data}
+        return render(request, 'main/rx_test.html', export)
 
+def phys_orders_view(request,user_):
+    if request.method == 'GET':
+        po_data = Phys_Orders.objects.all().filter(u_name=user_)
+        export = {'poData': po_data}
+        return render(request, 'main/po_test.html', export)
+
+def vaccines_view(request, user_):
+    if request.method == 'GET':
+        vac_data = Vaccines.objects.all().filter(u_name=user_)
+        export = {'vaxData': vac_data}
+        return render(request, 'main/vax_test.html', export)
+
+def records_view(request, user_):
+    if request.method == 'GET':
+        app_data = Appointment.objects.all().filter(u_name=user_)
+        bill_data = Bills.objects.all().filter(u_name=user_)
+        pay_data = Payment.objects.all().filter(u_name=user_)
+        export = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
+        return render(request, 'main/records_test.html', export)
