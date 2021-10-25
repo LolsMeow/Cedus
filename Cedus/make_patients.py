@@ -201,16 +201,18 @@ def make_allergy():
     return aller_drug, aller_severity
 
 ## Makes a single instance of a vitals record
-#   [0] vt_bloodgroup
-#   [1] vt_bp_sys (bloodpressure Systole)
-#   [2] vt_bp_dia (bloodpressure diastole)
-#   [3] vt_wbc (white blood cell count)
-#   [4] vt_rbc (red blood cell count)
-#   [5] vt_height
-#   [6] vt_weight
-#   [7] vt_comments
+#   [0] vt_date
+#   [1] vt_bloodgroup
+#   [2] vt_bp_sys (bloodpressure Systole)
+#   [3] vt_bp_dia (bloodpressure diastole)
+#   [4] vt_wbc (white blood cell count)
+#   [5] vt_rbc (red blood cell count)
+#   [6] vt_height
+#   [7] vt_weight
+#   [8] vt_comments
 def make_vital():
     vt_bloodgroup =''
+    vt_date = fakegen.date()
     #decide blood group to reflect irl percentage of population
     blood_grp_num = fakegen.random_int(min=0, max=99, step=1)
     if 0 <= blood_grp_num <= 35:
@@ -265,7 +267,7 @@ def make_vital():
     #comments
     vt_comments = fakegen.paragraph(nb_sentences=1),
 
-    return vt_bloodgroup, vt_bp_sys, vt_bp_dia, vt_wbc, vt_rbc, vt_height, vt_weight, vt_comments
+    return vt_datedate, vt_bloodgroup, vt_bp_sys, vt_bp_dia, vt_wbc, vt_rbc, vt_height, vt_weight, vt_comments
 
 
 ## Makes a single instance of a diagnosis record
@@ -445,11 +447,11 @@ def populate(number_of_profiles):
     vital_token = fakegen.random_int(min=5, max=20, step=1)
     for b in range(0, vital_token):
         this_vital = make_vital()
-        new_vital = models.Vitals(u_name=USER_NAME, vt_bloodgroup=this_vital[0], vt_bp_sys=this_vital[1],
-                                     vt_bp_dia=this_vital[2], vt_wbc=this_vital[3], vt_rbc=this_vital[4],
-                                     vt_height=this_vital[5], vt_weight=this_vital[6], vt_comments=this_vital[7])
+        new_vital = models.Vitals(u_name=USER_NAME, vt_date=this_vital[0], vt_bloodgroup=this_vital[1],
+                                  vt_bp_sys=this_vital[2], vt_bp_dia=this_vital[3], vt_wbc=this_vital[4],
+                                  vt_rbc=this_vital[5], vt_height=this_vital[6], vt_weight=this_vital[7],
+                                  vt_comments=this_vital[8])
         new_vital.save()
-
 
     ############ MAKING DIAGNOSIS ############
     diag_token = fakegen.random_int(min=3, max=20, step=1)

@@ -62,6 +62,7 @@ class Staff(models.Model):
 class Vitals(models.Model):
     vt_no = models.AutoField(primary_key=True)  # auto-iterating index as primary key
     u_name = models.CharField(max_length=50)  # pull from django user object
+    vt_date = models.DateField()
     vt_bloodgroup = models.CharField(max_length=50)
     vt_bp_sys = models.IntegerField()  # systole
     vt_bp_dia = models.IntegerField()  # diastole
