@@ -2,7 +2,8 @@
 
 {% block content %}
 
-{% load crispy_forms_tags %}   
+{% load crispy_forms_tags %}
+{% load static %}
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -71,9 +72,9 @@
 
         text-align: center;
 
-        padding-top: 50px;
+        padding-top: 10px;
 
-        padding-bottom: 50px;
+        padding-bottom: 10px;
 
     }
 
@@ -112,8 +113,6 @@
         width: 150px;
 
         height: auto;
-
-        padding-top: 200px;
 
     }
 
@@ -263,7 +262,7 @@
       <div class="column left">
         <h1>Sign Up</h1>
         <div class="content">
-            <img src='Cedus Icon Whie.png' title="colorimg" class="colorimg">
+            <img src="{% static 'images/Cedus Icon Whie.png' %}" title="colorimg" class="colorimg">
             <form method = 'POST'>{% csrf_token %}
 		        {{ form|crispy }}
                 {{ patient_form|crispy }}
@@ -274,7 +273,7 @@
             {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
             </h3>
             {% endfor %}
-            <a href="{% url 'main:register' %}">Login</a>
+            <a href="{% url 'main:login' %}">Login</a>
             <br>
 
         </div>

@@ -9,9 +9,9 @@ from .models import *
 
 def register_request(request):
     if request.method == "POST":
+        print(request.POST)
         form = register(request.POST)
-        patient_form = PatientForm(request.POST) #blank patient object
-        print(form)
+        patient_form = PatientForm(request.POST)
         if form.is_valid() and patient_form.is_valid():
             user = form.save()
             patient = patient_form.save(commit=False)
@@ -56,7 +56,6 @@ def login_request(request):
     return render(request=request, template_name='main/login.html', context={'form': form})
 
 def information_request(request):
-    print(request.user)
     if not request.user.is_active:
         return redirect('main:register')
     if request.method == 'POST':

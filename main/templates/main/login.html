@@ -1,7 +1,7 @@
 {% extends "main/header.html" %}
 
 {% block content %}  
-
+{% load static %}
 <head>
     <title>Login</title>
     <style>
@@ -76,7 +76,7 @@ input[type=text], input[type=password] {
 <body>
     <div class="split left">
         <div class="centered">
-          <img src="text logo.png" width = "200" heigh = "200">
+          <img src="{% static 'images/text logo.png' %}" width = "200" height = "85">
 
           <form method="POST">{% csrf_token %}
             <input type="text" placeholder="Email" name="username" required>
@@ -96,7 +96,7 @@ input[type=text], input[type=password] {
 
       <div class="split right">
         <div class="middle">
-            <img src="Cedus Icon Whie.png" width = "500" heigh = "500">
+            <img src="{% static 'images/Cedus Icon Whie.png' %}" width = "500" heigh = "500">
         </div>
       </div>
 </body>
