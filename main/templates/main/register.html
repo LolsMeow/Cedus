@@ -6,129 +6,253 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+
     * {
+
       box-sizing: border-box;
+
     }
-    
+
+
+
     /* Create two unequal columns that floats next to each other */
+
     .column {
-      float: left;
+
+		margin: auto;
+
       padding: 10px;
-      height: 1200px; 
+
+      height: 1200px;
+
     }
-    
+
+
+
     .left {
+
       width: 400px;
+
       background-color: white;
+
     }
-    
+
+
+
     .right {
+
       width: 1000px;
+
       background-color: #5da6ac;
+
     }
-    
+
+
+
     /* Clear floats after the columns */
+
     .row:after {
+
       content: "";
+
       display: table;
+
       clear: both;
+
     }
-    
+
+
+
     h1 {
+
         color: #5da6ac;
+
         font-size: 36px;
+
         text-align: center;
+
         padding-top: 50px;
+
         padding-bottom: 50px;
+
     }
-    
+
+
+
     .content {
+
         text-align: center;
+
     }
-    
+
+
+
     input[type=textlogin] {
+
       width: 350px;
+
       border: none;
+
       background-color: #f1f1f1;
+
       font-size: 18px;
+
       text-align: center;
+
       height: 40px;
+
     }
-    
+
+
+
     img {
+
         margin: auto;
+
         width: 150px;
+
         height: auto;
-        padding-top: 200px;	
+
+        padding-top: 200px;
+
     }
-    
+
+
+
     .colorimg {
+
         filter: invert(67%) sepia(10%) saturate(1592%) hue-rotate(136deg) brightness(89%) contrast(83%);
+
     }
-    
+
+
+
     h2 {
+
         font-size: 18px;
+
         padding-top: 20px;
+
         padding-left: 20px;
+
     }
-    
+
+
+
     .personaldetails {
+
         background-color: white;
+
         border-radius: 5px;
+
     }
-    
+
+
+
     .personalfillin {
+
         padding: 30px;
+
     }
-    
+
+
+
     .insurancedetails {
+
         background-color: white;
+
         border-radius: 5px;
+
     }
-    
+
+
+
     .insurancefillin {
+
         padding: 30px;
+
     }
-    
+
+
+
     .providerdetails {
+
         background-color: white;
+
         border-radius: 5px;
+
     }
-    
+
+
+
     .providerfillin{
+
         padding: 30px;
+
     }
-    
+
+
+
     input[type=short] {
+
       width: 200px;
+
       border: none;
+
       background-color: #f1f1f1;
+
       font-size: 12px;
+
       text-align: center;
+
       height: 40px;
+
     }
-   
-    button{   
-    background-color: #2484a4;   
-    width: 100%;  
-    color: white;   
-    padding: 12px;   
-    margin: 10px 0px;   
-    border: none;   
-    cursor: pointer;   
-}   
+
+
+
+    button{
+
+    background-color: #2484a4;
+
+    width: 100%;
+
+    color: white;
+
+    padding: 12px;
+
+    margin: 10px 0px;
+
+    border: none;
+
+    cursor: pointer;
+
+}
+
+
 
    input[type=text], input[type=password],input[type=email] {
+
       width: 350px;
+
       border: none;
+
       background-color: #f1f1f1;
+
       font-size: 12px;
+
       text-align: center;
+
       height: 40px;
+
       margin: 10px;
+
     }
-    h3{ 
+
+    h3{
+
         color: #5da6ac;
+
     }
 
     
@@ -139,8 +263,10 @@
       <div class="column left">
         <h1>Sign Up</h1>
         <div class="content">
+            <img src='Cedus Icon Whie.png' title="colorimg" class="colorimg">
             <form method = 'POST'>{% csrf_token %}
-		        {{ register_form|crispy }}  
+		        {{ form|crispy }}
+                {{ patient_form|crispy }}
                 <button type="submit">Register</button>
             </form>
             {% for message in messages %}
@@ -150,7 +276,7 @@
             {% endfor %}
             <a href="{% url 'main:register' %}">Login</a>
             <br>
-        <img src='Cedus Icon Whie.png' title="colorimg" class="colorimg">
+
         </div>
       </div>
     </div>

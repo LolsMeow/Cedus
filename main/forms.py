@@ -1,7 +1,6 @@
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from .models import *
 
 
@@ -12,8 +11,10 @@ class register(UserCreationForm):
                                  widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
     last_name = forms.CharField(label='', max_length=30, required=True,
                                 widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
-    email = forms.EmailField(label='', required=True, widget=forms.TextInput(attrs={'placeholder': 'Email Address'}))
-    password1 = forms.CharField(label='', required=True, widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    email = forms.EmailField(label='', required=True,
+                            widget=forms.TextInput(attrs={'placeholder': 'Email Address'}))
+    password1 = forms.CharField(label='', required=True,
+                                widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
     password2 = forms.CharField(label='', required=True,
                                 widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}))
 
@@ -25,6 +26,14 @@ class register(UserCreationForm):
             'password2': None
         }
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                ("This email address is already in use. Please supply a different email address."))
+        return email
+
     def save(self, commit=True):
         user = super(register, self).save(commit=False)
         user.email = self.cleaned_data['email']
@@ -32,6 +41,11 @@ class register(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class PatientForm(ModelForm):
+    class Meta:
+        model = Patient
+        fields = ()
 
 
 class DateInput(forms.DateInput):
@@ -44,11 +58,33 @@ class infoReg(ModelForm):
         model = Patient
         fields = ('birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code', 'provider_name',
                   'plan_name', 'rx_bin', 'id_number', 'rx_pcn', 'rx_group')
-        exclude = ['first_name', 'last_name', 'email']
+
+class userInfo(ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                ("This email address is already in use. Please supply a different email address."))
+        return email
+
+    def save(self, commit=True):
+        user = super(userInfo, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.username = user.email
+        if commit:
+            user.save()
+        return user
+
 
 class updateInfo(ModelForm):
     birth_date = forms.DateField(label="", widget=DateInput())
     class Meta:
         model = Patient
-        fields = ('first_name', 'last_name', 'email', 'birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code')
+        fields = ['birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code']
+        exclude = ['user', 'provider_name', 'plan_name', 'rx_bin', 'id_number', 'rx_pcn', 'rx_group']
 

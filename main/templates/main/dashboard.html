@@ -1,0 +1,21 @@
+{% extends "main/test.html" %}
+
+{% block content %}
+			<form method = 'POST'>{% csrf_token %}
+				<div class="page-content-wrapper">
+					<div class="grid-item"><label>First Name</label></br>{{ userForm.first_name }}</div>
+					<div class="grid-item"><label>Last Name</label></br>{{ userForm.last_name }}</div>
+					<div class="grid-item"><label>Email</label></br>{{ userForm.email }}</div>
+					<div class="grid-item"><label>Birthday</label></br>{{ form.birth_date }}</div>
+					<div class="grid-item"><label>Phone Number </label></br>{{ form.phone_number }}</div>
+					<div class="grid-item"><label>Street Address </label></br>{{ form.street_address }}</div>
+					<div class="grid-item"><label>Apartment # </label></br>{{ form.apt }}</div>
+  					<div class="grid-item"><label>City </label></br>{{ form.city }}</div>
+					<div class="grid-item"><label>State </label></br>{{ form.state }}</div>
+					<div class="grid-item"><label>Zip Code </label></br>{{ form.zip_code }}</div>
+                    <button type="submit">Update</button>
+                    {{ userForm.errors.email }}
+				</div>
+			</form>
+
+{% endblock %}
