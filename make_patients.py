@@ -402,7 +402,7 @@ def populate(number_of_profiles):
         this_pt = make_pt(this_ins)
         #fix fields in both arrays
         USER_NAME = str(this_pt[2])
-        print(USER_NAME)
+
         #make user
         user_ = User.objects.create_user(username=this_pt[2], email=this_pt[2], password= this_pt[3], first_name=this_pt[0],
                          last_name=this_pt[1])
@@ -422,7 +422,8 @@ def populate(number_of_profiles):
         new_pt.save()
 
 
-        print(str(this_pt[0]) + ' ' + str(this_pt[1])+'  Pass: '+str(this_pt[3]))
+        print('[Username: ' + USER_NAME + '] [Name: ' + str(this_pt[0]) + ' ' + str(this_pt[1])+'] [Pass: '+str(
+            this_pt[3])+']')
 
         ############ MAKING ALLERGIES ############
         #decide number of allergies by percent
@@ -456,7 +457,6 @@ def populate(number_of_profiles):
                                       vt_rbc=this_vital[5], vt_height=this_vital[6], vt_weight=this_vital[7],
                                       vt_comments=this_vital[8])
 
-            print(make_vital())
             new_vital.save()
 
         ############ MAKING DIAGNOSIS ############

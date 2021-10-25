@@ -10,11 +10,11 @@ urlpatterns = [
     path('login/', views.login_request, name="login"),
     path('logout/', views.auth_logout, name='auth_logout'),
     path('information',views.information_request,name='information'),
-    path('vitals/', views.vitals_view),
-    path('diagnosis/', views.diag_view),
-    path('rx/', views.rx_view),
-    path('phys/', views.phys_orders_view),
-    path('vax/', views.vaccines_view),
-    path('records/', views.records_view),
+    path('vitals/', views.vitals_view, name='vitals'),
+    path('diagnosis/', views.diag_view, name='diagnosis'),
+    path('rx/', views.rx_view, name='rx'),
+    path('phys/', views.phys_orders_view, name='phys'),
+    path('vax/', views.vaccines_view, name='vaccines'),
+    path('records/', views.records_view, name='records'),
 
 ]
