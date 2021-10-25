@@ -35,11 +35,10 @@ ul.sidebar-nav {
 	color: #5da6ac;
 }
 
-/* Style the buttons inside the sidebar-nav */
 a:link {
 	display: block;
-	background-color: white;
-	color: #5da6ac;
+	//background-color: ;
+	color: #696969;
 	padding: 22px 0px;
 	width: 100%;
 	border: none;
@@ -49,19 +48,22 @@ a:link {
 	transition: 0.3s;
 	font-size: 25px;
 	border-radius: 50px 0px 0px 50px;
-	text-decoration: none;
+    text-decoration: none;
 }
 
 /* Change background color of tabs on hover */
 .sidebar-nav a:hover {
+    color: white;
 	background-color: #5da6ac;
-	color: white;
 }
 
 /* Create an active/current "sidebar-nav button" class */
 .sidebar-nav a:active {
 	background-color: #5da6ac;
 	color: white;
+}
+.sidebar-nav a:visited {
+    color: #696969;
 }
 
 .page-content-wrapper {
@@ -85,6 +87,18 @@ label {
 input {
 	font-size: 20px;
 	background-color: #D7DFDF;
+    border-radius: 10px;
+}
+    
+button {
+    padding: 20px;
+    font-size: 20px;
+    background-color: white;
+    border-radius: 5px;
+}
+button:hover {
+    background-color: #D0D0D0;
+    color: #5da6ac;
 }
 </style>
 </head>
