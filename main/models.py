@@ -18,7 +18,7 @@ class Patient(models.Model):
     plan_name = models.CharField(max_length=50, blank=True)
     rx_bin = models.IntegerField(blank = True, null = True)
     id_number = models.IntegerField(blank = True, null = True)
-    rx_pcn = models.IntegerField(blank = True, null = True)
+    rx_pcn = models.CharField(max_length=10, blank = True, null = True)
     rx_group = models.CharField(max_length=50, blank=True)
 
 
