@@ -99,6 +99,15 @@ def vitals_view(request, user_):
         export = {'vitalData': vital_data}
         return render(request, 'main/vitals_test.html', export)
 
+def vitals_view_test(request):
+    if not request.user.is_active:
+        return redirect('main:login')
+
+    if request.method == 'POST':
+        vital_data = Vitals.obejects.all().filter(u_name= request.user)
+        export = {'vitalData': vital_data}
+        return render(request, 'main/vitals_test.html', export)
+
 def diag_view(request, user_):
     if request.method == 'GET':
         diag_data = Diagnosis.objects.all().filter(u_name=user_)
