@@ -1,27 +1,29 @@
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 
 class Patient(models.Model):
-	user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-	birth_date = models.DateField(default=datetime.date.today)
-	phone_number = models.CharField(max_length=50)
-	street_address = models.CharField(max_length=50)
-	apt = models.CharField(max_length=50)
-	city = models.CharField(max_length=50)
-	state = models.CharField(max_length=50)
-	zip_code = models.IntegerField(blank = True, null = True)
+    birth_date = models.DateField(default=datetime.date.today)
+    phone_number = models.CharField(max_length=50)
+    street_address = models.CharField(max_length=50)
+    apt = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=5, validators=[RegexValidator(r'^[0-9]{5}$')])
 
-	provider_name = models.CharField(max_length=50)
-	plan_name = models.CharField(max_length=50)
-	rx_bin = models.IntegerField(blank = True, null = True)
-	id_number = models.IntegerField(blank = True, null = True)
-	rx_pcn = models.IntegerField(blank = True, null = True)
-	rx_group = models.CharField(max_length=50)
+    provider_name = models.CharField(max_length=50, blank=True)
+    plan_name = models.CharField(max_length=50, blank=True)
+    rx_bin = models.IntegerField(blank = True, null = True)
+    id_number = models.IntegerField(blank = True, null = True)
+    rx_pcn = models.IntegerField(blank = True, null = True)
+    rx_group = models.CharField(max_length=50, blank=True)
 
-	def __str__(self):
-		return self.user.username
+
+    def __str__(self):
+        return self.user.username
 
 class Insurance(models.Model):
     ins_mem_id = models.CharField(max_length=20, primary_key=True)  # patient's insurance member ID
