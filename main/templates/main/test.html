@@ -95,13 +95,13 @@ input {
             <h1>Hi, {{ form.instance.user.first_name }}</h1>
             <ul class="sidebar-nav">
                 <li> <a href="{% url 'main:dashboard' %}"><i class="material-icons">dashboard&nbsp</i>Profile</a></li>
-                <li> <a href="#"><i class="material-icons">bloodtype&nbsp</i>Vitals</a></li>
-                <li> <a href="#"><i class="material-icons">assignment&nbsp</i>Diagnosis</a></li>
-                <li> <a href="#"><i class="material-icons">medication&nbsp</i>Physician's Orders</a></li>
-                <li> <a href="#"><i class="material-icons">healing&nbsp</i>Prescriptions</a></li>
-                <li> <a href="#"><i class="material-icons">health_and_safety&nbsp</i>Vaccines</a></li>
-                <li> <a href="#"><i class="material-icons">history&nbsp</i>Records</a></li>
-                <li> <a href="#"><i class="material-icons">history&nbsp</i>Appointments</a></li>
+                <li> <a href="{% url 'main:vitals_test' %}"><i class="material-icons">bloodtype&nbsp</i>Vitals</a></li>
+                <li> <a href="{% url 'main:diagnosis' %}"><i class="material-icons">assignment&nbsp</i>Diagnosis</a></li>
+                <li> <a href="{% url 'main:rx' %}"><i class="material-icons">medication&nbsp</i>Physician's Orders</a></li>
+                <li> <a href="{% url 'main:phys' %}"><i class="material-icons">healing&nbsp</i>Prescriptions</a></li>
+                <li> <a href="{% url 'main:vaccines' %}"><i class="material-icons">health_and_safety&nbsp</i>Vaccines</a></li>
+                <li> <a href="{% url 'main:records' %}"><i class="material-icons">history&nbsp</i>Records</a></li>
+                <li> <a href=""><i class="material-icons">history&nbsp</i>Appointments</a></li>
                 <li> <a href="{% url 'main:auth_logout' %}"><i class="material-icons">logout&nbsp</i>Logout</a></li>
             </ul>
         </div>
