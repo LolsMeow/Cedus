@@ -19,6 +19,31 @@ def register_request(request):
             patient.save()
             group = Group.objects.get(name='Patient')
             user.groups.add(group)
+
+            
+            #create empty patient related objects
+            ins = models.Insurance(u_name=patient.user)
+            ins.save()
+            allg = models.Allergies(u_name=patient.user)
+            allg.save()
+            vital = models.Vitals(u_name=patient.user)
+            vital.save()
+            diag = models.Diagnosis(u_name=patient.user)
+            diag.save()
+            p_o = models.Phys_Orders(u_name=patient.user)
+            p_o.save()
+            rx_ = models.Prescription(u_name=patient.user)
+            rx_.save()
+            vax = models.Vaccines(u_name=patient.user)
+            vax.save()
+            appt = models.Appointment(u_name=patient.user)
+            appt.save()
+            billy = models.Bills(u_name=patient.user)
+            billy.save()
+            pay_ = models.Payment(u_name=patient.user)
+            pay_.save()
+
+
             login(request, user)
             return redirect('main:information')
         messages.error(request, "Unsuccessful registration. Invalid information.")
