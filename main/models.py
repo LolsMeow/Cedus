@@ -40,6 +40,7 @@ class Insurance(models.Model):
 
 class Allergies(models.Model):
     aller_id = models.AutoField(primary_key=True)
+    u_name = models.CharField(max_length=50, null = True)
     aller_drug = models.CharField(max_length=20)
     aller_severity = models.CharField(max_length=10)
 
@@ -54,6 +55,7 @@ class Staff(models.Model):
 class Vitals(models.Model):
     vt_no = models.AutoField(primary_key=True)  # auto-iterating index as primary key
     u_name = models.CharField(max_length=50)  # pull from django user object
+    vt_date = models.DateField(null=True)
     vt_bloodgroup = models.CharField(max_length=50)
     vt_bp_sys = models.IntegerField()  # systole
     vt_bp_dia = models.IntegerField()  # diastole

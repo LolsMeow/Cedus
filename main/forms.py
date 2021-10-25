@@ -87,4 +87,3 @@ class updateInfo(ModelForm):
         model = Patient
         fields = ['birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code']
         exclude = ['user', 'provider_name', 'plan_name', 'rx_bin', 'id_number', 'rx_pcn', 'rx_group']
-

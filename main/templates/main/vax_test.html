@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vaccine Record</title>
+</head>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Specification</th>
+    </tr>
+    {% for item in vaxData %}
+    <tr>
+        <td>{{ item.vac_date }}</td>
+        <td>{{ item.vac_type }}</td>
+        <td>{{ item.vac_comment }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<body>
+
+</body>
+</html>

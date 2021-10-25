@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Records</title>
+</head>
+<h1>Appointments</h1>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Purpose</th>
+    </tr>
+    {% for item in appData %}
+    <tr>
+        <td>{{ item.appointment_date }}</td>
+        <td>{{ item.appointment_comments }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<h1>Billing</h1>
+<table>
+    <tr>
+        <th>Bill ID</th>
+        <th>Charge Date</th>
+        <th>Doctor Charge</th>
+        <th>Medical Charge</th>
+        <th>Room Charge</th>
+        <th>Surgery Charge</th>
+        <th>Admission Days</th>
+        <th>Nursing Charges</th>
+        <th>Advance</th>
+        <th>Test Charges</th>
+        <th>TOTAL AMOUNT/th>
+    </tr>
+    {% for item in billData %}
+    <tr>
+        <td>{{ item.bill_id }}</td>
+        <td>{{ item.charge_date }}</td>
+        <td>{{ item.doc_charges }}</td>
+        <td>{{ item.medi_charges }}</td>
+        <td>{{ item.room_charges }}</td>
+        <td>{{ item.surgery_charges }}</td>
+        <td>{{ item.admission_days }}</td>
+        <td>{{ item.nursing_charges }}</td>
+        <td>{{ item.advance }}</td>
+        <td>{{ item.test_charges }}</td>
+        <td>{{ item.bill_amount }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h1>Payments</h1>
+<table>
+    <tr>
+        <th>Payment ID</th>
+        <th>Payment Date</th>
+        <th>Payment Amount</th>
+        <th>Insurance Co-Pay</th>
+        <th>Description</th>
+        <th>Pay Location</th>
+    </tr>
+    {% for item in payData %}
+    <tr>
+        <td>{{ item.pay_id }}</td>
+        <td>{{ item.pay_date }}</td>
+        <td>{{ item.pay_amount }}</td>
+        <td>{{ item.ins_copay }}</td>
+        <td>{{ item.pay_description }}</td>
+        <td>{{ item.pay_location }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<body>
+
+</body>
+</html>
