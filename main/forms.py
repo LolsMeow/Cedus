@@ -56,8 +56,7 @@ class infoReg(ModelForm):
     birth_date = forms.DateField(label="", widget=DateInput())
     class Meta:
         model = Patient
-        fields = ('birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code', 'provider_name',
-                  'plan_name', 'rx_bin', 'id_number', 'rx_pcn', 'rx_group')
+        fields = ('birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code')
 
 class userInfo(ModelForm):
     class Meta:

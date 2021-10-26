@@ -414,9 +414,7 @@ def populate(number_of_profiles):
 
         ############ MAKING PATIENT ############ #NOTE: gender=this_pt[17], language=this_pt[18] removed due to models
         new_pt = models.Patient(user=user_, birth_date=this_pt[4], phone_number=this_pt[5], street_address=this_pt[6],
-                                apt=this_pt[7], city=this_pt[8], state=this_pt[9], zip_code=this_pt[10],
-                                provider_name=this_pt[11], plan_name=this_pt[12], rx_bin=this_pt[13], id_number=this_pt[
-                14], rx_pcn=this_pt[15], rx_group=this_pt[16])
+                                apt=this_pt[7], city=this_pt[8], state=this_pt[9], zip_code=this_pt[10])
 
         new_ins.save()
         new_pt.save()
