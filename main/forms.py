@@ -57,6 +57,12 @@ class infoReg(ModelForm):
     class Meta:
         model = Patient
         fields = ('birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code')
+    def clean_zip_code(self):
+        zip_code = self.cleaned_data.get('zip_code')
+
+        if len(zip_code) < 5:
+            raise forms.ValidationError(("Zip Code must be 5 digits."))
+        return zip_code
 
 class userInfo(ModelForm):
     class Meta:
@@ -66,7 +72,7 @@ class userInfo(ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
 
-        if User.objects.filter(email=email).exists():
+        if User.objects.exclude(pk=self.instance.pk).filter(email=email).exists():
             raise forms.ValidationError(
                 ("This email address is already in use. Please supply a different email address."))
         return email

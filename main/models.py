@@ -10,7 +10,7 @@ class Patient(models.Model):
     birth_date = models.DateField(default=datetime.date.today)
     phone_number = models.CharField(max_length=50)
     street_address = models.CharField(max_length=50)
-    apt = models.CharField(max_length=50)
+    apt = models.CharField(max_length=50, blank=True, null=True)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     zip_code = models.CharField(max_length=5, validators=[RegexValidator(r'^[0-9]{5}$')])

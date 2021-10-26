@@ -86,8 +86,11 @@ def information_request(request):
     if request.method == 'POST':
         p = Patient.objects.all().get(user=request.user)
         form = infoReg(data=request.POST, instance=p)
-        p = form.save()
-        return redirect('main:login')
+        if form.is_valid():
+            p = form.save()
+            return redirect('main:login')
+        else:
+            return render(request=request, template_name='main/info.html', context={'information_form': form})
     form = infoReg()
     return render(request=request, template_name='main/info.html', context={'information_form': form})
 
@@ -102,16 +105,18 @@ def dashboard(request):
         return redirect('main:login')
 
     u = User.objects.get(username=request.user)
+    userForm = userInfo(instance=u)
     p = Patient.objects.get(user=request.user)
     form = updateInfo(instance=p)
-    userForm = userInfo(instance=u)
 
     if request.method == 'POST':
+
         u = User.objects.all().get(username=request.user)
-        userForm = userInfo(data=request.POST, instance=u)
+        userForm = userInfo(data=request.POST, instance=request.user)
         p = Patient.objects.all().get(user=request.user)
         form = updateInfo(data=request.POST, instance=p)
-        if form.is_valid() and userForm.is_valid():
+        print(userForm)
+        if form.is_valid() and (userForm.is_valid()):
             u = userForm.save()
             p = form.save()
         else:
