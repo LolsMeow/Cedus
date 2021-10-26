@@ -3,13 +3,11 @@
 {% block content %}
 <table>
     <tr>
-        <th>Order Num</th>
         <th>Date</th>
         <th>Orders</th>
     </tr>
     {% for item in physdata %}
     <tr>
-        <td>{{ item.order_no }}</td>
         <td>{{ item.order_date }}</td>
         <td>{{ item.order_contents }}</td>
     </tr>
