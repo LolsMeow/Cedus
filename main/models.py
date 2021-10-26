@@ -26,7 +26,7 @@ class Insurance(models.Model):
     ins_plan = models.CharField(max_length=100, blank=True, null=True)
     ins_rx_bin = models.CharField(max_length=10, blank=True, null=True)
     ins_rx_pcn = models.CharField(max_length=10, blank=True, null=True)
-    ins_rx_group = models.CharField(max_length=20, blank=True, null=True)
+    ins_rx_group = models.CharField(max_length=50, blank=True, null=True)
     ins_coverage = models.CharField(max_length=100, blank=True, null=True)
 
 
@@ -35,7 +35,7 @@ class Insurance(models.Model):
 
 class Allergies(models.Model):
     u_name = models.CharField(max_length=50, blank=True, null=True)
-    aller_drug = models.CharField(max_length=20, blank=True, null=True)
+    aller_drug = models.CharField(max_length=50, blank=True, null=True)
     aller_severity = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
