@@ -130,8 +130,8 @@ def vitals_view(request):
         return redirect('main:login')
 
     else:
-        vital_data = Vitals.objects.all().filter(u_name=request.user)
-        form = {'vitalData': vital_data}
+        form = Vitals.objects.all().filter(u_name=request.user)
+        form = {'form': form}
         return render(request, 'main/vitals_test.html', form)
 
 
@@ -146,8 +146,8 @@ def diag_view(request):
         return redirect('main:login')
 
     else:
-        diag_data = Diagnosis.objects.all().filter(u_name=request.user)
-        form = {'diagData': diag_data}
+        form = Diagnosis.objects.all().filter(u_name=request.user)
+        form = {'form': form}
         return render(request, 'main/diag_test.html', form)
 
 
@@ -162,8 +162,8 @@ def rx_view(request):
         return redirect('main:login')
 
     else:
-        rx_data = Prescription.objects.all().filter(u_name=request.user)
-        form = {'rxData': rx_data}
+        form = Prescription.objects.all().filter(u_name=request.user)
+        form = {'form': form}
         return render(request, 'main/rx_test.html', form)
 
 # def phys_orders_view_test(request, user_):
@@ -177,8 +177,8 @@ def phys_orders_view(request):
         return redirect('main:login')
 
     else:
-        po_data = Phys_Orders.objects.all().filter(u_name=request.user)
-        form = {'poData': po_data}
+        form = Phys_Orders.objects.all().filter(u_name=request.user)
+        form = {'form': form}
         return render(request, 'main/po_test.html', form)
 
 # def vaccines_view_test(request, user_):
@@ -192,8 +192,8 @@ def vaccines_view(request):
         return redirect('main:login')
 
     else:
-        vac_data = Vaccines.objects.all().filter(u_name=request.user)
-        form = {'vaxData': vac_data}
+        form = Vaccines.objects.all().filter(u_name=request.user)
+        form = {'form': form}
         return render(request, 'main/vax_test.html', form)
 
 # def records_view_test(request, user_):
@@ -209,8 +209,8 @@ def records_view(request):
     if not request.user.is_active:
         return redirect('main:login')
     else:
-        app_data = Appointment.objects.all().filter(u_name=request.user)
+        form = Appointment.objects.all().filter(u_name=request.user)
         bill_data = Bills.objects.all().filter(u_name=request.user)
         pay_data = Payment.objects.all().filter(u_name=request.user)
-        form = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
+        form = {'form': form, 'billData': bill_data, 'payData': pay_data}
         return render(request, 'main/records_test.html', form)
