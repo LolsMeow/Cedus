@@ -146,8 +146,8 @@ def diag_view(request):
         return redirect('main:login')
 
     else:
-        form = Diagnosis.objects.all().filter(u_name=request.user)
-        form = {'form': form}
+        diag_data = Diagnosis.objects.all().filter(u_name=request.user)
+        form = {'diag_data': diag_data}
         return render(request, 'main/diag_test.html', form)
 
 
@@ -162,8 +162,8 @@ def rx_view(request):
         return redirect('main:login')
 
     else:
-        form = Prescription.objects.all().filter(u_name=request.user)
-        form = {'form': form}
+        pdata = Prescription.objects.all().filter(u_name=request.user)
+        form = {'pdata': pdata}
         return render(request, 'main/rx_test.html', form)
 
 # def phys_orders_view_test(request, user_):
@@ -177,8 +177,9 @@ def phys_orders_view(request):
         return redirect('main:login')
 
     else:
-        form = Phys_Orders.objects.all().filter(u_name=request.user)
-        form = {'form': form}
+        physdata = Phys_Orders.objects.all().filter(u_name=request.user)
+        form = {'physdata': physdata}
+        print(physdata)
         return render(request, 'main/po_test.html', form)
 
 # def vaccines_view_test(request, user_):

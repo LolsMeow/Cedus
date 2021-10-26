@@ -408,7 +408,7 @@ def populate(number_of_profiles):
                          last_name=this_pt[1])
 
         ############ MAKING INSURANCE ############
-        new_ins = models.Insurance(ins_mem_id=this_ins[0], u_name=USER_NAME, ins_name=this_ins[1],
+        new_ins = models.Insurance(u_name=USER_NAME, ins_name=this_ins[1],
                                  ins_copay=this_ins[2], ins_plan=this_ins[3], ins_rx_bin=this_ins[4], ins_rx_pcn= this_ins[5], ins_rx_group=this_ins[6], ins_coverage=this_ins[7])
 
 
@@ -484,7 +484,7 @@ def populate(number_of_profiles):
 
         for e in range(0,rx_token):
             this_rx = make_rx_order()
-            new_rx = models.Prescription(u_name=USER_NAME, rx_no= rx_num_, rx_date=this_rx[0], rx_name=this_rx[1],
+            new_rx = models.Prescription(u_name=USER_NAME, rx_date=this_rx[0], rx_name=this_rx[1],
                                          rx_dosage=this_rx[2], rx_sig=this_rx[3], rx_comments=this_rx[4])
 
             rx_num_+= 1
