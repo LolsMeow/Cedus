@@ -86,8 +86,11 @@ def information_request(request):
     if request.method == 'POST':
         p = Patient.objects.all().get(user=request.user)
         form = infoReg(data=request.POST, instance=p)
-        p = form.save()
-        return redirect('main:login')
+        if form.is_valid():
+            p = form.save()
+            return redirect('main:login')
+        else:
+            return render(request=request, template_name='main/info.html', context={'information_form': form})
     form = infoReg()
     return render(request=request, template_name='main/info.html', context={'information_form': form})
 
