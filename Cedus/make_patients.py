@@ -384,7 +384,7 @@ def make_payment(location):
     pay_date = fakegen.date()
     pay_amount = doc_charges = decimal.Decimal(str(round(random.uniform(0.00, 150.00), 2)))
     ins_copay = doc_charges = decimal.Decimal(str(round(random.uniform(0.00, 25.00), 2)))
-    pay_description = fake.paragraph(nb_sentences=5)
+    pay_description = fake.paragraph(nb_sentences=2)
     pay_location = location
 
     return pay_date, pay_amount, ins_copay, pay_description, pay_location
@@ -513,7 +513,7 @@ def populate(number_of_profiles):
 
 
     ############ MAKING PAYMENTS ############
-    pay_token = fakegen.random_int(min=0, max=5, step=1)
+    pay_token = fakegen.random_int(min=0, max=10, step=1)
     for j in range(0, pay_token):
         this_pay = make_payment()
         new_pay = models.Payment(u_name=USER_NAME, pay_date=this_pay[0], pay_amount=this_pay[1], ins_copay=this_pay[
