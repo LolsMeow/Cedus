@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Prescriptions</title>
-</head>
+{% extends "main/test.html" %}
+
+{% block content %}
 <table>
     <tr>
         <th>Date</th>
@@ -24,7 +21,4 @@
     </tr>
     {% endfor %}
 </table>
-<body>
-
-</body>
-</html>
+{% endblock %}

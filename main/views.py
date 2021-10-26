@@ -22,27 +22,26 @@ def register_request(request):
 
             
             #create empty patient related objects
-            ins = models.Insurance(u_name=patient.user)
+            ins = Insurance.objects.create(u_name=patient.user.username)
             ins.save()
-            allg = models.Allergies(u_name=patient.user)
+            allg = Allergies.objects.create(u_name=patient.user.username)
             allg.save()
-            vital = models.Vitals(u_name=patient.user)
+            vital = Vitals.objects.create(u_name=patient.user.username)
             vital.save()
-            diag = models.Diagnosis(u_name=patient.user)
+            diag = Diagnosis.objects.create(u_name=patient.user.username)
             diag.save()
-            p_o = models.Phys_Orders(u_name=patient.user)
+            p_o = Phys_Orders.objects.create(u_name=patient.user.username)
             p_o.save()
-            rx_ = models.Prescription(u_name=patient.user)
+            rx_ = Prescription.objects.create(u_name=patient.user.username)
             rx_.save()
-            vax = models.Vaccines(u_name=patient.user)
+            vax = Vaccines.objects.create(u_name=patient.user.username)
             vax.save()
-            appt = models.Appointment(u_name=patient.user)
+            appt = Appointment.objects.create(u_name=patient.user.username)
             appt.save()
-            billy = models.Bills(u_name=patient.user)
+            billy = Bills.objects.create(u_name=patient.user.username)
             billy.save()
-            pay_ = models.Payment(u_name=patient.user)
+            pay_ = Payment.objects.create(u_name=patient.user.username)
             pay_.save()
-
 
             login(request, user)
             return redirect('main:information')
@@ -99,7 +98,7 @@ def auth_logout(request):
 
 
 def dashboard(request):
-    if not request.user.is_active:
+    if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
     u = User.objects.get(username=request.user)
@@ -123,8 +122,8 @@ def dashboard(request):
 # def vitals_view_test(request, user_):
 #     if request.method == 'GET':
 #         vital_data = Vitals.objects.all().filter(u_name=user_)
-#         export = {'vitalData': vital_data}
-#         return render(request, 'main/vitals_test.html', export)
+#         form = {'vitalData': vital_data}
+#         return render(request, 'main/vitals_test.html', form)
 
 def vitals_view(request):
     if not request.user.is_active:
@@ -132,15 +131,15 @@ def vitals_view(request):
 
     else:
         vital_data = Vitals.objects.all().filter(u_name=request.user)
-        export = {'vitalData': vital_data}
-        return render(request, 'main/vitals_test.html', export)
+        form = {'vitalData': vital_data}
+        return render(request, 'main/vitals_test.html', form)
 
 
 # def diag_view_test(request, user_):
 #     if request.method == 'GET':
 #         diag_data = Diagnosis.objects.all().filter(u_name=user_)
-#         export = {'diagData': diag_data}
-#         return render(request, 'main/diag_test.html', export)
+#         form = {'diagData': diag_data}
+#         return render(request, 'main/diag_test.html', form)
 
 def diag_view(request):
     if not request.user.is_active:
@@ -148,15 +147,15 @@ def diag_view(request):
 
     else:
         diag_data = Diagnosis.objects.all().filter(u_name=request.user)
-        export = {'diagData': diag_data}
-        return render(request, 'main/diag_test.html', export)
+        form = {'diagData': diag_data}
+        return render(request, 'main/diag_test.html', form)
 
 
 # def rx_view_test(request, user_):
 #     if request.method == 'GET':
 #         rx_data = Prescription.objects.all().filter(u_name=user_)
-#         export = {'rxData': rx_data}
-#         return render(request, 'main/rx_test.html', export)
+#         form = {'rxData': rx_data}
+#         return render(request, 'main/rx_test.html', form)
 
 def rx_view(request):
     if not request.user.is_active:
@@ -164,14 +163,14 @@ def rx_view(request):
 
     else:
         rx_data = Prescription.objects.all().filter(u_name=request.user)
-        export = {'rxData': rx_data}
-        return render(request, 'main/rx_test.html', export)
+        form = {'rxData': rx_data}
+        return render(request, 'main/rx_test.html', form)
 
 # def phys_orders_view_test(request, user_):
 #     if request.method == 'GET':
 #         po_data = Phys_Orders.objects.all().filter(u_name=user_)
-#         export = {'poData': po_data}
-#         return render(request, 'main/po_test.html', export)
+#         form = {'poData': po_data}
+#         return render(request, 'main/po_test.html', form)
 
 def phys_orders_view(request):
     if not request.user.is_active:
@@ -179,14 +178,14 @@ def phys_orders_view(request):
 
     else:
         po_data = Phys_Orders.objects.all().filter(u_name=request.user)
-        export = {'poData': po_data}
-        return render(request, 'main/po_test.html', export)
+        form = {'poData': po_data}
+        return render(request, 'main/po_test.html', form)
 
 # def vaccines_view_test(request, user_):
 #     if request.method == 'GET':
 #         vac_data = Vaccines.objects.all().filter(u_name=user_)
-#         export = {'vaxData': vac_data}
-#         return render(request, 'main/vax_test.html', export)
+#         form = {'vaxData': vac_data}
+#         return render(request, 'main/vax_test.html', form)
 
 def vaccines_view(request):
     if not request.user.is_active:
@@ -194,16 +193,16 @@ def vaccines_view(request):
 
     else:
         vac_data = Vaccines.objects.all().filter(u_name=request.user)
-        export = {'vaxData': vac_data}
-        return render(request, 'main/vax_test.html', export)
+        form = {'vaxData': vac_data}
+        return render(request, 'main/vax_test.html', form)
 
 # def records_view_test(request, user_):
 #     if request.method == 'GET':
 #         app_data = Appointment.objects.all().filter(u_name=user_)
 #         bill_data = Bills.objects.all().filter(u_name=user_)
 #         pay_data = Payment.objects.all().filter(u_name=user_)
-#         export = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
-#         return render(request, 'main/records_test.html', export)
+#         form = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
+#         return render(request, 'main/records_test.html', form)
 
 
 def records_view(request):
@@ -213,5 +212,5 @@ def records_view(request):
         app_data = Appointment.objects.all().filter(u_name=request.user)
         bill_data = Bills.objects.all().filter(u_name=request.user)
         pay_data = Payment.objects.all().filter(u_name=request.user)
-        export = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
-        return render(request, 'main/records_test.html', export)
+        form = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
+        return render(request, 'main/records_test.html', form)
