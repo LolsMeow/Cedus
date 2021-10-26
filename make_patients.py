@@ -281,7 +281,7 @@ def make_diagnosis():
 
     diagnosis_status = pickoutofhat(condition,1,False)
 
-    diagnosis_comment = fakegen.paragraph(nb_sentences=2)
+    diagnosis_comment = fakegen.paragraph(nb_sentences=1)
 
     return diagnosis_date, diagnosis_status,diagnosis_comment
 
@@ -291,7 +291,7 @@ def make_diagnosis():
 #   [1] order_contents
 def make_phys_order():
     order_date = fakegen.date()
-    order_contents = fakegen.paragraph(nb_sentences=5)
+    order_contents = fakegen.paragraph(nb_sentences=1)
 
     return order_date, order_contents
 
@@ -317,7 +317,7 @@ def make_rx_order():
     rx_name = drug_list[rand]
     rx_dosage = fakegen.random_int(10, 300, step=20)
     rx_sig = fakegen.paragraph(nb_sentences=1)
-    rx_comments = fakegen.paragraph(nb_sentences=2)
+    rx_comments = fakegen.paragraph(nb_sentences=1)
 
     return rx_date, rx_name, rx_dosage, rx_sig, rx_comments
 
@@ -387,7 +387,7 @@ def make_payment(location):
     pay_date = fakegen.date()
     pay_amount = doc_charges = decimal.Decimal(str(round(random.uniform(0.00, 150.00), 2)))
     ins_copay = doc_charges = decimal.Decimal(str(round(random.uniform(0.00, 25.00), 2)))
-    pay_description = fakegen.paragraph(nb_sentences=5)
+    pay_description = fakegen.paragraph(nb_sentences=1)
     pay_location = location
 
     return pay_date, pay_amount, ins_copay, pay_description, pay_location
