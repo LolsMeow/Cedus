@@ -28,7 +28,7 @@
         <th>Nursing Charges</th>
         <th>Advance</th>
         <th>Test Charges</th>
-        <th>TOTAL AMOUNT/th>
+        <th>TOTAL AMOUNT</th>
     </tr>
     {% for item in billData %}
     <tr>
@@ -50,7 +50,6 @@
 </br><h2>Payments</h2></br>
 <table>
     <tr>
-        <th>Payment ID</th>
         <th>Payment Date</th>
         <th>Payment Amount</th>
         <th>Insurance Co-Pay</th>
@@ -59,7 +58,6 @@
     </tr>
     {% for item in payData %}
     <tr>
-        <td>{{ item.pay_id }}</td>
         <td>{{ item.pay_date }}</td>
         <td>{{ item.pay_amount }}</td>
         <td>{{ item.ins_copay }}</td>
