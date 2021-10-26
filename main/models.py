@@ -3,6 +3,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
+
 class Patient(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -25,6 +26,7 @@ class Patient(models.Model):
     def __str__(self):
         return self.user.username
 
+
 class Insurance(models.Model):
     #ins_mem_id = models.CharField(max_length=20, primary_key=True, default=1)  # patient's insurance member ID
     u_name = models.CharField(max_length=50)
@@ -35,7 +37,6 @@ class Insurance(models.Model):
     ins_rx_pcn = models.CharField(max_length=10, blank=True, null=True)
     ins_rx_group = models.CharField(max_length=20, blank=True, null=True)
     ins_coverage = models.CharField(max_length=100, blank=True, null=True)
-
 
 
 class Allergies(models.Model):
