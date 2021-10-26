@@ -64,6 +64,15 @@ class infoReg(ModelForm):
             raise forms.ValidationError(("Zip Code must be 5 digits."))
         return zip_code
 
+    def clean_zip_code(self):
+        zip_code = self.cleaned_data.get('zip_code')
+
+        if len(zip_code) < 5:
+            raise forms.ValidationError(
+                ("Zip Code must be 5 digits long."))
+        return zip_code
+
+
 class userInfo(ModelForm):
     class Meta:
         model = User
@@ -91,4 +100,12 @@ class updateInfo(ModelForm):
     class Meta:
         model = Patient
         fields = ['birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code']
-        exclude = ['user', 'provider_name', 'plan_name', 'rx_bin', 'id_number', 'rx_pcn', 'rx_group']
+        exclude = ['user']
+
+    def clean_zip_code(self):
+        zip_code = self.cleaned_data.get('zip_code')
+
+        if len(zip_code) < 5:
+            raise forms.ValidationError(
+                ("Zip Code must be 5 digits long."))
+        return zip_code
