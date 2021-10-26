@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Vitals</title>
-</head>
+{% extends "main/test.html" %}
+
+{% block content %}
 <table>
     <tr>
         <th>Date</th>
@@ -16,7 +13,7 @@
         <th>Wt</th>
         <th>Comments</th>
     </tr>
-    {% for item in vitalData %}
+    {% for item in form %}
     <tr>
         <td>{{ item.vt_date }}</td>
         <td>{{ item.vt_bloodgroup }}</td>
@@ -30,7 +27,4 @@
     </tr>
     {% endfor %}
 </table>
-<body>
-
-</body>
-</html>
+{% endblock %}

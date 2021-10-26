@@ -107,7 +107,6 @@ def pickoutofhat(list_, num_needed=0, allow_empty=False):
 #   [6] = insurance Rx Group Number - 2 upper letters + 5 digits
 #   [7] = insruance coverage
 def make_ins():
-    ins_mem_id = fakegen.random_int(min=100000000000000, max=999999999999999, step=1)
     ins_name = pickoutofhat(companies, 1, False)
     ins_copay = decimal.Decimal(str(round(random.uniform(0.00, 50.00), 2)))
     ins_plan = pickoutofhat(ins_plan_names, 1, False)
@@ -398,7 +397,7 @@ def populate(number_of_profiles):
     this_ins = make_ins()
 
     #make object
-    new_ins = models.Insurance(ins_mem_id=this_ins[0], u_name='test@test.com', ins_name=this_ins[1],
+    new_ins = models.Insurance(u_name='test@test.com', ins_name=this_ins[1],
                              ins_copay=this_ins[2], ins_plan=this_ins[3], ins_rx_bin=this_ins[4], ins_rx_pcn= this_ins[5], ins_rx_group=this_ins[6], ins_coverage=this_ins[7])
 
 

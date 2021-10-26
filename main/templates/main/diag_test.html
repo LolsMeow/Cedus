@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Diagnosis</title>
-</head>
+{% extends "main/test.html" %}
+
+{% block content %}
 <table>
     <tr>
         <th>Date</th>
         <th>Status</th>
         <th>Comments</th>
     </tr>
-    {% for item in diagData %}
+    {% for item in diag_data %}
     <tr>
         <td>{{ item.diagnosis_date }}</td>
         <td>{{ item.diagnosis_status }}</td>
@@ -18,7 +15,4 @@
     </tr>
     {% endfor %}
 </table>
-<body>
-
-</body>
-</html>
+{% endblock %}

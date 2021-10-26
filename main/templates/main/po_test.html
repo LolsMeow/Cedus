@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Physcian's Orders</title>
-</head>
+{% extends "main/test.html" %}
+
+{% block content %}
 <table>
     <tr>
         <th>Order Num</th>
         <th>Date</th>
         <th>Orders</th>
     </tr>
-    {% for item in poData %}
+    {% for item in physdata %}
     <tr>
         <td>{{ item.order_no }}</td>
         <td>{{ item.order_date }}</td>
@@ -18,7 +15,4 @@
     </tr>
     {% endfor %}
 </table>
-<body>
-
-</body>
-</html>
+{% endblock %}

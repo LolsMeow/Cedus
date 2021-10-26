@@ -1,23 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Records</title>
-</head>
-<h1>Appointments</h1>
+{% extends "main/test.html" %}
+
+{% block content %}
+<h2>Appointments</h2></br>
 <table>
     <tr>
         <th>Date</th>
         <th>Purpose</th>
     </tr>
-    {% for item in appData %}
+    {% for item in form %}
     <tr>
         <td>{{ item.appointment_date }}</td>
         <td>{{ item.appointment_comments }}</td>
     </tr>
     {% endfor %}
 </table>
-<h1>Billing</h1>
+</br><h2>Billing</h2></br>
+
 <table>
     <tr>
         <th>Bill ID</th>
@@ -49,7 +47,7 @@
     {% endfor %}
 </table>
 
-<h1>Payments</h1>
+</br><h2>Payments</h2></br>
 <table>
     <tr>
         <th>Payment ID</th>
@@ -70,7 +68,4 @@
     </tr>
     {% endfor %}
 </table>
-<body>
-
-</body>
-</html>
+{% endblock %}
