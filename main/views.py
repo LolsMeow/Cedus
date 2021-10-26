@@ -210,8 +210,8 @@ def records_view(request):
     if not request.user.is_active:
         return redirect('main:login')
     else:
-        form = Appointment.objects.all().filter(u_name=request.user)
+        app_data = Appointment.objects.all().filter(u_name=request.user)
         bill_data = Bills.objects.all().filter(u_name=request.user)
         pay_data = Payment.objects.all().filter(u_name=request.user)
-        form = {'form': form, 'billData': bill_data, 'payData': pay_data}
+        form = {'app_data': app_data, 'billData': bill_data, 'payData': pay_data}
         return render(request, 'main/records_test.html', form)
