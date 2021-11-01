@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 
+class Role(models.Model):
+    role_id = models.IntegerField(primary_key=True)
+
+
 class Patient(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -14,6 +18,7 @@ class Patient(models.Model):
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     zip_code = models.CharField(max_length=5, validators=[RegexValidator(r'^[0-9]{5}$')])
+    provider = models.CharField(max_length=10)
 
     def __str__(self):
         return self.user.username
@@ -29,9 +34,9 @@ class Insurance(models.Model):
     ins_rx_group = models.CharField(max_length=50, blank=True, null=True)
     ins_coverage = models.CharField(max_length=100, blank=True, null=True)
 
-
     def __str__(self):
         return self.u_name
+
 
 class Allergies(models.Model):
     u_name = models.CharField(max_length=50, blank=True, null=True)
@@ -40,6 +45,7 @@ class Allergies(models.Model):
 
     def __str__(self):
         return self.u_name
+
 
 # Staff class
 class Staff(models.Model):
@@ -62,7 +68,7 @@ class Vitals(models.Model):
     vt_rbc = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
     vt_height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     vt_weight = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    vt_comments = models.CharField(max_length=400, default='',blank=True, null=True)
+    vt_comments = models.CharField(max_length=400, default='', blank=True, null=True)
 
     def __str__(self):
         return self.u_name
@@ -123,6 +129,7 @@ class Appointment(models.Model):
     def __str__(self):
         return self.u_name
 
+
 class Bills(models.Model):
     u_name = models.CharField(max_length=50)  # search by patient
     charge_date = models.DateField(blank=True, null=True)
@@ -148,7 +155,5 @@ class Payment(models.Model):
     pay_description = models.CharField(max_length=100, blank=True, null=True)
     pay_location = models.CharField(max_length=100, blank=True, null=True)
 
-
     def __str__(self):
         return self.u_name
-
