@@ -109,3 +109,9 @@ class updateInfo(ModelForm):
             raise forms.ValidationError(
                 ("Zip Code must be 5 digits long."))
         return zip_code
+
+class makeappointment(ModelForm):
+    appointment_date = forms.DateField(label="", widget=DateInput())
+    class Meta:
+        model = Appointment
+        fields = ['appointment_date', 'appointment_time', 'doctor_name', 'appointment_comments']
