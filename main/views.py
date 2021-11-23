@@ -123,7 +123,6 @@ def dashboard(request):
             return render(request, 'main/dashboard.html', locals())
     return render(request, 'main/dashboard.html', locals())
 
-
 # def vitals_view_test(request, user_):
 #     if request.method == 'GET':
 #         vital_data = Vitals.objects.all().filter(u_name=user_)
@@ -139,7 +138,6 @@ def vitals_view(request):
         form = {'form': form}
         return render(request, 'main/vitals_test.html', form)
 
-
 # def diag_view_test(request, user_):
 #     if request.method == 'GET':
 #         diag_data = Diagnosis.objects.all().filter(u_name=user_)
@@ -154,7 +152,6 @@ def diag_view(request):
         diag_data = Diagnosis.objects.all().filter(u_name=request.user)
         form = {'diag_data': diag_data}
         return render(request, 'main/diag_test.html', form)
-
 
 # def rx_view_test(request, user_):
 #     if request.method == 'GET':
@@ -209,7 +206,6 @@ def vaccines_view(request):
 #         pay_data = Payment.objects.all().filter(u_name=user_)
 #         form = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
 #         return render(request, 'main/records_test.html', form)
-
 
 def records_view(request):
     if not request.user.is_active:
