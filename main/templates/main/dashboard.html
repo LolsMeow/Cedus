@@ -1,6 +1,7 @@
 {% extends "main/test.html" %}
 
 {% block content %}
+<!-- html template for dashboard information-->
 			<form method = 'POST'>{% csrf_token %}
 				<div class="page-content-wrapper">
 					<div class="grid-item"><label>First Name</label></br>{{ userForm.first_name }}</div>
