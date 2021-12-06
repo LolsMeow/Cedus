@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import infoReg, PatientForm, register, updateInfo, userInfo
+from .forms import infoReg, PatientForm, register, updateInfo, userInfo, makeappointment, admin_register
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -19,9 +19,7 @@ def register_request(request):
             patient.save()
             group = Group.objects.get(name='Patient')
             user.groups.add(group)
-
-            
-            #create empty patient related objects
+            # create empty patient related objects
             ins = Insurance.objects.create(u_name=patient.user.username)
             ins.save()
             allg = Allergies.objects.create(u_name=patient.user.username)
@@ -36,13 +34,10 @@ def register_request(request):
             rx_.save()
             vax = Vaccines.objects.create(u_name=patient.user.username)
             vax.save()
-            appt = Appointment.objects.create(u_name=patient.user.username)
-            appt.save()
             billy = Bills.objects.create(u_name=patient.user.username)
             billy.save()
             pay_ = Payment.objects.create(u_name=patient.user.username)
             pay_.save()
-
             login(request, user)
             return redirect('main:information')
         messages.error(request, "Unsuccessful registration. Invalid information.")
@@ -81,7 +76,7 @@ def login_request(request):
 
 
 def information_request(request):
-    if not request.user.is_active:
+    if not request.user.is_active or request.user.is_superuser:
         return redirect('main:register')
     if request.method == 'POST':
         p = Patient.objects.all().get(user=request.user)
@@ -115,7 +110,6 @@ def dashboard(request):
         userForm = userInfo(data=request.POST, instance=request.user)
         p = Patient.objects.all().get(user=request.user)
         form = updateInfo(data=request.POST, instance=p)
-        print(userForm)
         if form.is_valid() and (userForm.is_valid()):
             u = userForm.save()
             p = form.save()
@@ -123,6 +117,29 @@ def dashboard(request):
             return render(request, 'main/dashboard.html', locals())
     return render(request, 'main/dashboard.html', locals())
 
+def make_appointments(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    else:
+        if request.method == 'POST':
+            form = makeappointment(data=request.POST)
+            if form.is_valid():
+                appt = form.save(commit=False)
+                appt.u_name = request.user
+                appt.save()
+            else:
+                return render(request, 'main/make_appointments.html', context={'appointment_form': form})
+        form = makeappointment()
+        return render(request, 'main/make_appointments.html', context={'appointment_form': form})
+
+
+def appointments_view(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    else:
+        form = Appointment.objects.all().filter(u_name=request.user)
+        form = {'form': form}
+        return render(request, 'main/appointments.html', form)
 # def vitals_view_test(request, user_):
 #     if request.method == 'GET':
 #         vital_data = Vitals.objects.all().filter(u_name=user_)
@@ -130,7 +147,7 @@ def dashboard(request):
 #         return render(request, 'main/vitals_test.html', form)
 
 def vitals_view(request):
-    if not request.user.is_active:
+    if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
     else:
@@ -145,7 +162,7 @@ def vitals_view(request):
 #         return render(request, 'main/diag_test.html', form)
 
 def diag_view(request):
-    if not request.user.is_active:
+    if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
     else:
@@ -160,7 +177,7 @@ def diag_view(request):
 #         return render(request, 'main/rx_test.html', form)
 
 def rx_view(request):
-    if not request.user.is_active:
+    if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
     else:
@@ -175,7 +192,7 @@ def rx_view(request):
 #         return render(request, 'main/po_test.html', form)
 
 def phys_orders_view(request):
-    if not request.user.is_active:
+    if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
     else:
@@ -191,7 +208,7 @@ def phys_orders_view(request):
 #         return render(request, 'main/vax_test.html', form)
 
 def vaccines_view(request):
-    if not request.user.is_active:
+    if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
     else:
@@ -208,7 +225,7 @@ def vaccines_view(request):
 #         return render(request, 'main/records_test.html', form)
 
 def records_view(request):
-    if not request.user.is_active:
+    if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
     else:
         app_data = Appointment.objects.all().filter(u_name=request.user)
@@ -216,3 +233,33 @@ def records_view(request):
         pay_data = Payment.objects.all().filter(u_name=request.user)
         form = {'app_data': app_data, 'billData': bill_data, 'payData': pay_data}
         return render(request, 'main/records_test.html', form)
+
+
+def admin_reg(request):
+    # if not request.user.is_active or request.user.is_superuser:
+    #     return redirect('main:login')
+    # else:
+        if request.method == 'POST':
+            print(request.POST)
+            form = admin_register(request.POST)
+            if form.is_valid():
+                role = form.data.get('extra_field')
+                user = form.save()
+                if role == 'staff':
+                    group = Group.objects.get(name='Staff')
+                    user.groups.add(group)
+                elif role == 'pharmacist':
+                    group = Group.objects.get(name='Pharmacist')
+                    user.groups.add(group)
+                else:
+                    group = Group.objects.get(name='Doctor')
+                    user.groups.add(group)
+                messages.error(request, "Successful registration.")
+            return render(request=request,
+                          template_name="main/admin_reg.html",
+                          context={'form': form})
+        else:
+            form = admin_register()
+            return render(request=request,
+                          template_name="main/admin_reg.html",
+                          context={'form': form})

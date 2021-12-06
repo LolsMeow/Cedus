@@ -1,0 +1,20 @@
+{% extends "main/test.html" %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>Appointment Date</th>
+        <th>Appointment Time</th>
+        <th>Doctor Name</th>
+        <th>Comments</th>
+    </tr>
+    {% for item in form %}
+    <tr>
+        <td>{{ item.appointment_date }}</td>
+        <td>{{ item.appointment_time }}</td>
+        <td>{{ item.doctor_name }}</td>
+        <td>{{ item.appointment_comments }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

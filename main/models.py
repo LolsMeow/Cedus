@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 import datetime
 from django.contrib.auth.models import User
@@ -49,7 +50,7 @@ class Allergies(models.Model):
 
 # Staff class
 class Staff(models.Model):
-    u_name = models.CharField(max_length=50)  # pull from django user object
+    u_name = models.EmailField(max_length=50)  # pull from django user object
     s_f_name = models.CharField(max_length=50, blank=True, null=True)
     s_l_name = models.CharField(max_length=50, blank=True, null=True)
     s_affiliation = models.CharField(max_length=100, blank=True, null=True)
@@ -121,9 +122,14 @@ class Vaccines(models.Model):
         return self.u_name
 
 
+doctors_list = [('test','Alvin Chen'),('test1','Albert Chen')]
+
+
 class Appointment(models.Model):
     appointment_date = models.DateField(blank=True, null=True)
-    u_name = models.CharField(max_length=50, blank=True, null=True)  # search by patient
+    appointment_time = models.TimeField(max_length=10, blank=True, null=True)
+    u_name = models.CharField(max_length=50, blank=True, null=True)
+    doctor_name = models.CharField(max_length=50, blank=True, null=True)
     appointment_comments = models.CharField(max_length=400, blank=True, null=True)
 
     def __str__(self):
