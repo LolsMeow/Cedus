@@ -1,0 +1,307 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+    * {
+
+      box-sizing: border-box;
+
+    }
+
+
+
+    /* Create two unequal columns that floats next to each other */
+
+    .column {
+
+		margin: auto;
+
+      padding: 10px;
+
+      height: 1200px;
+
+    }
+
+
+
+    .left {
+
+      width: 400px;
+
+      background-color: white;
+
+    }
+
+
+
+    .right {
+
+      width: 1000px;
+
+      background-color: #5da6ac;
+
+    }
+
+
+
+    /* Clear floats after the columns */
+
+    .row:after {
+
+      content: "";
+
+      display: table;
+
+      clear: both;
+
+    }
+
+
+
+    h1 {
+
+        color: #5da6ac;
+
+        font-size: 36px;
+
+        text-align: center;
+
+        padding-top: 10px;
+
+        padding-bottom: 10px;
+
+    }
+
+
+
+    .content {
+
+        text-align: center;
+
+    }
+
+
+
+    input[type=textlogin] {
+
+      width: 350px;
+
+      border: none;
+
+      background-color: #f1f1f1;
+
+      font-size: 18px;
+
+      text-align: center;
+
+      height: 40px;
+
+    }
+
+
+
+    img {
+
+        margin: auto;
+
+        width: 150px;
+
+        height: auto;
+
+    }
+
+
+
+    .colorimg {
+
+        filter: invert(67%) sepia(10%) saturate(1592%) hue-rotate(136deg) brightness(89%) contrast(83%);
+
+    }
+
+
+
+    h2 {
+
+        font-size: 18px;
+
+        padding-top: 20px;
+
+        padding-left: 20px;
+
+    }
+
+
+
+    .personaldetails {
+
+        background-color: white;
+
+        border-radius: 5px;
+
+    }
+
+
+
+    .personalfillin {
+
+        padding: 30px;
+
+    }
+
+
+
+    .insurancedetails {
+
+        background-color: white;
+
+        border-radius: 5px;
+
+    }
+
+
+
+    .insurancefillin {
+
+        padding: 30px;
+
+    }
+
+
+
+    .providerdetails {
+
+        background-color: white;
+
+        border-radius: 5px;
+
+    }
+
+
+
+    .providerfillin{
+
+        padding: 30px;
+
+    }
+
+
+
+    input[type=short] {
+
+      width: 200px;
+
+      border: none;
+
+      background-color: #f1f1f1;
+
+      font-size: 12px;
+
+      text-align: center;
+
+      height: 40px;
+
+    }
+
+
+
+    button{
+
+    background-color: #2484a4;
+
+    width: 100%;
+
+    color: white;
+
+    padding: 12px;
+
+    margin: 10px 0px;
+
+    border: none;
+
+    cursor: pointer;
+
+}
+
+
+
+   input[type=text], input[type=password],input[type=email] {
+
+      width: 350px;
+
+      border: none;
+
+      background-color: #f1f1f1;
+
+      font-size: 12px;
+
+      text-align: center;
+
+      height: 40px;
+
+      margin: 10px;
+
+    }
+
+    h3{
+
+        color: #5da6ac;
+
+    }
+
+    a {
+	margin: 20px;
+	background-color: #F5F5F5;
+	text-decoration: none;
+	color: black;
+	font-size: 20px;
+	padding: 5px;
+	border-radius: 5px;
+	border-style: solid;
+	border-color: #5da6ac;
+	border-width: .5px;
+}
+a:hover {
+	background-color: #D0D0D0;
+	text-decoration: none;
+	color: black;
+	font-size: 20px;
+	padding: 5px;
+	border-radius: 5px;
+	border-style: solid;
+	border-color: #5da6ac;
+	border-width: 1.5px;
+}
+    </style>
+    </head>
+    <body>
+    <div class="row">
+      <div class="column left">
+        <h1>Sign Up</h1>
+        <div class="content">
+            <img src="{% static 'images/Cedus Icon Whie.png' %}" title="colorimg" class="colorimg">
+            <form method = 'POST'>{% csrf_token %}
+		        {{ form|crispy }}
+                <button type="submit">Register</button>
+            </form>
+            {% for message in messages %}
+            <h3 class="{{ message.tags }}">
+            {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+            </h3>
+            {% endfor %}
+            <br>
+
+        </div>
+      </div>
+    </div>
+
+    </body>
+
+
+{% endblock %}
+

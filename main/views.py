@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import infoReg, PatientForm, register, updateInfo, userInfo, makeappointment
+from .forms import infoReg, PatientForm, register, updateInfo, userInfo, makeappointment, admin_register
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -13,6 +13,12 @@ def register_request(request):
         form = register(request.POST)
         patient_form = PatientForm(request.POST)
         if form.is_valid() and patient_form.is_valid():
+            user = form.save()
+            patient = patient_form.save(commit=False)
+            patient.user = user
+            patient.save()
+            group = Group.objects.get(name='Patient')
+            user.groups.add(group)
             # create empty patient related objects
             ins = Insurance.objects.create(u_name=patient.user.username)
             ins.save()
@@ -32,14 +38,6 @@ def register_request(request):
             billy.save()
             pay_ = Payment.objects.create(u_name=patient.user.username)
             pay_.save()
-
-            user = form.save()
-            patient = patient_form.save(commit=False)
-            patient.user = user
-            patient.save()
-            group = Group.objects.get(name='Patient')
-            user.groups.add(group)
-
             login(request, user)
             return redirect('main:information')
         messages.error(request, "Unsuccessful registration. Invalid information.")
@@ -238,3 +236,33 @@ def records_view(request):
         pay_data = Payment.objects.all().filter(u_name=request.user)
         form = {'app_data': app_data, 'billData': bill_data, 'payData': pay_data}
         return render(request, 'main/records_test.html', form)
+
+
+def admin_reg(request):
+    # if not request.user.is_active or request.user.is_superuser:
+    #     return redirect('main:login')
+    # else:
+        if request.method == 'POST':
+            print(request.POST)
+            form = admin_register(request.POST)
+            if form.is_valid():
+                role = form.data.get('extra_field')
+                user = form.save()
+                if role == 'staff':
+                    group = Group.objects.get(name='Staff')
+                    user.groups.add(group)
+                elif role == 'pharmacist':
+                    group = Group.objects.get(name='Pharmacist')
+                    user.groups.add(group)
+                else:
+                    group = Group.objects.get(name='Doctor')
+                    user.groups.add(group)
+                messages.error(request, "Successful registration.")
+            return render(request=request,
+                          template_name="main/admin_reg.html",
+                          context={'form': form})
+        else:
+            form = admin_register()
+            return render(request=request,
+                          template_name="main/admin_reg.html",
+                          context={'form': form})

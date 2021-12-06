@@ -44,7 +44,7 @@ class Allergies(models.Model):
 
 # Staff class
 class Staff(models.Model):
-    u_name = models.CharField(max_length=50)  # pull from django user object
+    u_name = models.EmailField(max_length=50)  # pull from django user object
     s_f_name = models.CharField(max_length=50, blank=True, null=True)
     s_l_name = models.CharField(max_length=50, blank=True, null=True)
     s_affiliation = models.CharField(max_length=100, blank=True, null=True)

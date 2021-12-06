@@ -18,4 +18,5 @@ urlpatterns = [
     path('records/', views.records_view, name='records'),
     path('makeappt/', views.make_appointments, name='makeappt'),
     path('appt/', views.appointments_view, name='appt'),
+    path('admin_reg/', views.admin_reg, name='admin_reg'),
 ]

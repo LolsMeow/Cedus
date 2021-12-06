@@ -115,3 +115,38 @@ class makeappointment(ModelForm):
     class Meta:
         model = Appointment
         fields = ['appointment_date', 'appointment_time', 'doctor_name', 'appointment_comments']
+
+class admin_register(ModelForm):
+    ROLES = [
+        ('staff', 'Staff'),
+        ('pharmacist', 'Pharmacist'),
+        ('doctor', 'Doctor')
+    ]
+    extra_field = forms.CharField(label='What is their role?', widget=forms.Select(choices=ROLES))
+    first_name = forms.CharField(label='', max_length=30, required=True,
+                                 widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+    last_name = forms.CharField(label='', max_length=30, required=True,
+                                widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
+    email = forms.EmailField(label='', required=True,
+                             widget=forms.TextInput(attrs={'placeholder': 'Email Address'}))
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', "email")
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                ("This email address is already in use. Please supply a different email address."))
+        return email
+
+    def save(self, commit=True):
+        user = super(admin_register, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        user.username = user.email
+        user.password1 = ''
+        user.password2 = ''
+        if commit:
+            user.save()
+        return user
