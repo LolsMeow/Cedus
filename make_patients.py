@@ -52,7 +52,7 @@ appointment_types = ['Regular Checkup', 'Urgent Appointment', 'Follow-up', 'Vacc
 #             list_ : iterable
 #         numneeded : int number of items to be chosen randomly (if greater than size of list, numneeded = size of list)
 #     numneeded = 0 : generates a random number of items to be chosen (DEFAULT SETTING)
-#     allow_empty : allow the return of nothing (0 to n items) (BOOLEAN : DEFAULT IS FALSE)
+#       allow_empty : allow the return of nothing (0 to n items) (BOOLEAN : DEFAULT IS FALSE)
 def pickoutofhat(list_, num_needed=0, allow_empty=False):
     rng_list = []
     rng_set = set([])
@@ -124,7 +124,7 @@ def make_ins():
 
 
 ## Makes a list to be used to fill Insurance object [
-#   PASS IN OUPUT FROM makes_ins()!
+#   PASS IN OUTPUT FROM makes_ins()!
 #   [0] = first_name (determined by gender)
 #   [1] = last_name (determined by gender)
 #   [2] = email
@@ -180,7 +180,7 @@ def make_pt(ins_obj):
     state = fakegen.state_abbr()
     zip_code = fakegen.postcode_in_state(state)
 
-    provider_name = fakegen.name()
+    #provider_name = fakegen.name()
 
     plan_name = ins_obj[3]
     rx_bin = ins_obj[4]
@@ -191,7 +191,7 @@ def make_pt(ins_obj):
     language = fakegen.language_name()
 
     return first_name, last_name, email, password, birth_date, phone_number, street_address, apt, city, state, \
-           zip_code, provider_name, plan_name, rx_bin, id_number, rx_pcn, rx_group, gender, language
+           zip_code, plan_name, rx_bin, id_number, rx_pcn, rx_group, gender, language
 
 ## Makes a single instance of an allergy record
 #   [0] aller_drug - drug or drug class patient is allergic to

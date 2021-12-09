@@ -19,7 +19,6 @@ class Patient(models.Model):
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     zip_code = models.CharField(max_length=5, validators=[RegexValidator(r'^[0-9]{5}$')])
-    provider = models.CharField(max_length=10)
 
     def __str__(self):
         return self.user.username
