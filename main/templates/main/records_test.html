@@ -30,6 +30,10 @@
         <th>Advance</th>
         <th>Test Charges</th>
         <th>TOTAL AMOUNT</th>
+        <th>Payment Date</th>
+        <th>Payment Amount</th>
+        <th>Insurance Co-Pay</th>
+        <th>BALANCE</th>
     </tr>
     {% for item in billData %}
     <tr>
@@ -44,6 +48,11 @@
         <td>{{ item.advance }}</td>
         <td>{{ item.test_charges }}</td>
         <td>{{ item.bill_amount }}</td>
+        <td>{{ item.pay_date }}</td>
+        <td>{{ item.pay_amount }}</td>
+        <td>{{ item.ins_copay }}</td>
+        <td>{{ item.balance }}</td>
+
     </tr>
     {% endfor %}
 </table>

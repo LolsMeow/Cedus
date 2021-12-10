@@ -147,18 +147,10 @@ class Bills(models.Model):
     advance = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     test_charges = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     bill_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-
-    def __str__(self):
-        return self.u_name
-
-
-class Payment(models.Model):
-    u_name = models.CharField(max_length=50)
     pay_date = models.DateField(blank=True, null=True)
     pay_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     ins_copay = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    pay_description = models.CharField(max_length=100, blank=True, null=True)
-    pay_location = models.CharField(max_length=100, blank=True, null=True)
+    balance = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
         return self.u_name
