@@ -11,7 +11,6 @@ admin.site.register(Prescription)
 admin.site.register(Vaccines)
 admin.site.register(Appointment)
 admin.site.register(Bills)
-admin.site.register(Payment)
 
 
 

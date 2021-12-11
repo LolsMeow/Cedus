@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- main html page that holds the display of the navigation-sidebar when logged in. -->
 <html>
-
+{% load static %}
 <head>
     <title>Patient Home</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -38,7 +38,6 @@ ul.sidebar-nav {
 
 a:link {
 	display: block;
-	//background-color: ;
 	color: #696969;
 	padding: 22px 0px;
 	width: 100%;
@@ -130,6 +129,7 @@ h3 {
 	padding: 20px;
 	border-radius: 5px;
 	font-size: 20px;
+	width: max-content;
 }
 #div_id_appointment_date {
 	background-color: white;
@@ -145,6 +145,13 @@ h3 {
 	padding: 20px;
 	border-radius: 0px 0px 5px 5px;
 }
+img.cedus {
+	margin-left: 20%;
+}
+img.colorimg {
+	float: right;
+	margin-bottom: 0px;
+}
 </style>
 </head>
 
@@ -152,6 +159,7 @@ h3 {
     <div id="wrapper">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
+		<img src="{% static 'images/text logo.png' %}" class="cedus" width = "200" height = "85">
                 <li> <a href="{% url 'main:dashboard' %}"><i class="material-icons">dashboard&nbsp</i>Profile</a></li>
                 <li> <a href="{% url 'main:vitals' %}"><i class="material-icons">bloodtype&nbsp</i>Vitals</a></li>
                 <li> <a href="{% url 'main:diagnosis' %}"><i class="material-icons">assignment&nbsp</i>Diagnosis</a></li>
@@ -163,6 +171,7 @@ h3 {
                 <li> <a href="{% url 'main:appt' %}"><i class="material-icons">history&nbsp</i>Appointments</a></li>
                 <li> <a href="{% url 'main:auth_logout' %}"><i class="material-icons">logout&nbsp</i>Logout</a></li>
             </ul>
+		<img src="{% static 'images/Cedus Icon Whie.png' %}" title="colorimg" class="colorimg" width = "80" height = "80">
         </div>
         <div class="page-content-wrapper">
 			{% block content %}

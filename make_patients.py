@@ -52,7 +52,7 @@ appointment_types = ['Regular Checkup', 'Urgent Appointment', 'Follow-up', 'Vacc
 #             list_ : iterable
 #         numneeded : int number of items to be chosen randomly (if greater than size of list, numneeded = size of list)
 #     numneeded = 0 : generates a random number of items to be chosen (DEFAULT SETTING)
-#     allow_empty : allow the return of nothing (0 to n items) (BOOLEAN : DEFAULT IS FALSE)
+#       allow_empty : allow the return of nothing (0 to n items) (BOOLEAN : DEFAULT IS FALSE)
 def pickoutofhat(list_, num_needed=0, allow_empty=False):
     rng_list = []
     rng_set = set([])
@@ -124,7 +124,7 @@ def make_ins():
 
 
 ## Makes a list to be used to fill Insurance object [
-#   PASS IN OUPUT FROM makes_ins()!
+#   PASS IN OUTPUT FROM makes_ins()!
 #   [0] = first_name (determined by gender)
 #   [1] = last_name (determined by gender)
 #   [2] = email
@@ -180,7 +180,7 @@ def make_pt(ins_obj):
     state = fakegen.state_abbr()
     zip_code = fakegen.postcode_in_state(state)
 
-    provider_name = fakegen.name()
+    #provider_name = fakegen.name()
 
     plan_name = ins_obj[3]
     rx_bin = ins_obj[4]
@@ -191,7 +191,7 @@ def make_pt(ins_obj):
     language = fakegen.language_name()
 
     return first_name, last_name, email, password, birth_date, phone_number, street_address, apt, city, state, \
-           zip_code, provider_name, plan_name, rx_bin, id_number, rx_pcn, rx_group, gender, language
+           zip_code, plan_name, rx_bin, id_number, rx_pcn, rx_group, gender, language
 
 ## Makes a single instance of an allergy record
 #   [0] aller_drug - drug or drug class patient is allergic to
@@ -371,26 +371,14 @@ def make_bill():
     test_charges = decimal.Decimal(str(round(random.uniform(20.00, 50.00), 2)))
     total = float(doc_charges) + float(medi_charges) + float(room_charges) + float(nursing_charges) + float(advance) + float(test_charges)
     bill_amount = format(total, '.2f')
+    pay_date = charge_date
+    pay_amount = random.uniform(0, total)
+    ins_copay = random.uniform(0, 100)
+    balance = total - (pay_amount + ins_copay)
 
     return charge_date, doc_charges, medi_charges, room_charges, surgery_charges, admission_days, nursing_charges, \
-           advance, test_charges, bill_amount
+           advance, test_charges, bill_amount, pay_date, pay_amount, ins_copay, balance
 
-
-## Makes a single instance of a payment record
-#   Pass in string for location
-#   [0] pay_date
-#   [1] pay_amount
-#   [2] ins_copay
-#   [3] pay_description
-#   [4] pay_location
-def make_payment(location):
-    pay_date = fakegen.date()
-    pay_amount = doc_charges = decimal.Decimal(str(round(random.uniform(0.00, 150.00), 2)))
-    ins_copay = doc_charges = decimal.Decimal(str(round(random.uniform(0.00, 25.00), 2)))
-    pay_description = fakegen.paragraph(nb_sentences=1)
-    pay_location = location
-
-    return pay_date, pay_amount, ins_copay, pay_description, pay_location
 
 
 def populate(number_of_profiles):
@@ -513,19 +501,11 @@ def populate(number_of_profiles):
             new_bill = models.Bills(u_name=USER_NAME, charge_date=this_bill[0], doc_charges=this_bill[1],
                                     medi_charges=this_bill[2], room_charges=this_bill[3], surgery_charges=this_bill[4],
                                     admission_days=this_bill[5], nursing_charges=this_bill[6], advance=this_bill[7],
-                                    test_charges=this_bill[8], bill_amount=this_bill[9])
+                                    test_charges=this_bill[8], bill_amount=this_bill[9], pay_date=this_bill[10],
+                                    pay_amount=this_bill[11],ins_copay=this_bill[12], balance=this_bill[13])
 
             new_bill.save()
 
-
-        ############ MAKING PAYMENTS ############
-        pay_token = fakegen.random_int(min=0, max=10, step=1)
-        for j in range(0, pay_token):
-            this_pay = make_payment('Long Island Jewish')
-            new_pay = models.Payment(u_name=USER_NAME, pay_date=this_pay[0], pay_amount=this_pay[1], ins_copay=this_pay[
-                2], pay_description=this_pay[3], pay_location=this_pay[4])
-
-            new_pay.save()
 
 if __name__ == '__main__':
     print('~~Patient Creation Script~~')
