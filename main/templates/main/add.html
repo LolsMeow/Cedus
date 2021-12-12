@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+      <form method="POST">
+        {% csrf_token %}
+
+        <h3><u>Adding item</u></h3>
+        {% for field in form %}
+        <div>
+          <label for="id_{{ field.name }}">{{ field.label }}</label>
+
+          <div>
+
+            {{ field }}
+            {{ field.errors }}
+          </div>
+        </div>
+
+        {% endfor %}
+        <div>
+            <button type="submit">Add item</button>
+        </div>
+
+      </form>
+    </div>
+</body>
+</html>

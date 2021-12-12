@@ -1,6 +1,9 @@
 {% extends "main/test.html" %}
 
 {% block content %}
+
+{% load auth_extras %}
+
 <table>
     <tr>
         <th>Appointment Date</th>
@@ -14,6 +17,15 @@
         <td>{{ item.appointment_time }}</td>
         <td>{{ item.doctor_name }}</td>
         <td>{{ item.appointment_comments }}</td>
+
+        <td>
+            <a href="{% url 'main:edit_appointments' item.pk %}" role="button">Edit</a>
+        </td>
+        {% if request.user|has_group:"Patient" %}
+            <td>
+                <a href="{% url 'main:delete_appointments' item.pk %}" role="button">Delete</a>
+            </td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>

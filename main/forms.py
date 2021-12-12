@@ -110,11 +110,13 @@ class updateInfo(ModelForm):
                 ("Zip Code must be 5 digits long."))
         return zip_code
 
+
 class makeappointment(ModelForm):
     appointment_date = forms.DateField(label="", widget=DateInput())
     class Meta:
         model = Appointment
         fields = ['appointment_date', 'appointment_time', 'doctor_name', 'appointment_comments']
+
 
 class admin_register(ModelForm):
     ROLES = [
@@ -150,3 +152,47 @@ class admin_register(ModelForm):
         if commit:
             user.save()
         return user
+
+
+class Vital_Forms(ModelForm):
+    class Meta:
+        model = Vitals
+        fields = ('vt_date', 'vt_bloodgroup', 'vt_bp_sys', 'vt_bp_dia', 'vt_wbc', 'vt_rbc', 'vt_height', 'vt_weight', 'vt_comments')
+
+
+class Diag_Forms(ModelForm):
+    class Meta:
+        model = Diagnosis
+        fields = ('diagnosis_date', 'diagnosis_status', 'diagnosis_comment')
+
+
+class Po_Forms(ModelForm):
+    class Meta:
+        model = Phys_Orders
+        fields = ('order_date', 'order_contents')
+
+
+class Prescription_Forms(ModelForm):
+    class Meta:
+        model = Prescription
+        fields = ('rx_date', 'rx_name', 'rx_dosage', 'rx_sig', 'rx_comments')
+
+
+class Vaccine_Forms(ModelForm):
+    class Meta:
+        model = Vaccines
+        fields = ('vac_date', 'vac_type', 'vac_comment')
+
+
+class Records_Forms(ModelForm):
+    class Meta:
+        model = Bills
+        fields = ('charge_date', 'doc_charges', 'medi_charges', 'room_charges', 'surgery_charges', 'admission_days',
+                  'nursing_charges', 'advance', 'test_charges', 'bill_amount', 'pay_date', 'pay_amount',
+                  'ins_copay', 'balance')
+
+
+class Appointments_Forms(ModelForm):
+    class Meta:
+        model = Appointment
+        fields = ('appointment_date', 'appointment_time', 'doctor_name', 'appointment_comments')

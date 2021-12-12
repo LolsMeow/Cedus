@@ -1,6 +1,14 @@
 {% extends "main/test.html" %}
 
 {% block content %}
+
+{% load auth_extras %}
+
+{% if request.user|has_group:"Patient" %}
+      <td>
+          <a href="{% url 'main:add_vaccine' %}" role="button">Add</a>
+      </td>
+{% endif %}
 <!-- html template for vaccines information-->
 <table>
     <tr>
@@ -13,6 +21,16 @@
         <td>{{ item.vac_date }}</td>
         <td>{{ item.vac_type }}</td>
         <td>{{ item.vac_comment }}</td>
+        {% if request.user|has_group:"Doctor" %}
+            <td>
+                <a href="{% url 'main:edit_vaccine' item.pk %}" role="button">Edit</a>
+            </td>
+        {% endif %}
+        {% if request.user|has_group:"Patient" %}
+            <td>
+                <a href="{% url 'main:delete_vaccine' item.pk %}" role="button">Delete</a>
+            </td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>
