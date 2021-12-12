@@ -33,7 +33,7 @@
         <td>{{ item.vt_height }}</td>
         <td>{{ item.vt_weight }}</td>
         <td>{{ item.vt_comments }}</td>
-        {% if request.user|has_group:"Doctor" %}
+        {% if request.user|has_group:"Patient" %}
             <td>
                 <a href="{% url 'main:edit_vitals' item.pk %}" role="button">Edit</a>
             </td>

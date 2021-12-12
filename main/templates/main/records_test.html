@@ -60,7 +60,7 @@
         <td>{{ item.pay_amount }}</td>
         <td>{{ item.ins_copay }}</td>
         <td>{{ item.balance }}</td>
-        {% if request.user|has_group:"Doctor" %}
+        {% if request.user|has_group:"Patient" %}
             <td>
                 <a href="{% url 'main:edit_records' item.pk %}" role="button">Edit</a>
             </td>

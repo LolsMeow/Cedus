@@ -25,7 +25,7 @@
         <td>{{ item.rx_dosage }}</td>
         <td>{{ item.rx_sig }}</td>
         <td>{{ item.vt_comments }}</td>
-        {% if request.user|has_group:"Doctor" %}
+        {% if request.user|has_group:"Patient" %}
             <td>
                 <a href="{% url 'main:edit_prescription' item.pk %}" role="button">Edit</a>
             </td>

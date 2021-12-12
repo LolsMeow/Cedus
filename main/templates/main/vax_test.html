@@ -21,7 +21,7 @@
         <td>{{ item.vac_date }}</td>
         <td>{{ item.vac_type }}</td>
         <td>{{ item.vac_comment }}</td>
-        {% if request.user|has_group:"Doctor" %}
+        {% if request.user|has_group:"Patient" %}
             <td>
                 <a href="{% url 'main:edit_vaccine' item.pk %}" role="button">Edit</a>
             </td>
