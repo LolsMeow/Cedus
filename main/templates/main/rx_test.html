@@ -3,7 +3,7 @@
 {% block content %}
 
 {% load auth_extras %}
-
+{% load static %}
 {% if request.user|has_group:"Patient" %}
       <td>
           <a href="{% url 'main:add_prescription' %}" role="button">Add</a>
@@ -27,7 +27,7 @@
         <td>{{ item.vt_comments }}</td>
         {% if request.user|has_group:"Patient" %}
             <td>
-                <a href="{% url 'main:edit_prescription' item.pk %}" role="button">Edit</a>
+                <a href="{% url 'main:edit_prescription' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
             </td>
         {% endif %}
         {% if request.user|has_group:"Patient" %}
