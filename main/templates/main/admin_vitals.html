@@ -1,0 +1,49 @@
+{% extends "main/admin_test.html" %}
+
+{% block content %}
+
+{% load auth_extras %}
+<!-- html template for vitals information-->
+{% load static %}
+{% if request.user|has_group:"Patient" %}
+      <td>
+          <a href="{% url 'main:add_vitals' %}" role="button">Add</a>
+      </td>
+{% endif %}
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Blood Type</th>
+        <th>BP (sys)</th>
+        <th>BP (dias)</th>
+        <th>WBC</th>
+        <th>RBC</th>
+        <th>Ht</th>
+        <th>Wt</th>
+        <th>Comments</th>
+    </tr>
+    {% for item in form %}
+    <tr>
+        <td>{{ item.vt_date }}</td>
+        <td>{{ item.vt_bloodgroup }}</td>
+        <td>{{ item.vt_bp_sys }}</td>
+        <td>{{ item.vt_bp_dia }}</td>
+        <td>{{ item.vt_wbc }}</td>
+        <td>{{ item.vt_rbc }}</td>
+        <td>{{ item.vt_height }}</td>
+        <td>{{ item.vt_weight }}</td>
+        <td>{{ item.vt_comments }}</td>
+        {% if request.user|has_group:"Patient" %}
+            <td>
+                <a href="{% url 'main:edit_vitals' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
+            </td>
+        {% endif %}
+        {% if request.user|has_group:"Patient" %}
+            <td>
+                <a href="{% url 'main:delete_vitals' item.pk %}" role="button">Delete</a>
+            </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

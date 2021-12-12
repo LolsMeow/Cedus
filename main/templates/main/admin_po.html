@@ -1,0 +1,35 @@
+{% extends "main/admin_test.html" %}
+
+{% block content %}
+
+{% load auth_extras %}
+{% load static %}
+{% if request.user|has_group:"Patient" %}
+      <td>
+          <a href="{% url 'main:add_po' %}" role="button">Add</a>
+      </td>
+{% endif %}
+<!-- html template for physician's orders information-->
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Orders</th>
+    </tr>
+    {% for item in physdata %}
+    <tr>
+        <td>{{ item.order_date }}</td>
+        <td>{{ item.order_contents }}</td>
+        {% if request.user|has_group:"Patient" %}
+            <td>
+            <a href="{% url 'main:edit_po' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
+        </td>
+        {% endif %}
+        {% if request.user|has_group:"Patient" %}
+            <td>
+                <a href="{% url 'main:delete_po' item.pk %}" role="button">Delete</a>
+            </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

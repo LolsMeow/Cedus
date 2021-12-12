@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!-- main html page that holds the display of the navigation-sidebar when logged in. -->
+<html>
+{% load static %}
+
+<head>
+    <title>Patient Home</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAACspl0A////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEREQAAAAAREREREQAAARERAREREAARERAAARERABERAAAAEREBEREAAAAREREREAABAAEREREAAAABEBEREQAAAQAAEREQAAAAAAABEREAAAAAABEQEQAAEQAAEQARERERERERAAERERERERAAABERERERAAAAABEREQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+body {font-family: 'Quicksand', sans-serif;background-color:#5da6ac; margin: 0;}
+
+/*Hi, Name*/
+h1 {
+	background-color: white;
+    width: 20%;
+    color: #5da6ac;
+	margin: 0;
+	padding: 50px 20px 20px;
+	text-align: center;
+}
+
+ul.sidebar-nav {
+	list-style-type: none;
+}
+
+.sidebar-nav {
+	float: left;
+	display: block;
+	background-color: white;
+	width: 20%;
+	height: 1024px;
+	padding-top: 30px;
+	margin: 0;
+	color: #5da6ac;
+}
+.plus {
+  position: relative;
+  width:30px;
+  height:30px;
+  background:#000;
+  border-radius: 50%;
+}
+
+.plus:before,
+.plus:after {
+  content: "";
+  position:absolute;
+  background:#fff;
+}
+
+/* the vertical line */
+.plus:before {
+  left:50%;
+  top:4px; /* this defines how much black "border" there should be */
+  bottom:4px;
+  width:2px;
+  transform:translateX(-50%);
+}
+
+/* the horizontal line */
+.plus:after {
+  top:50%;
+  left:4px;
+  right:4px;
+  height:2px;
+  transform:translateY(-50%);
+}
+a:link {
+	display: block;
+	color: #696969;
+	padding: 22px 0px;
+	width: 100%;
+	border: none;
+	outline: none;
+	text-align: left;
+	cursor: pointer;
+	transition: 0.3s;
+	font-size: 25px;
+	border-radius: 50px 0px 0px 50px;
+    text-decoration: none;
+}
+
+/* Change background color of tabs on hover */
+.sidebar-nav a:hover {
+    color: white;
+	background-color: #5da6ac;
+}
+
+/* Create an active/current "sidebar-nav button" class */
+.sidebar-nav a:active {
+	background-color: #5da6ac;
+	color: white;
+}
+.sidebar-nav a:visited {
+    color: #696969;
+}
+
+.page-content-wrapper {
+	display: grid;
+	grid-template-columns: auto auto;
+	background-color: #5da6ac;
+	padding: 10px;
+    grid-gap: 10px;
+}
+.grid-item {
+	background-color: white;
+	padding: 20px;
+	font-size: 20px;
+	text-align: left;
+	border-radius: 5px;
+}
+
+label {
+	font-size: 20px;
+}
+input {
+	font-size: 20px;
+	background-color: #D7DFDF;
+    border-radius: 10px;
+}
+
+button {
+    padding: 20px;
+    font-size: 20px;
+    background-color: white;
+    border-radius: 5px;
+}
+button:hover {
+    background-color: #D0D0D0;
+    color: #5da6ac;
+}
+h2 {
+	color: #282828;
+	background-color: white;
+	width: max-content;
+	margin-bottom: 0;
+	padding: 10px;
+	border-radius: 5px;
+}
+table {
+	background-color: white;
+	border-radius: 5px;
+}
+tr {
+	font-size: 25px;
+}
+td {
+	font-size: 20px;
+	background-color: #F0F0F0;
+	text-align: left;
+	padding: 10px;
+}
+th {
+	border-radius: 30px;
+}
+h3 {
+	background-color: white;
+	padding: 20px;
+	border-radius: 5px;
+	font-size: 20px;
+	width: max-content;
+}
+#div_id_appointment_date {
+	background-color: white;
+	padding: 20px;
+	border-radius: 5px 5px 0px 0px;
+}
+#div_id_appointment_time, #div_id_doctor_name{
+	background-color: white;
+	padding: 20px;
+}
+#div_id_appointment_comments {
+	background-color: white;
+	padding: 20px;
+	border-radius: 0px 0px 5px 5px;
+}
+img.cedus {
+	margin-left: 20%;
+}
+img.colorimg {
+	float: right;
+	margin-bottom: 0px;
+}
+</style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+		<img src="{% static 'images/text logo.png' %}" class="cedus" width = "200" height = "85">
+                <li> <a href="{% url 'main:patient_search' %}"><i class="material-icons">dashboard&nbsp</i>Patient Search</a></li>
+                <li> <a href="{% url 'main:admin_dashboard' %}"><i class="material-icons">dashboard&nbsp</i>Profile</a></li>
+                <li> <a href="{% url 'main:admin_vitals' %}"><i class="material-icons">bloodtype&nbsp</i>Vitals</a></li>
+                <li> <a href="{% url 'main:admin_diagnosis' %}"><i class="material-icons">assignment&nbsp</i>Diagnosis</a></li>
+                <li> <a href="{% url 'main:admin_phys' %}"><i class="material-icons">medication&nbsp</i>Physician's Orders</a></li>
+                <li> <a href="{% url 'main:admin_rx' %}"><i class="material-icons">healing&nbsp</i>Prescriptions</a></li>
+                <li> <a href="{% url 'main:admin_vaccines' %}"><i class="material-icons">health_and_safety&nbsp</i>Vaccines</a></li>
+                <li> <a href="{% url 'main:admin_records' %}"><i class="material-icons">history&nbsp</i>Records</a></li>
+                <li> <a href="{% url 'main:admin_makeappt' %}"><i class="material-icons">bookmark_add&nbsp</i>Make Appointments</a></li>
+                <li> <a href="{% url 'main:admin_appt' %}"><i class="material-icons">turned_in&nbsp</i>Appointments</a></li>
+                <li> <a href="{% url 'main:auth_logout' %}"><i class="material-icons">logout&nbsp</i>Logout</a></li>
+            </ul>
+		<img src="{% static 'images/Cedus Icon Whie.png' %}" title="colorimg" class="colorimg" width = "80" height = "80">
+        </div>
+        <div class="page-content-wrapper">
+			{% block content %}
+
+            {% endblock %}
+        </div>
+    </div>
+
+</body>
+
+</html>

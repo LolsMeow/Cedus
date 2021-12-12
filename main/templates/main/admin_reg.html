@@ -294,6 +294,7 @@ a:hover {
             {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
             </h3>
             {% endfor %}
+            <a href="{% url 'main:login' %}">Login</a>
             <br>
 
         </div>

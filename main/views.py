@@ -68,7 +68,7 @@ def login_request(request):
                 elif is_admin(user):
                     return redirect('main:admin_reg')
                 else:
-                    return redirect('main:dashboard')
+                    return redirect('main:patient_search')
             else:
                 messages.error(request, 'Invalid Username or Password')
 
@@ -213,7 +213,6 @@ def phys_orders_view(request):
 def vaccines_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
-
     else:
         form = Vaccines.objects.all().filter(u_name=request.user)
         form = {'form': form}
@@ -283,11 +282,11 @@ def is_doctor(user):
 
 
 def is_pharmacist(user):
-    return user.groups.filter(name='pharmacist').exists()
+    return user.groups.filter(name='Pharmacist').exists()
 
 
 def is_staff(user):
-    return user.groups.filter(name='staff').exists()
+    return user.groups.filter(name='Staff').exists() or user.groups.filter(name='Pharmacist').exists() or user.groups.filter(name='Doctor').exists()
 
 
 def add_items(request, model, form):
@@ -298,20 +297,37 @@ def add_items(request, model, form):
             info = form.save(commit=False)
             info.u_name = request.user
             info.save()
-            if model == Vitals:
-                return redirect('main:vitals')
-            elif model == Diagnosis:
-                return redirect('main:diagnosis')
-            elif model == Phys_Orders:
-                return redirect('main:rx')
-            elif model == Prescription:
-                return redirect('main:phys')
-            elif model == Vaccines:
-                return redirect('main:vaccines')
-            elif model == Bills:
-                return redirect('main:records')
-            elif model == Appointment:
-                return redirect('main:appt')
+            print('working')
+            if is_staff(request.user):
+                if model == Vitals:
+                    return redirect('main:admin_vitals')
+                elif model == Diagnosis:
+                    return redirect('main:admin_diagnosis')
+                elif model == Phys_Orders:
+                    return redirect('main:admin_rx')
+                elif model == Prescription:
+                    return redirect('main:admin_phys')
+                elif model == Vaccines:
+                    return redirect('main:admin_vaccines')
+                elif model == Bills:
+                    return redirect('main:admin_records')
+                elif model == Appointment:
+                    return redirect('main:admin_appt')
+            else:
+                if model == Vitals:
+                    return redirect('main:vitals')
+                elif model == Diagnosis:
+                    return redirect('main:diagnosis')
+                elif model == Phys_Orders:
+                    return redirect('main:rx')
+                elif model == Prescription:
+                    return redirect('main:phys')
+                elif model == Vaccines:
+                    return redirect('main:vaccines')
+                elif model == Bills:
+                    return redirect('main:records')
+                elif model == Appointment:
+                    return redirect('main:appt')
         else:
             return render(request, 'main/add.html', {'form': form})
     else:
@@ -355,20 +371,37 @@ def edit_items(request, pk, model, form):
         form = form(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            if model == Vitals:
-                return redirect('main:vitals')
-            elif model == Diagnosis:
-                return redirect('main:diagnosis')
-            elif model == Phys_Orders:
-                return redirect('main:rx')
-            elif model == Prescription:
-                return redirect('main:phys')
-            elif model == Vaccines:
-                return redirect('main:vaccines')
-            elif model == Bills:
-                return redirect('main:records')
-            elif model == Appointment:
-                return redirect('main:appt')
+            print(is_staff(request.user))
+            if is_staff(request.user):
+                if model == Vitals:
+                    return redirect('main:admin_vitals')
+                elif model == Diagnosis:
+                    return redirect('main:admin_diagnosis')
+                elif model == Phys_Orders:
+                    return redirect('main:admin_rx')
+                elif model == Prescription:
+                    return redirect('main:admin_phys')
+                elif model == Vaccines:
+                    return redirect('main:admin_vaccines')
+                elif model == Bills:
+                    return redirect('main:admin_records')
+                elif model == Appointment:
+                    return redirect('main:admin_appt')
+            else:
+                if model == Vitals:
+                    return redirect('main:vitals')
+                elif model == Diagnosis:
+                    return redirect('main:diagnosis')
+                elif model == Phys_Orders:
+                    return redirect('main:rx')
+                elif model == Prescription:
+                    return redirect('main:phys')
+                elif model == Vaccines:
+                    return redirect('main:vaccines')
+                elif model == Bills:
+                    return redirect('main:records')
+                elif model == Appointment:
+                    return redirect('main:appt')
     else:
         form = form(instance=item)
 
@@ -403,26 +436,40 @@ def edit_appointments(request, pk):
     return edit_items(request, pk, Appointment, Appointments_Forms)
 
 
-def delete_items(request, pk, model):
+def delete_items(pk, model):
 
     model.objects.filter(id=pk).delete()
 
-    if model == Vitals:
-        return redirect('main:vitals')
-    elif model == Diagnosis:
-        return redirect('main:diagnosis')
-    elif model == Phys_Orders:
-        return redirect('main:phys')
-    elif model == Prescription:
-        return redirect('main:rx')
-    elif model == Vaccines:
-        return redirect('main:vaccines')
-    elif model == Bills:
-        return redirect('main:records')
-    elif model == Appointment:
-        return redirect('main:appt')
+    if is_staff(request.user):
+        if model == Vitals:
+            return redirect('main:admin_vitals')
+        elif model == Diagnosis:
+            return redirect('main:admin_diagnosis')
+        elif model == Phys_Orders:
+            return redirect('main:admin_rx')
+        elif model == Prescription:
+            return redirect('main:admin_phys')
+        elif model == Vaccines:
+            return redirect('main:admin_vaccines')
+        elif model == Bills:
+            return redirect('main:admin_records')
+        elif model == Appointment:
+            return redirect('main:admin_appt')
     else:
-        return redirect('main:dashboard')
+        if model == Vitals:
+            return redirect('main:vitals')
+        elif model == Diagnosis:
+            return redirect('main:diagnosis')
+        elif model == Phys_Orders:
+            return redirect('main:rx')
+        elif model == Prescription:
+            return redirect('main:phys')
+        elif model == Vaccines:
+            return redirect('main:vaccines')
+        elif model == Bills:
+            return redirect('main:records')
+        elif model == Appointment:
+            return redirect('main:appt')
 
 
 def delete_vitals(request, pk):
@@ -451,3 +498,158 @@ def delete_records(request, pk):
 
 def delete_appointments(request, pk):
     return delete_items(request, pk, Appointment)
+
+
+def patient_search(request):
+    if request.method == 'GET' and request.GET.get("search_box") != None:
+        search_text = request.GET.get("search_box")
+        request.session['user'] = search_text
+        return redirect('main:admin_dashboard')
+    else:
+        return render(request, 'main/patient_search.html')
+
+def admin_dashboard(request):
+    # if not request.user.is_active or request.user.is_superuser:
+    #     return redirect('main:login')
+    user = request.session.get('user')
+    u = User.objects.get(username=user)
+    userForm = userInfo(instance=u)
+    p = Patient.objects.get(user=u)
+    form = updateInfo(instance=p)
+
+    if request.method == 'POST':
+
+        u = User.objects.all().get(username=user)
+        userForm = userInfo(data=request.POST, instance=u)
+        p = Patient.objects.all().get(user=u)
+        form = updateInfo(data=request.POST, instance=p)
+        if form.is_valid() and (userForm.is_valid()):
+            u = userForm.save()
+            p = form.save()
+        else:
+            return render(request, 'main/admin_dashboard.html', locals())
+    return render(request, 'main/admin_dashboard.html', locals())
+
+
+def admin_makeappt(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            form = makeappointment(data=request.POST)
+            if form.is_valid():
+                appt = form.save(commit=False)
+                appt.u_name = user
+                appt.save()
+            else:
+                return render(request, 'main/admin_make.html', context={'appointment_form': form})
+        form = makeappointment()
+        return render(request, 'main/admin_make.html', context={'appointment_form': form})
+
+
+def admin_appt(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    else:
+        user = request.session.get('user')
+        form = Appointment.objects.all().filter(u_name=user)
+        form = {'form': form}
+        return render(request, 'main/admin_appointments.html', form)
+# def vitals_view_test(request, user_):
+#     if request.method == 'GET':
+#         vital_data = Vitals.objects.all().filter(u_name=user_)
+#         form = {'vitalData': vital_data}
+#         return render(request, 'main/vitals_test.html', form)
+
+def admin_vitals(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+
+    else:
+        user = request.session.get('user')
+        form = Vitals.objects.all().filter(u_name=user)
+        form = {'form': form}
+        return render(request, 'main/admin_vitals.html', form)
+
+# def diag_view_test(request, user_):
+#     if request.method == 'GET':
+#         diag_data = Diagnosis.objects.all().filter(u_name=user_)
+#         form = {'diagData': diag_data}
+#         return render(request, 'main/diag_test.html', form)
+
+def admin_diagnosis(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+
+    else:
+        user = request.session.get('user')
+        diag_data = Diagnosis.objects.all().filter(u_name=user)
+        form = {'diag_data': diag_data}
+        return render(request, 'main/admin_diag.html', form)
+
+# def rx_view_test(request, user_):
+#     if request.method == 'GET':
+#         rx_data = Prescription.objects.all().filter(u_name=user_)
+#         form = {'rxData': rx_data}
+#         return render(request, 'main/rx_test.html', form)
+
+def admin_rx(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+
+    else:
+        user = request.session.get('user')
+        pdata = Prescription.objects.all().filter(u_name=user)
+        form = {'pdata': pdata}
+        return render(request, 'main/admin_rx.html', form)
+
+# def phys_orders_view_test(request, user_):
+#     if request.method == 'GET':
+#         po_data = Phys_Orders.objects.all().filter(u_name=user_)
+#         form = {'poData': po_data}
+#         return render(request, 'main/po_test.html', form)
+
+def admin_phys(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+
+    else:
+        user = request.session.get('user')
+        physdata = Phys_Orders.objects.all().filter(u_name=user)
+        form = {'physdata': physdata}
+        return render(request, 'main/admin_po.html', form)
+
+# def vaccines_view_test(request, user_):
+#     if request.method == 'GET':
+#         vac_data = Vaccines.objects.all().filter(u_name=user_)
+#         form = {'vaxData': vac_data}
+#         return render(request, 'main/vax_test.html', form)
+
+def admin_vaccines(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    else:
+        user = request.session.get('user')
+        form = Vaccines.objects.all().filter(u_name=user)
+        form = {'form': form}
+        return render(request, 'main/admin_vax.html', form)
+
+# def records_view_test(request, user_):
+#     if request.method == 'GET':
+#         app_data = Appointment.objects.all().filter(u_name=user_)
+#         bill_data = Bills.objects.all().filter(u_name=user_)
+#         pay_data = Payment.objects.all().filter(u_name=user_)
+#         form = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
+#         return render(request, 'main/records_test.html', form)
+
+def admin_records(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    else:
+        user = request.session.get('user')
+        app_data = Appointment.objects.all().filter(u_name=user)
+        bill_data = Bills.objects.all().filter(u_name=user)
+        #pay_data = Payment.objects.all().filter(u_name=request.user)
+        form = {'app_data': app_data, 'billData': bill_data}
+        return render(request, 'main/admin_records.html', form)

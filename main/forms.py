@@ -118,7 +118,7 @@ class makeappointment(ModelForm):
         fields = ['appointment_date', 'appointment_time', 'doctor_name', 'appointment_comments']
 
 
-class admin_register(ModelForm):
+class admin_register(UserCreationForm):
     ROLES = [
         ('staff', 'Staff'),
         ('pharmacist', 'Pharmacist'),
@@ -131,9 +131,13 @@ class admin_register(ModelForm):
                                 widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
     email = forms.EmailField(label='', required=True,
                              widget=forms.TextInput(attrs={'placeholder': 'Email Address'}))
+    password1 = forms.CharField(label='', required=True,
+                                widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
+    password2 = forms.CharField(label='', required=True,
+                                widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password'}))
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', "email")
+        fields = ('first_name', 'last_name', "email", "password1", "password2")
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -147,10 +151,9 @@ class admin_register(ModelForm):
         user = super(admin_register, self).save(commit=False)
         user.email = self.cleaned_data['email']
         user.username = user.email
-        user.password1 = ''
-        user.password2 = ''
         if commit:
             user.save()
+        print(user)
         return user
 
 
@@ -196,3 +199,4 @@ class Appointments_Forms(ModelForm):
     class Meta:
         model = Appointment
         fields = ('appointment_date', 'appointment_time', 'doctor_name', 'appointment_comments')
+

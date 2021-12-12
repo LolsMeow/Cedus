@@ -1,0 +1,13 @@
+{% extends "main/admin_test.html" %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+        <div>
+            <form method = 'POST'>{% csrf_token %}
+                <h3>Make Appointments</h3>
+                {{ appointment_form|crispy }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+{% endblock %}
