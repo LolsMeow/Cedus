@@ -4,11 +4,6 @@
 <!-- html template for diagnosis information-->
 {% load auth_extras %}
 {% load static %}
-{% if request.user|has_group:"Patient" %}
-      <td>
-          <a href="{% url 'main:add_diag' %}" role="button">Add</a>
-      </td>
-{% endif %}
 <table>
 
     <tr>
@@ -21,16 +16,6 @@
         <td>{{ item.diagnosis_date }}</td>
         <td>{{ item.diagnosis_status }}</td>
         <td>{{ item.diagnosis_comment }}</td>
-        {% if request.user|has_group:"Patient" %}
-            <td>
-                <a href="{% url 'main:edit_diag' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
-            </td>
-        {% endif %}
-        {% if request.user|has_group:"Patient" %}
-            <td>
-                <a href="{% url 'main:delete_diag' item.pk %}" role="button">Delete</a>
-            </td>
-        {% endif %}
     </tr>
     {% endfor %}
 </table>

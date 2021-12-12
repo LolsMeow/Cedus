@@ -5,11 +5,6 @@
 {% load auth_extras %}
 <!-- html template for vitals information-->
 {% load static %}
-{% if request.user|has_group:"Patient" %}
-      <td>
-          <a href="{% url 'main:add_vitals' %}" role="button">Add</a>
-      </td>
-{% endif %}
 <table>
     <tr>
         <th>Date</th>
@@ -33,16 +28,6 @@
         <td>{{ item.vt_height }}</td>
         <td>{{ item.vt_weight }}</td>
         <td>{{ item.vt_comments }}</td>
-        {% if request.user|has_group:"Patient" %}
-            <td>
-                <a href="{% url 'main:edit_vitals' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
-            </td>
-        {% endif %}
-        {% if request.user|has_group:"Patient" %}
-            <td>
-                <a href="{% url 'main:delete_vitals' item.pk %}" role="button">Delete</a>
-            </td>
-        {% endif %}
     </tr>
     {% endfor %}
 </table>
