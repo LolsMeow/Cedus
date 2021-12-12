@@ -3,7 +3,7 @@
 {% block content %}
 
 {% load auth_extras %}
-
+{% load static %}
 <table>
     <tr>
         <th>Appointment Date</th>
@@ -19,7 +19,7 @@
         <td>{{ item.appointment_comments }}</td>
 
         <td>
-            <a href="{% url 'main:edit_appointments' item.pk %}" role="button">Edit</a>
+            <a href="{% url 'main:edit_appointments' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
         </td>
         {% if request.user|has_group:"Patient" %}
             <td>
