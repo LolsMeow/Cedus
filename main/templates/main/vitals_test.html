@@ -44,7 +44,6 @@
                         <th>Height</th>
                         <th>Weight</th>
                         <th>Comments</th>
-                        <th>Action</th>
                     </tr>
                     {% for item in pag_obj %}
 
@@ -59,7 +58,6 @@
                         <td>{{ item.vt_height|default:"" }}</td>
                         <td>{{ item.vt_weight|default:"" }}</td>
                         <td>{{ item.vt_comments|default:"" }}</td>
-                        <td><a href="#" class="paging" class="btn btn-md  bg-light-blue text-white"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a></td>
                     </tr>
                     {% empty %}
                     <tr>
