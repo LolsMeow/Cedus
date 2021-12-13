@@ -569,11 +569,20 @@ def records_view(request):
 def patient_search(request):
     if request.method == 'GET' and request.GET.get("search_box") != None:
         search_text = request.GET.get("search_box")
+        #if (search_text == '' or search_text == None:
         request.session['user'] = search_text
         return redirect('main:admin_dashboard')
     else:
         return render(request, 'main/patient_search.html')
 
+def patient_search_failed(request):
+    if request.method == 'GET' and request.GET.get("search_box") != None:
+        search_text = request.GET.get("search_box")
+        #if (search_text == '' or search_text == None:
+        request.session['user'] = search_text
+        return redirect('main:admin_dashboard')
+    else:
+        return render(request, 'main/patient_search_failed.html')
 
 def admin_dashboard(request):
     if is_patient(request.user):
@@ -581,23 +590,27 @@ def admin_dashboard(request):
     # if not request.user.is_active or request.user.is_superuser:
     #     return redirect('main:login')
     user = request.session.get('user')
-    u = User.objects.get(username=user)
-    userForm = userInfo(instance=u)
-    p = Patient.objects.get(user=u)
-    form = updateInfo(instance=p)
+    print('TESTING: ', user)
+    if(user != ''):
+        u = User.objects.get(username=user)
+        userForm = userInfo(instance=u)
+        p = Patient.objects.get(user=u)
+        form = updateInfo(instance=p)
+        if request.method == 'POST':
 
-    if request.method == 'POST':
+            u = User.objects.all().get(username=user)
+            userForm = userInfo(data=request.POST, instance=u)
+            p = Patient.objects.all().get(user=u)
+            form = updateInfo(data=request.POST, instance=p)
+            if form.is_valid() and (userForm.is_valid()):
+                u = userForm.save()
+                p = form.save()
+            else:
+                return render(request, 'main/admin_dashboard.html', locals())
+        return render(request, 'main/admin_dashboard.html', locals())
 
-        u = User.objects.all().get(username=user)
-        userForm = userInfo(data=request.POST, instance=u)
-        p = Patient.objects.all().get(user=u)
-        form = updateInfo(data=request.POST, instance=p)
-        if form.is_valid() and (userForm.is_valid()):
-            u = userForm.save()
-            p = form.save()
-        else:
-            return render(request, 'main/admin_dashboard.html', locals())
-    return render(request, 'main/admin_dashboard.html', locals())
+    else:
+        return patient_search_failed(request)
 
 
 def admin_makeappt(request):
