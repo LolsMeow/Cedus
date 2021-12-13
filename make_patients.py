@@ -11,7 +11,7 @@ import random
 from main import models
 from main import views
 from faker import Faker
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 import csv
 
 fakegen = Faker()
@@ -394,7 +394,8 @@ def populate(number_of_profiles):
         #make user
         user_ = User.objects.create_user(username=this_pt[2], email=this_pt[2], password= this_pt[3], first_name=this_pt[0],
                          last_name=this_pt[1])
-
+        group = Group.objects.get(name='Patient')
+        user_.groups.add(group)
         ############ MAKING INSURANCE ############
         new_ins = models.Insurance(u_name=USER_NAME, ins_name=this_ins[1],
                                  ins_copay=this_ins[2], ins_plan=this_ins[3], ins_rx_bin=this_ins[4], ins_rx_pcn= this_ins[5], ins_rx_group=this_ins[6], ins_coverage=this_ins[7])

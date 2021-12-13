@@ -13,7 +13,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import Group
 from .models import *
 from .decorators import allowed_users
-
+import requests
 
 # =>SEARCH VIEWS STARTS HERE
 # search method for Vitals
