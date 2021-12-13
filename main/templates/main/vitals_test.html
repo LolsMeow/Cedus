@@ -28,7 +28,8 @@
                         </div>
 
                 </div>
-<a href="{%  url 'main:vitals' %}">Refresh</a>
+				<div class="refresh">
+<a href="{%  url 'main:vitals' %}"><img src="{% static 'images/refresh.png' %}" width = "30" height = "30"></a></div>
             <hr>
             <div id="apptable">
                 <table class="table table-bordered table-striped">
@@ -58,7 +59,7 @@
                         <td>{{ item.vt_height|default:"" }}</td>
                         <td>{{ item.vt_weight|default:"" }}</td>
                         <td>{{ item.vt_comments|default:"" }}</td>
-                        <td><a href="#" class="paging" class="btn btn-md  bg-light-blue text-white">Edit</a></td>
+                        <td><a href="#" class="paging" class="btn btn-md  bg-light-blue text-white"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a></td>
                     </tr>
                     {% empty %}
                     <tr>
