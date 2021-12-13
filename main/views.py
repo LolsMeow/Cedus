@@ -590,14 +590,13 @@ def admin_dashboard(request):
     # if not request.user.is_active or request.user.is_superuser:
     #     return redirect('main:login')
     user = request.session.get('user')
-    print('TESTING: ', user)
-    if(user != ''):
+    try:
         u = User.objects.get(username=user)
+        print('TESTING: ', u)
         userForm = userInfo(instance=u)
         p = Patient.objects.get(user=u)
         form = updateInfo(instance=p)
         if request.method == 'POST':
-
             u = User.objects.all().get(username=user)
             userForm = userInfo(data=request.POST, instance=u)
             p = Patient.objects.all().get(user=u)
@@ -608,8 +607,7 @@ def admin_dashboard(request):
             else:
                 return render(request, 'main/admin_dashboard.html', locals())
         return render(request, 'main/admin_dashboard.html', locals())
-
-    else:
+    except User.DoesNotExist:
         return patient_search_failed(request)
 
 
