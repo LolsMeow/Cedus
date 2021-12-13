@@ -6,7 +6,7 @@
 {% load static %}
 {% if request.user|has_group:"Doctor" %}
       <div class="plus">
-          <a href="{% url 'main:add_po' %}" role="button">Add</a>
+          <a href="{% url 'main:add_po' %}" role="button"></a>
       </div>
 {% endif %}
 <!-- html template for physician's orders information-->
