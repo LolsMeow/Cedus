@@ -6,6 +6,100 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import Group
 from .models import *
 
+import json
+from collections import namedtuple
+from types import SimpleNamespace
+from django.http import HttpResponse, JsonResponse
+from django.core.paginator import Paginator
+from .decorators import allowed_users
+import requests
+
+# search method for Vitals
+def search_vitals(request):
+    if request.method=='POST':
+        search_str=json.loads(request.body).get('searchText')
+        mydata=Vitals.objects.filter(
+            u_name=request.user,vt_bloodgroup__icontains=search_str) | Vitals.objects.filter(u_name=request.user,
+            vt_date__icontains=search_str)
+
+        data=mydata.values()
+        return JsonResponse(list(data),safe=False)
+# search method for Diagnosis
+def search_diag(request):
+    if request.method=='POST':
+        search_str=json.loads(request.body).get('searchText')
+        mydata=Diagnosis.objects.filter(
+            u_name=request.user,diagnosis_date__icontains=search_str) | Diagnosis.objects.filter(
+            u_name=request.user,diagnosis_status__icontains=search_str)
+
+        data=mydata.values()
+        return JsonResponse(list(data),safe=False)
+
+# Search method for Physician Orders
+def search_phyorders(request):
+    if request.method=='POST':
+        search_str=json.loads(request.body).get('searchText')
+        mydata=Phys_Orders.objects.filter(
+            u_name=request.user,order_date__icontains=search_str) | Phys_Orders.objects.filter(
+            u_name=request.user,order_contents__icontains=search_str)
+
+        data=mydata.values()
+        return JsonResponse(list(data),safe=False)
+
+# search method for Prescriptions
+def search_rx(request):
+    if request.method=='POST':
+        search_str=json.loads(request.body).get('searchText')
+        mydata=Prescription.objects.filter(
+            u_name=request.user,rx_date__icontains=search_str) | Prescription.objects.filter(
+            u_name=request.user,rx_name__icontains=search_str)
+
+        data=mydata.values()
+        return JsonResponse(list(data),safe=False)
+
+
+# search method for Vaccine
+def search_vaccine(request):
+    if request.method=='POST':
+        search_str=json.loads(request.body).get('searchText')
+        mydata=Vaccines.objects.filter(
+            u_name=request.user,vac_date__icontains=search_str) | Vaccines.objects.filter(
+            u_name=request.user,vac_type__icontains=search_str)
+
+
+
+
+        data=mydata.values()
+        return JsonResponse(list(data),safe=False)
+# search method for Appointments
+def search_appointments(request):
+    if request.method=='POST':
+        search_str=json.loads(request.body).get('searchText')
+        mydata=Appointment.objects.filter(
+            u_name=request.user,appointment_date__icontains=search_str) | Appointment.objects.filter(
+            u_name=request.user,appointment_comments__icontains=search_str)
+
+
+
+
+        data=mydata.values()
+        return JsonResponse(list(data),safe=False)
+
+# search method of Record(Bills) starts from here
+
+def search_billrecords(request):
+    if request.method=='POST':
+        search_str=json.loads(request.body).get('searchText')
+        mydata=Bills.objects.filter(
+            u_name=request.user,id__icontains=search_str) | Bills.objects.filter(
+            u_name=request.user,charge_date__icontains=search_str) | Bills.objects.filter(
+            u_name=request.user,pay_date__icontains=search_str)
+
+
+
+        data=mydata.values()
+        return JsonResponse(list(data),safe=False)
+
 
 def register_request(request):
     if request.method == "POST":
