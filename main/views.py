@@ -381,9 +381,24 @@ def appointments_view(request):
     elif is_staff(request.user):
         return redirect('main:patient_search')
     else:
-        form = Appointment.objects.all().filter(u_name=request.user)
-        form = {'form': form}
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print(fromdate)
+            print(todate)
+            result = Appointment.objects.filter(appointment_date__range=[fromdate, todate], u_name=request.user)
+            form = {'pag_obj': result}
+            return render(request, 'main/appointments.html', form)
+
+        data = Appointment.objects.filter(u_name=request.user).order_by('id')
+        page_nator = Paginator(data, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'form': data, 'pag_obj': pag_obj}
         return render(request, 'main/appointments.html', form)
+        # form = Appointment.objects.all().filter(u_name=request.user)
+        # form = {'form': form}
+        # return render(request, 'main/appointments.html', form)
 
 
 # def vitals_view_test(request, user_):
@@ -626,9 +641,24 @@ def admin_appt(request):
         return redirect('main:dashboard')
     else:
         user = request.session.get('user')
-        form = Appointment.objects.all().filter(u_name=user)
-        form = {'form': form}
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print(fromdate)
+            print(todate)
+            result = Appointment.objects.filter(appointment_date__range=[fromdate, todate], u_name=user)
+            form = {'pag_obj': result}
+            return render(request, 'main/admin_appointments.html', form)
+
+        data = Appointment.objects.filter(u_name=user).order_by('id')
+        page_nator = Paginator(data, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'form': data, 'pag_obj': pag_obj}
         return render(request, 'main/admin_appointments.html', form)
+        # form = Appointment.objects.all().filter(u_name=user)
+        # form = {'form': form}
+        # return render(request, 'main/admin_appointments.html', form)
 
 
 # def vitals_view_test(request, user_):
