@@ -1,105 +1,110 @@
+import json
+from collections import namedtuple
+from types import SimpleNamespace
+
+from django.http import HttpResponse, JsonResponse
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
-from .forms import infoReg, PatientForm, register, updateInfo, userInfo, makeappointment, admin_register, Vital_Forms, Diag_Forms, Po_Forms, Prescription_Forms, Vaccine_Forms, Records_Forms, Appointments_Forms
+from .forms import infoReg, PatientForm, register, updateInfo, userInfo, makeappointment, admin_register, Vital_Forms, \
+    Diag_Forms, Po_Forms, Prescription_Forms, Vaccine_Forms, Records_Forms, Appointments_Forms
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import Group
 from .models import *
-
-import json
-from collections import namedtuple
-from types import SimpleNamespace
-from django.http import HttpResponse, JsonResponse
-from django.core.paginator import Paginator
 from .decorators import allowed_users
 import requests
 
+
+# =>SEARCH VIEWS STARTS HERE
 # search method for Vitals
 def search_vitals(request):
-    if request.method=='POST':
-        search_str=json.loads(request.body).get('searchText')
-        mydata=Vitals.objects.filter(
-            u_name=request.user,vt_bloodgroup__icontains=search_str) | Vitals.objects.filter(u_name=request.user,
-            vt_date__icontains=search_str)
+    if request.method == 'POST':
+        search_str = json.loads(request.body).get('searchText')
+        mydata = Vitals.objects.filter(
+            u_name=request.user, vt_bloodgroup__icontains=search_str) | Vitals.objects.filter(u_name=request.user,
+                                                                                              vt_date__icontains=search_str)
+        data = mydata.values()
+        return JsonResponse(list(data), safe=False)
 
-        data=mydata.values()
-        return JsonResponse(list(data),safe=False)
-# search method for Diagnosis
+
+# Search method for Diagnosis
 def search_diag(request):
-    if request.method=='POST':
-        search_str=json.loads(request.body).get('searchText')
-        mydata=Diagnosis.objects.filter(
-            u_name=request.user,diagnosis_date__icontains=search_str) | Diagnosis.objects.filter(
-            u_name=request.user,diagnosis_status__icontains=search_str)
+    if request.method == 'POST':
+        search_str = json.loads(request.body).get('searchText')
+        mydata = Diagnosis.objects.filter(
+            u_name=request.user, diagnosis_date__icontains=search_str) | Diagnosis.objects.filter(
+            u_name=request.user, diagnosis_status__icontains=search_str)
 
-        data=mydata.values()
-        return JsonResponse(list(data),safe=False)
+        data = mydata.values()
+        return JsonResponse(list(data), safe=False)
 
-# Search method for Physician Orders
+
+# Search method for "Physician Orders"
 def search_phyorders(request):
-    if request.method=='POST':
-        search_str=json.loads(request.body).get('searchText')
-        mydata=Phys_Orders.objects.filter(
-            u_name=request.user,order_date__icontains=search_str) | Phys_Orders.objects.filter(
-            u_name=request.user,order_contents__icontains=search_str)
+    if request.method == 'POST':
+        search_str = json.loads(request.body).get('searchText')
+        mydata = Phys_Orders.objects.filter(
+            u_name=request.user, order_date__icontains=search_str) | Phys_Orders.objects.filter(
+            u_name=request.user, order_contents__icontains=search_str)
 
-        data=mydata.values()
-        return JsonResponse(list(data),safe=False)
+        data = mydata.values()
+        return JsonResponse(list(data), safe=False)
 
-# search method for Prescriptions
+
+# Search method for "Prescriptions"
 def search_rx(request):
-    if request.method=='POST':
-        search_str=json.loads(request.body).get('searchText')
-        mydata=Prescription.objects.filter(
-            u_name=request.user,rx_date__icontains=search_str) | Prescription.objects.filter(
-            u_name=request.user,rx_name__icontains=search_str)
+    if request.method == 'POST':
+        search_str = json.loads(request.body).get('searchText')
+        mydata = Prescription.objects.filter(
+            u_name=request.user, rx_date__icontains=search_str) | Prescription.objects.filter(
+            u_name=request.user, rx_name__icontains=search_str) | Prescription.objects.filter(
+            u_name=request.user, rx_dosage__icontains=search_str) | Prescription.objects.filter(
+            u_name=request.user, rx_sig__icontains=search_str)
 
-        data=mydata.values()
-        return JsonResponse(list(data),safe=False)
+        data = mydata.values()
+        return JsonResponse(list(data), safe=False)
 
 
-# search method for Vaccine
+# Search method for "Vaccine"
 def search_vaccine(request):
-    if request.method=='POST':
-        search_str=json.loads(request.body).get('searchText')
-        mydata=Vaccines.objects.filter(
-            u_name=request.user,vac_date__icontains=search_str) | Vaccines.objects.filter(
-            u_name=request.user,vac_type__icontains=search_str)
+    if request.method == 'POST':
+        search_str = json.loads(request.body).get('searchText')
+        mydata = Vaccines.objects.filter(
+            u_name=request.user, vac_date__icontains=search_str) | Vaccines.objects.filter(
+            u_name=request.user, vac_type__icontains=search_str)
+
+        data = mydata.values()
+        return JsonResponse(list(data), safe=False)
 
 
-
-
-        data=mydata.values()
-        return JsonResponse(list(data),safe=False)
-# search method for Appointments
+# Search method for "Appointments"
 def search_appointments(request):
-    if request.method=='POST':
-        search_str=json.loads(request.body).get('searchText')
-        mydata=Appointment.objects.filter(
-            u_name=request.user,appointment_date__icontains=search_str) | Appointment.objects.filter(
-            u_name=request.user,appointment_comments__icontains=search_str)
+    if request.method == 'POST':
+        search_str = json.loads(request.body).get('searchText')
+        mydata = Appointment.objects.filter(
+            u_name=request.user, appointment_date__icontains=search_str) | Appointment.objects.filter(
+            u_name=request.user, appointment_comments__icontains=search_str)
+
+        data = mydata.values()
+        return JsonResponse(list(data), safe=False)
 
 
-
-
-        data=mydata.values()
-        return JsonResponse(list(data),safe=False)
-
-# search method of Record(Bills) starts from here
+# Search method for "Record(Bills)"
 
 def search_billrecords(request):
-    if request.method=='POST':
-        search_str=json.loads(request.body).get('searchText')
-        mydata=Bills.objects.filter(
-            u_name=request.user,id__icontains=search_str) | Bills.objects.filter(
-            u_name=request.user,charge_date__icontains=search_str) | Bills.objects.filter(
-            u_name=request.user,pay_date__icontains=search_str)
+    if request.method == 'POST':
+        search_str = json.loads(request.body).get('searchText')
+        mydata = Bills.objects.filter(
+            u_name=request.user, id__icontains=search_str) | Bills.objects.filter(
+            u_name=request.user, charge_date__icontains=search_str) | Bills.objects.filter(
+            u_name=request.user, pay_date__icontains=search_str)
+
+        data = mydata.values()
+        return JsonResponse(list(data), safe=False)
 
 
-
-        data=mydata.values()
-        return JsonResponse(list(data),safe=False)
-
+# =>SEARCH VIEWS ENDS HERE
 
 def register_request(request):
     if request.method == "POST":
@@ -113,6 +118,7 @@ def register_request(request):
             patient.save()
             group = Group.objects.get(name='Patient')
             user.groups.add(group)
+
             # create empty patient related objects
             ins = Insurance.objects.create(u_name=patient.user.username)
             ins.save()
@@ -130,8 +136,8 @@ def register_request(request):
             vax.save()
             billy = Bills.objects.create(u_name=patient.user.username)
             billy.save()
-            pay_ = Payment.objects.create(u_name=patient.user.username)
-            pay_.save()
+            #pay_ = Payment.objects.create(u_name=patient.user.username)
+            #pay_.save()
             login(request, user)
             return redirect('main:information')
         messages.error(request, "Unsuccessful registration. Invalid information.")
@@ -198,22 +204,28 @@ def dashboard(request):
         return redirect('main:login')
 
     u = User.objects.get(username=request.user)
-    userForm = userInfo(instance=u)
     p = Patient.objects.get(user=request.user)
+    data = Insurance.objects.filter(u_name=request.user)
+    allergies_data = Allergies.objects.filter(u_name=request.user)
+    context = {'data': data, 'allergies_data': allergies_data}
     form = updateInfo(instance=p)
+    userForm = userInfo(instance=u)
 
     if request.method == 'POST':
-
-        u = User.objects.all().get(username=request.user)
-        userForm = userInfo(data=request.POST, instance=request.user)
-        p = Patient.objects.all().get(user=request.user)
-        form = updateInfo(data=request.POST, instance=p)
+        group = request.user.groups.all()[0].name
+        print(group)
+        if group == 'Patient':
+            u = User.objects.all().get(username=request.user)
+            userForm = userInfo(data=request.POST, instance=request.user)
+            p = Patient.objects.all().get(user=request.user)
+            form = updateInfo(data=request.POST, instance=p)
         if form.is_valid() and (userForm.is_valid()):
             u = userForm.save()
             p = form.save()
         else:
             return render(request, 'main/dashboard.html', locals())
     return render(request, 'main/dashboard.html', locals())
+
 
 def make_appointments(request):
     if not request.user.is_active or request.user.is_superuser:
@@ -238,6 +250,8 @@ def appointments_view(request):
         form = Appointment.objects.all().filter(u_name=request.user)
         form = {'form': form}
         return render(request, 'main/appointments.html', form)
+
+
 # def vitals_view_test(request, user_):
 #     if request.method == 'GET':
 #         vital_data = Vitals.objects.all().filter(u_name=user_)
@@ -248,10 +262,25 @@ def vitals_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
+
     else:
-        form = Vitals.objects.all().filter(u_name=request.user)
-        form = {'form': form}
+
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print(fromdate)
+            print(todate)
+            result = Vitals.objects.filter(vt_date__range=[fromdate, todate], u_name=request.user)
+            form = {'pag_obj': result}
+            return render(request, 'main/vitals_test.html', form)
+
+        data = Vitals.objects.filter(u_name=request.user).order_by('id')
+        page_nator = Paginator(data, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'form': data, 'pag_obj': pag_obj}
         return render(request, 'main/vitals_test.html', form)
+
 
 # def diag_view_test(request, user_):
 #     if request.method == 'GET':
@@ -263,10 +292,24 @@ def diag_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
+
     else:
+
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print('diagnosis date filter called')
+            result = Diagnosis.objects.filter(diagnosis_date__range=[fromdate, todate], u_name=request.user)
+            form = {'pag_obj': result}
+            return render(request, 'main/diag_test.html', form)
+
         diag_data = Diagnosis.objects.all().filter(u_name=request.user)
-        form = {'diag_data': diag_data}
+        page_nator = Paginator(diag_data, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'diag_data': diag_data, 'pag_obj': pag_obj}
         return render(request, 'main/diag_test.html', form)
+
 
 # def rx_view_test(request, user_):
 #     if request.method == 'GET':
@@ -278,10 +321,24 @@ def rx_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
+
     else:
+
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print('Prescription date filter called')
+            result = Prescription.objects.filter(rx_date__range=[fromdate, todate], u_name=request.user)
+            form = {'pag_obj': result}
+            return render(request, 'main/rx_test.html', form)
+
         pdata = Prescription.objects.all().filter(u_name=request.user)
-        form = {'pdata': pdata}
+        page_nator = Paginator(pdata, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'pdata': pdata, 'pag_obj': pag_obj}
         return render(request, 'main/rx_test.html', form)
+
 
 # def phys_orders_view_test(request, user_):
 #     if request.method == 'GET':
@@ -293,10 +350,24 @@ def phys_orders_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
+
     else:
+
+        if request.method == 'POST':
+            fromate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print('physician date filter called')
+            result = Phys_Orders.objects.filter(order_date__range=[fromdate, todate], u_name=request.user)
+            form = {'pag_obj': result}
+            return render(request, 'main/po_test.html', form)
+
         physdata = Phys_Orders.objects.all().filter(u_name=request.user)
-        form = {'physdata': physdata}
+        page_nator = Paginator(physdata, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'physdata': physdata, 'pag_obj': pag_obj}
         return render(request, 'main/po_test.html', form)
+
 
 # def vaccines_view_test(request, user_):
 #     if request.method == 'GET':
@@ -307,10 +378,23 @@ def phys_orders_view(request):
 def vaccines_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+
     else:
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print('Vaccines date filter called')
+
+            result = Vaccines.objects.filter(vac_date__range=[fromdate, todate], u_name=request.user)
+            form = {'pag_obj': result}
+            return render(request, 'main/vax_test.html', form)
         form = Vaccines.objects.all().filter(u_name=request.user)
-        form = {'form': form}
+        page_nator = Paginator(form, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'form': form, 'pag_obj': pag_obj}
         return render(request, 'main/vax_test.html', form)
+
 
 # def records_view_test(request, user_):
 #     if request.method == 'GET':
@@ -324,11 +408,191 @@ def records_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
     else:
-        app_data = Appointment.objects.all().filter(u_name=request.user)
+        # app_data = Appointment.objects.all().filter(u_name=request.user)
+        if request.method == 'POST':
+            fromdate = request.POST.get('billfromdate')
+            todate = request.POST.get('billtodate')
+            pag_obj_bill = Bills.objects.filter(charge_date__range=[fromdate, todate], u_name=request.user)
+            form = {'billData': pag_obj_bill}
+            return render(request, 'main/records_test.html', form)
+
         bill_data = Bills.objects.all().filter(u_name=request.user)
-        #pay_data = Payment.objects.all().filter(u_name=request.user)
-        form = {'app_data': app_data, 'billData': bill_data}
+        page_nator = Paginator(bill_data, 6)
+        page_number = request.GET.get('page_pay')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'billData': bill_data, 'pag_obj_pay': pag_obj}
         return render(request, 'main/records_test.html', form)
+
+
+@allowed_users(allowed_roles=['Patient', 'Staff'])
+def Allergy_Edit(request, id):
+    allergy_data = Allergies.objects.get(id=id)
+    print("hello from edit allergy")
+    context = {'allergy_data': allergy_data}
+    if request.method == 'GET':
+        return render(request, 'main/edit_allergies.html', context)
+    if request.method == 'POST':
+
+        aller_to = request.POST.get('drug')
+        remarks = request.POST.get('severity')
+
+        if not aller_to:
+            messages.error(request, 'Field is Required')
+            return render(request, 'edit_allergies.html')
+        if not remarks:
+            messages.error(request, 'Field is Required')
+            return render(request, 'edit_allergies.html')
+        allergy_data.aller_drug = aller_to
+        allergy_data.aller_severity = remarks
+        allergy_data.save()
+        messages.success(request, 'Record Updated Successfully')
+        return redirect('main:dashboard')
+    return HttpResponse('Patient and Staff are Allowed to Edit Data')
+
+
+@allowed_users(allowed_roles=['Patient'])
+def insurance_Edit(request, id):
+    data = Insurance.objects.get(id=id)
+    context = {'data': data}
+    if request.method == 'GET':
+        return render(request, 'main/edit_insurance.html', context)
+    if request.method == 'POST':
+
+        name = request.POST.get('name')
+        plan = request.POST.get('plan')
+        Rx_bin = request.POST.get('Rx_bin')
+        Rx_pcn = request.POST.get('Rx_pcn')
+        Rx_Group = request.POST.get('Rx_Group')
+        coverage = request.POST.get('coverage')
+
+        if not name:
+            messages.error(request, 'Insurance Name is Required')
+            return render(request, 'edit_insurance.html')
+        if not plan:
+            messages.error(request, 'Insurance Plan is Required')
+            return render(request, 'edit_insurance.html')
+        if not Rx_bin:
+            messages.error(request, 'Rx_Bin is Required')
+            return render(request, 'edit_insurance.html')
+        if not Rx_pcn:
+            messages.error(request, 'Rx_Pcn is Required')
+            return render(request, 'edit_insurance.html')
+        if not Rx_Group:
+            messages.error(request, 'Rx_Group is Required')
+            return render(request, 'edit_insurance.html')
+        if not coverage:
+            messages.error(request, 'Coverage is Required')
+            return render(request, 'edit_insurance.html')
+        data.ins_name = name
+        data.ins_plan = plan
+        data.ins_rx_bin = Rx_bin
+        data.ins_rx_pcn = Rx_pcn
+        data.ins_rx_group = Rx_Group
+        data.ins_coverage = coverage
+        data.save()
+        messages.success(request, 'Record Updated Successfully')
+        return redirect('main:dashboard')
+    return HttpResponse('Access Granted to Patient Only')
+
+def provider_details(request):
+
+        if request.method == 'POST':
+
+            firstname = request.POST.get('first_name')
+            lastname = request.POST.get('last_name')
+
+            request.session["firstname"] = firstname
+            request.session["lastname"] = lastname
+
+            if not firstname:
+                messages.error(request, 'First Name is Required')
+                return render(request, 'main/provider_details.html')
+            if not lastname:
+                messages.error(request, 'Last Name is Required')
+                return render(request, 'main/provider_details.html')
+
+        firstname = request.session.get('firstname', 'abc')
+        lastname = request.session.get('lastname', 'abc')
+        page_no = request.session.get('page_no')
+        data = 'https://npiregistry.cms.hhs.gov/api/?number=&enumeration_type=&taxonomy_description=&first_name=' + firstname + '&use_first_name_alias=&last_name=' + lastname + '&organization_name=&address_purpose=&city=&state=&postal_code=&country_code=&limit=&skip=&version=2.1'
+
+        response = requests.get(url=data).json()
+
+        provider = []
+
+        count = response['result_count']
+        for item in range(count):
+            provider.append({
+                'NPI': '',
+                'FirstName': '',
+                'LastName': '',
+                'Country': '',
+                'Address': '',
+                'City': '',
+                'State': '',
+                'Phone': '',
+                'PostalCode': '',
+                'Taxonomies': '',
+
+            })
+
+        for j, i in enumerate(response['results']):
+            NPI = i['number']
+            provider[j]['NPI'] = NPI
+            FirstName = i['basic']['first_name']
+            provider[j]['FirstName'] = FirstName
+            LastName = i['basic']['last_name']
+            provider[j]['LastName'] = LastName
+            CountryName = i['addresses'][0]['country_name']
+            provider[j]['Country'] = CountryName
+            Address1 = i['addresses'][0]['address_1']
+            provider[j]['Address'] = Address1
+            city = i['addresses'][0]['city']
+            provider[j]['City'] = city
+            state = i['addresses'][0]['state']
+            provider[j]['State'] = state
+            telephone_number = i['addresses'][0]['telephone_number']
+            provider[j]['phone'] = telephone_number
+            postal_code = i['addresses'][0]['postal_code']
+            provider[j]['postal_code'] = postal_code
+            taxonomies = i['taxonomies'][0]['desc']
+            provider[j]['taxonomies'] = taxonomies
+            print(NPI, FirstName, LastName, Address1, telephone_number)
+
+        page_no = request.GET.get('page_no')
+        if not page_no:
+            page_no = 5
+
+        page_nator = Paginator(provider, page_no)
+        page_number = request.GET.get('page')
+
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        context = {'pag_obj': pag_obj}
+
+        return render(request, 'main/provider_details.html', context)
+
+        return render(request, 'main/provider_details.html')
+
+
+@allowed_users(allowed_roles=['Patient', 'Staff'])
+def appointments(request):
+    if not request.user.is_active:
+        return redirect('main:login')
+
+    else:
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+
+            result = Appointment.objects.filter(appointment_date__range=[fromdate, todate], u_name=request.user)
+            form = {'pag_obj_pay': result}
+            return render(request, 'main/appointments.html', form)
+        form = Appointment.objects.all().filter(u_name=request.user)
+        page_nator = Paginator(form, 5)
+        page_number = request.GET.get('page_pay')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'pag_obj_pay': pag_obj}
+        return render(request, 'main/appointments.html', form)
 
 
 def admin_reg(request):
@@ -380,11 +644,11 @@ def is_pharmacist(user):
 
 
 def is_staff(user):
-    return user.groups.filter(name='Staff').exists() or user.groups.filter(name='Pharmacist').exists() or user.groups.filter(name='Doctor').exists()
+    return user.groups.filter(name='Staff').exists() or user.groups.filter(
+        name='Pharmacist').exists() or user.groups.filter(name='Doctor').exists()
 
 
 def add_items(request, model, form):
-
     if request.method == "POST":
         form = form(request.POST)
         if form.is_valid():
@@ -531,7 +795,6 @@ def edit_appointments(request, pk):
 
 
 def delete_items(pk, model):
-
     model.objects.filter(id=pk).delete()
 
     if is_staff(request.user):
@@ -602,6 +865,7 @@ def patient_search(request):
     else:
         return render(request, 'main/patient_search.html')
 
+
 def admin_dashboard(request):
     # if not request.user.is_active or request.user.is_superuser:
     #     return redirect('main:login')
@@ -650,6 +914,8 @@ def admin_appt(request):
         form = Appointment.objects.all().filter(u_name=user)
         form = {'form': form}
         return render(request, 'main/admin_appointments.html', form)
+
+
 # def vitals_view_test(request, user_):
 #     if request.method == 'GET':
 #         vital_data = Vitals.objects.all().filter(u_name=user_)
@@ -665,6 +931,7 @@ def admin_vitals(request):
         form = Vitals.objects.all().filter(u_name=user)
         form = {'form': form}
         return render(request, 'main/admin_vitals.html', form)
+
 
 # def diag_view_test(request, user_):
 #     if request.method == 'GET':
@@ -682,6 +949,7 @@ def admin_diagnosis(request):
         form = {'diag_data': diag_data}
         return render(request, 'main/admin_diag.html', form)
 
+
 # def rx_view_test(request, user_):
 #     if request.method == 'GET':
 #         rx_data = Prescription.objects.all().filter(u_name=user_)
@@ -697,6 +965,7 @@ def admin_rx(request):
         pdata = Prescription.objects.all().filter(u_name=user)
         form = {'pdata': pdata}
         return render(request, 'main/admin_rx.html', form)
+
 
 # def phys_orders_view_test(request, user_):
 #     if request.method == 'GET':
@@ -714,6 +983,7 @@ def admin_phys(request):
         form = {'physdata': physdata}
         return render(request, 'main/admin_po.html', form)
 
+
 # def vaccines_view_test(request, user_):
 #     if request.method == 'GET':
 #         vac_data = Vaccines.objects.all().filter(u_name=user_)
@@ -722,12 +992,14 @@ def admin_phys(request):
 
 def admin_vaccines(request):
     if not request.user.is_active or request.user.is_superuser:
+
         return redirect('main:login')
     else:
         user = request.session.get('user')
         form = Vaccines.objects.all().filter(u_name=user)
         form = {'form': form}
         return render(request, 'main/admin_vax.html', form)
+
 
 # def records_view_test(request, user_):
 #     if request.method == 'GET':
@@ -744,6 +1016,6 @@ def admin_records(request):
         user = request.session.get('user')
         app_data = Appointment.objects.all().filter(u_name=user)
         bill_data = Bills.objects.all().filter(u_name=user)
-        #pay_data = Payment.objects.all().filter(u_name=request.user)
+        # pay_data = Payment.objects.all().filter(u_name=request.user)
         form = {'app_data': app_data, 'billData': bill_data}
         return render(request, 'main/admin_records.html', form)

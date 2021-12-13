@@ -11,7 +11,6 @@ class Role(models.Model):
 
 class Patient(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
     birth_date = models.DateField(default=datetime.date.today)
     phone_number = models.CharField(max_length=50)
     street_address = models.CharField(max_length=50)
@@ -19,6 +18,7 @@ class Patient(models.Model):
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     zip_code = models.CharField(max_length=5, validators=[RegexValidator(r'^[0-9]{5}$')])
+    provider = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -37,6 +37,13 @@ class Insurance(models.Model):
     def __str__(self):
         return self.u_name
 
+class Surgeries(models.Model):
+    surgery_id = models.AutoField(primary_key=True)
+    u_name = models.CharField(max_length=50, blank=True, null=True)
+    # doc_id = models.IntegerField() # We'll pull NPI from API
+    surgery_date = models.DateField()
+    # surgery_loc_id = models.IntegerField # We'll pull location from API
+    surgery_description = models.CharField(max_length=100)
 
 class Allergies(models.Model):
     u_name = models.CharField(max_length=50, blank=True, null=True)

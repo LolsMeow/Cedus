@@ -1,0 +1,138 @@
+{% extends "main/test.html" %}
+
+{% block content %}
+
+
+<div class="form-group" xmlns="http://www.w3.org/1999/html">
+
+    <div class="row">
+<h3>Search Provider </h3></br>
+        <form action="{% url 'main:provider_details' %}" METHOD="post">
+
+
+            {% csrf_token %}
+
+            <div class="text-center">
+
+                <div>
+                    <label for="first_name">First Name: </label>
+                    <input type="text" id="first_name" name="first_name" required>
+                </div>
+                <br>
+                <div>
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" required>
+                </div>
+
+                <br>
+                <br>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+
+            </div>
+        </form>
+
+        <br>
+        <br>
+        <br>
+
+ <form action="{% url 'main:provider_details' %}" METHOD="get">
+
+
+
+
+            <div class="text-center">
+
+
+                <div >
+                    <label for="page_no">Records per Page: </label>
+
+                  <select name="page_no" id="page_no" class="form-control" onchange="this.form.submit()">
+
+                    <option>Select </option>
+                    <option name="page_no" value="5">5</option>
+                    <option name="page_no" value="10">10</option>
+                    <option name="page_no" value="20">15</option>
+                    <option name="page_no" value="30">20</option>
+                    <option name="page_no" value="30">25</option>
+
+                  </select>
+            </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<div>
+    <h3>Provider Details</h3></br>
+    <table class="table table-bordered table-sm">
+        <tr>
+            <th>NPI</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Primary Practice Address</th>
+            <th>Phone</th>
+            <th>Primary Taxonomy</th>
+
+        </tr>
+        {% for value in pag_obj %}
+        <tr>
+
+        <td>{{ value.NPI|default:"Null" }}</td>
+
+            <td>{{ value.FirstName|default:"Null" }}</td>
+            <td>{{ value.LastName|default:"Null" }}</td>
+            <td>
+                {{ value.Country }}<br>
+                {{ value.City }}<br>
+                {{ value.Address|default:"Null" }}<br>
+                {{ value.State }}<br>
+                {{ value.postal_code }}
+            </td>
+
+            <td>
+                {{ value.phone|default:"Null" }}
+            </td>
+
+            <td>
+                {{ value.taxonomies|default:"Null" }}
+            </td>
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+    <br>
+<div  id="paginationcontainer">
+   <h3> Viewing Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}</h3>
+
+     {% if pag_obj.has_other_pages %}
+  <ul class="list">
+
+    {% if pag_obj.has_previous %}
+      <li><a class="paging" class="btn btn-dark" href="?page={{ pag_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in pag_obj.paginator.page_range %}
+      {% if usepag_objrs.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a class="paging" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if pag_obj.has_next %}
+      <li><a class="paging" class="btn btn-dark" href="?page={{ pag_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+</div>
+
+{% endblock %}

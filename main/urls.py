@@ -1,10 +1,23 @@
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
 from . import views
 
 app_name = "main"
 
 
 urlpatterns = [
+    # Search box urls starts from here
+    path('search_vitals', csrf_exempt(views.search_vitals), name='search_vitals'),
+    path('search_diag', csrf_exempt(views.search_diag), name='search_diag'),
+    path('search_phyorders', csrf_exempt(views.search_phyorders), name='search_phyorders'),
+    path('search_rx', csrf_exempt(views.search_rx), name='search_rx'),
+    path('search_vaccine', csrf_exempt(views.search_vaccine), name='search_vaccine'),
+    path('search_appointments', csrf_exempt(views.search_appointments), name='search_appointments'),
+    path('search_billrecords', csrf_exempt(views.search_billrecords), name='search_billrecords'),
+
+
+
+   # Remaining methods' urls starts from here
     path("", views.dashboard, name="dashboard"),
     path("register", views.register_request, name="register"),
     path('login/', views.login_request, name="login"),
@@ -16,6 +29,9 @@ urlpatterns = [
     path('phys/', views.phys_orders_view, name='phys'),
     path('vax/', views.vaccines_view, name='vaccines'),
     path('records/', views.records_view, name='records'),
+    path('provider_details/', views.provider_details, name='provider_details'),
+    path('Allergy_Edit/<int:id>', views.Allergy_Edit, name='Allergy_Edit'),
+    path('insurance_Edit/<int:id>', views.insurance_Edit, name='insurance_Edit'),
     path('makeappt/', views.make_appointments, name='makeappt'),
     path('appt/', views.appointments_view, name='appt'),
     path('add_vitals', views.add_vitals, name='add_vitals'),

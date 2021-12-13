@@ -5,18 +5,90 @@
 {% load auth_extras %}
 {% load static %}
 <!-- html template for vaccines information-->
-<table>
+ <div class="col-md-6">
+   <form action="{% url 'main:vaccines' %}" method="post">
+    {% csrf_token %}
+<h3>From Date:<input type="date" name="fromdate">
+To Date:<input type="date" name="todate">
+    <input type="submit" value="Search"></h3>
+    </form>
+<div>
+    <hr>
+           <div class="col-md-12">
+
+
+                        <div class="col-md-12">
+                            <h5>Search by Date(YYYY-MM-DD) or Vaccine Type: <input class="form-control" type="text"
+                                   placeholder=" Search" name="Search"
+                                   id="searchField">
+                            </h5>
+                            {% csrf_token %}
+                        </div>
+
+                </div>
+<a href="{%  url 'main:vaccines' %}">Refresh</a>
+            <hr>
+     <div id="apptable">
+<table class="table table-bordered table-striped">
     <tr>
         <th>Date</th>
         <th>Type</th>
         <th>Specification</th>
     </tr>
-    {% for item in form %}
+    {% for item in pag_obj %}
     <tr>
         <td>{{ item.vac_date }}</td>
         <td>{{ item.vac_type }}</td>
         <td>{{ item.vac_comment }}</td>
     </tr>
+                 {% empty %}
+    <tr>
+        <td>No Data Found</td>
+
+    </tr>
     {% endfor %}
 </table>
+</div>
+
+</div>
+<div id="outputtable">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+           <th>Date</th>
+        <th>Type</th>
+        <th>Specification</th>
+        </tr>
+        </thead>
+        <tbody id="outputtablebody">
+        </tbody>
+    </table>
+</div>
+<br>
+<div  id="paginationcontainer">
+   <h3> Viewing Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}</h3>
+
+     {% if pag_obj.has_other_pages %}
+  <ul class="list">
+    {% if pag_obj.has_previous %}
+      <li><a class="paging" class="btn btn-dark" href="?page={{ pag_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in pag_obj.paginator.page_range %}
+      {% if usepag_objrs.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a class="paging" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if pag_obj.has_next %}
+      <li><a class="paging" class="btn btn-dark" href="?page={{ pag_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+<script src="{% static 'js/search_vaccine.js' %}"></script>
 {% endblock %}

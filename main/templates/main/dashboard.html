@@ -2,8 +2,13 @@
 
 {% block content %}
 <!-- html template for dashboard information-->
+			<div >
+      <h5 style="text-decoration:#00a65a">{% include 'main/_messages.html' %}</h5>
 			<form method = 'POST'>{% csrf_token %}
+
+                <h3>Patient Details</h3>
 				<div class="page-content-wrapper">
+
 					<div class="grid-item"><label>First Name</label></br>{{ userForm.first_name }}</div>
 					<div class="grid-item"><label>Last Name</label></br>{{ userForm.last_name }}</div>
 					<div class="grid-item"><label>Email</label></br>{{ userForm.email }}</div>
@@ -14,10 +19,80 @@
   					<div class="grid-item"><label>City </label></br>{{ form.city }}</div>
 					<div class="grid-item"><label>State </label></br>{{ form.state }}</div>
 					<div class="grid-item"><label>Zip Code </label></br>{{ form.zip_code }}</div>
+					<div class="grid-item"><label>NPI Number </label></br>{{ form.provider }}</div>
                     <button type="submit">Update</button>
                     {{ userForm.errors.email }}
 					{{ form.errors.zip_code }}
 				</div>
 			</form>
+	</div>
+
+<div class="row">
+    <h3>Insurance Details</h3>
+
+                <table class="table table-bordered table-sm">
+                    <tbody>
+                    		    {% for data in data %}
+                    <tr>
+                        <td>Insurance Name</td>
+                        <td><b>{{ data.ins_name|default:"--" }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Plan</td>
+                        <td><b>{{ data.ins_plan|default:"--" }}</b></td>
+                    </tr>
+
+                    <tr>
+                        <td>Rx Bin</td>
+                         <td><b>{{ data.ins_rx_bin|default:"--"  }}</b></td>
+                    </tr>
+
+                    <tr>
+                        <td>Rx Pcn</td>
+                        <td><b>{{ data.ins_rx_pcn|default:"--" }}</b></td>
+                    </tr>
+                                 <tr>
+                        <td>Rx Group</td>
+                        <td><b>{{ data.ins_rx_group|default:"--" }}</b></td>
+                    </tr>
+                                <tr>
+                        <td>Coverage</td>
+                        <td><b>{{ data.ins_coverage|default:"--" }}</b></td>
+                    </tr>
+                                 <tr>
+                                   <td><a href="{% url 'main:insurance_Edit' data.id %}"><button type="button">Update</button></a></td>
+                                   <td></td>
+                               </tr>
+
+                   {% endfor %}
+
+                    </tbody>
+                </table>
+     <h3>Allergy Details</h3>
+
+                <table class="table table-bordered table-sm">
+                    </tbody>
+                    		    {% for data in allergies_data %}
+                    <tr>
+                        <td>Drug</td>
+                        <td><b>{{ data.aller_drug|default:"--" }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Level</td>
+                        <td><b>{{ data.aller_severity|default:"--" }}</b></td>
+                    </tr>
+
+                               <tr>
+                                   <td><a href="{% url 'main:Allergy_Edit' data.id %}"><button type="button">Update</button></a></td>
+                                <td></td>
+                               </tr>
+
+                   {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
 
 {% endblock %}

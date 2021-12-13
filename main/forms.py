@@ -99,7 +99,7 @@ class updateInfo(ModelForm):
     birth_date = forms.DateField(label="", widget=DateInput())
     class Meta:
         model = Patient
-        fields = ['birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code']
+        fields = ['birth_date', 'phone_number', 'street_address', 'apt', 'city', 'state', 'zip_code', 'provider']
         exclude = ['user']
 
     def clean_zip_code(self):

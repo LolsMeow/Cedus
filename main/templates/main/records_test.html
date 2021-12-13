@@ -5,21 +5,47 @@
 {% load auth_extras %}
 {% load static %}
 <!-- html template for records information-->
-<h2>Appointments</h2></br>
-<table>
-    <tr>
-        <th>Date</th>
-        <th>Purpose</th>
-    </tr>
-    {% for item in app_data %}
-    <tr>
-        <td>{{ item.appointment_date }}</td>
-        <td>{{ item.appointment_comments }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<!-- html template for records information-->
+<!--<h2>Appointments</h2></br>-->
+<!--<table>-->
+<!--    <tr>-->
+<!--        <th>Date</th>-->
+<!--        <th>Purpose</th>-->
+<!--    </tr>-->
+<!--    {% for item in app_data %}-->
+<!--    <tr>-->
+<!--        <td>{{ item.appointment_date }}</td>-->
+<!--        <td>{{ item.appointment_comments }}</td>-->
+<!--    </tr>-->
+<!--    {% endfor %}-->
+<!--</table>-->
+
 </br><h2>Billing</h2></br>
 
+    <div class="col-md-6">
+       <form action="{% url 'main:records' %}" method="post">
+    {% csrf_token %}
+        <h3>From Date:<input type="date" name="billfromdate">
+            To Date:<input type="date" name="billtodate">
+            <input class="recsearch" type="submit" value="Search"></h3>
+</form>
+        <div>
+<hr>
+            <div class="col-md-12">
+
+
+                <div class="col-md-12">
+                    <h5>Search by Bill ID, Charge Date(YYYY-MM-DD) or Payment Date(YYYY-MM-DD): <input class="form-control" type="text"
+                                                                     placeholder=" Search" name="Search"
+                                                                     id="searchField">
+                    </h5>
+                    {% csrf_token %}
+                </div>
+
+            </div>
+    <a href="{% url 'main:records' %}">Refresh</a>
+            <hr>
+            <div id="apptable">
 <table>
     <tr>
         <th>Bill ID</th>
@@ -38,9 +64,9 @@
         <th>Insurance Co-Pay</th>
         <th>BALANCE</th>
     </tr>
-    {% for item in billData %}
+    {% for item in pag_obj_pay %}
     <tr>
-        <td>{{ item.bill_id }}</td>
+        <td>{{ item.id }}</td>
         <td>{{ item.charge_date }}</td>
         <td>{{ item.doc_charges }}</td>
         <td>{{ item.medi_charges }}</td>
@@ -55,9 +81,64 @@
         <td>{{ item.pay_amount }}</td>
         <td>{{ item.ins_copay }}</td>
         <td>{{ item.balance }}</td>
+
     </tr>
     {% endfor %}
 </table>
+
+</div>
+<div id="outputtable">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+        <th>Bill ID</th>
+        <th>Charge Date</th>
+        <th>Doctor Charge</th>
+        <th>Medical Charge</th>
+        <th>Room Charge</th>
+        <th>Surgery Charge</th>
+        <th>Admission Days</th>
+        <th>Nursing Charges</th>
+        <th>Advance</th>
+        <th>Test Charges</th>
+        <th>TOTAL AMOUNT</th>
+        <th>Payment Date</th>
+        <th>Payment Amount</th>
+        <th>Insurance Co-Pay</th>
+        <th>BALANCE</th>
+        </tr>
+        </thead>
+        <tbody id="outputtablebody">
+        </tbody>
+    </table>
+</div>
+<br>
+<div  id="paginationcontainer">
+   <h3> Viewing Page {{ pag_obj_pay.number }} of {{ pag_obj_pay.paginator.num_pages }}</h3>
+
+     {% if pag_obj_pay.has_other_pages %}
+  <ul class="list">
+    {% if pag_obj_pay.has_previous %}
+      <li><a class="paging" class="btn btn-dark" href="?page_pay={{ pag_obj_pay.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in pag_obj_pay.paginator.page_range %}
+      {% if usepag_objrs.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a class="paging" href="?page_pay={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if pag_obj_pay.has_next %}
+      <li><a class="paging" class="btn btn-dark" href="?page_pay={{ pag_obj_pay.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</div>
+<script src="{% static 'js/search_bills.js' %}"></script>
 
 <!--</br><h2>Payments</h2></br>
 <table>
