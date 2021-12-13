@@ -592,7 +592,6 @@ def admin_dashboard(request):
     user = request.session.get('user')
     try:
         u = User.objects.get(username=user)
-        print('TESTING: ', u)
         userForm = userInfo(instance=u)
         p = Patient.objects.get(user=u)
         form = updateInfo(instance=p)
