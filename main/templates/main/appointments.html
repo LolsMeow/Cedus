@@ -25,7 +25,7 @@
         </td>
         {% if request.user|has_group:"Patient" %}
             <td>
-                <a href="{% url 'main:delete_appointments' item.pk %}" role="button">Delete</a>
+                <a href="{% url 'main:delete_appointments' item.pk %}" role="button"><img src="{% static 'images/delete.png' %}" width = "20" height = "20"></a>
             </td>
         {% endif %}
     </tr>
