@@ -5,9 +5,9 @@
 {% load auth_extras %}
 {% load static %}
 {% if request.user|has_group:"Doctor" %}
-      <td>
-          <a href="{% url 'main:add_diag' %}" role="button">Add</a>
-      </td>
+      <div class="plus">
+          <a  href="{% url 'main:add_diag' %}" role="button" ></a>
+	</div>
 {% endif %}
 <table>
 
