@@ -5,13 +5,13 @@
 {% load auth_extras %}
 {% load static %}
 {% if request.user|has_group:"Doctor" %}
-      <td>
+      <div class="plus">
           <a href="{% url 'main:add_vaccine' %}" role="button">Add</a>
-      </td>
+      </div>
 {% endif %}
 {% if request.user|has_group:"Pharmacist" %}
       <td>
-          <a href="{% url 'main:add_vaccine' %}" role="button">Add</a>
+          <a href="{% url 'main:add_vaccine' %}" role="button"></a>
       </td>
 {% endif %}
 <!-- html template for vaccines information-->
