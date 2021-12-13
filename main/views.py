@@ -584,8 +584,12 @@ def records_view(request):
 def patient_search(request):
     if request.method == 'GET' and request.GET.get("search_box") != None:
         search_text = request.GET.get("search_box")
-        request.session['user'] = search_text
-        return redirect('main:admin_dashboard')
+        if Patient.objects.filter(user__username=search_text).exists():
+            request.session['user'] = search_text
+            return redirect('main:admin_dashboard')
+        else:
+            messages.error(request, 'Patient does not exist')
+            return render(request, 'main/patient_search.html')
     else:
         return render(request, 'main/patient_search.html')
 

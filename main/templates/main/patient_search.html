@@ -65,6 +65,11 @@ img.colorimg {
         <input  id="search_box" type="text" name="search_box"  placeholder="Search" >
         <button id="search_submit" type="submit" >Submit</button>
     </form>
+    {% for message in messages %}
+            <h3 class="{{ message.tags }}">
+            {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+            </h3>
+            {% endfor %}
 		  <br>
 	  <img src="{% static 'images/Cedus Icon Whie.png' %}" title="colorimg" class="colorimg" width = "150" height = "150">
 </body>
