@@ -34,6 +34,8 @@ urlpatterns = [
     path('insurance_Edit/<int:id>', views.insurance_Edit, name='insurance_Edit'),
     path('makeappt/', views.make_appointments, name='makeappt'),
     path('appt/', views.appointments_view, name='appt'),
+
+    # Add Information
     path('add_vitals', views.add_vitals, name='add_vitals'),
     path('add_diag', views.add_diag, name='add_diag'),
     path('add_po', views.add_po, name='add_po'),
@@ -41,6 +43,8 @@ urlpatterns = [
     path('add_vaccine', views.add_vaccine, name='add_vaccine'),
     path('add_records', views.add_records, name='add_records'),
     path('add_appointments', views.add_appointments, name='add_appointments'),
+
+    # Edit Information
     path('edit_vitals/(?P<pk>\d+)', views.edit_vitals, name='edit_vitals'),
     path('edit_diag/(?P<pk>\d+)', views.edit_diag, name='edit_diag'),
     path('edit_po/(?P<pk>\d+)', views.edit_po, name='edit_po'),
@@ -48,6 +52,8 @@ urlpatterns = [
     path('edit_vaccine/(?P<pk>\d+)', views.edit_vaccine, name='edit_vaccine'),
     path('edit_records/(?P<pk>\d+)', views.edit_records, name='edit_records'),
     path('edit_appointments/(?P<pk>\d+)', views.edit_appointments, name='edit_appointments'),
+
+    # Delete Information
     path('delete_vitals/(?P<pk>\d+)', views.delete_vitals, name='delete_vitals'),
     path('delete_diag/(?P<pk>\d+)', views.delete_diag, name='delete_diag'),
     path('delete_po/(?P<pk>\d+)', views.delete_po, name='delete_po'),
@@ -55,6 +61,8 @@ urlpatterns = [
     path('delete_vaccine/(?P<pk>\d+)', views.delete_vaccine, name='delete_vaccine'),
     path('delete_records/(?P<pk>\d+)', views.delete_records, name='delete_records'),
     path('delete_appointments/(?P<pk>\d+)', views.delete_appointments, name='delete_appointments'),
+
+    # Admin Side
     path('admin_reg/', views.admin_reg, name='admin_reg'),
     path('patient_search/', views.patient_search, name='patient_search'),
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),

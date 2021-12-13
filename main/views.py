@@ -181,6 +181,8 @@ def login_request(request):
 def information_request(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:register')
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     if request.method == 'POST':
         p = Patient.objects.all().get(user=request.user)
         form = infoReg(data=request.POST, instance=p)
@@ -231,6 +233,8 @@ def dashboard(request):
 def make_appointments(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     else:
         if request.method == 'POST':
             form = makeappointment(data=request.POST)
@@ -247,6 +251,8 @@ def make_appointments(request):
 def appointments_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     else:
         form = Appointment.objects.all().filter(u_name=request.user)
         form = {'form': form}
@@ -263,7 +269,8 @@ def vitals_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
-
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     else:
 
         if request.method == 'POST':
@@ -293,7 +300,8 @@ def diag_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
-
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     else:
 
         if request.method == 'POST':
@@ -322,7 +330,8 @@ def rx_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
-
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     else:
 
         if request.method == 'POST':
@@ -351,7 +360,8 @@ def phys_orders_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 
-
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     else:
 
         if request.method == 'POST':
@@ -379,7 +389,8 @@ def phys_orders_view(request):
 def vaccines_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
-
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     else:
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
@@ -408,6 +419,8 @@ def vaccines_view(request):
 def records_view(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_staff(request.user):
+        return redirect('main:patient_search')
     else:
         # app_data = Appointment.objects.all().filter(u_name=request.user)
         if request.method == 'POST':
@@ -871,6 +884,8 @@ def patient_search(request):
 
 
 def admin_dashboard(request):
+    if is_patient(request.user):
+        return redirect('main:dashboard')
     # if not request.user.is_active or request.user.is_superuser:
     #     return redirect('main:login')
     user = request.session.get('user')
@@ -896,6 +911,8 @@ def admin_dashboard(request):
 def admin_makeappt(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
     else:
         user = request.session.get('user')
         if request.method == 'POST':
@@ -913,6 +930,8 @@ def admin_makeappt(request):
 def admin_appt(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
     else:
         user = request.session.get('user')
         form = Appointment.objects.all().filter(u_name=user)
@@ -929,6 +948,8 @@ def admin_appt(request):
 def admin_vitals(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
 
     else:
         user = request.session.get('user')
@@ -946,6 +967,8 @@ def admin_vitals(request):
 def admin_diagnosis(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
 
     else:
         user = request.session.get('user')
@@ -963,6 +986,8 @@ def admin_diagnosis(request):
 def admin_rx(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
 
     else:
         user = request.session.get('user')
@@ -980,6 +1005,8 @@ def admin_rx(request):
 def admin_phys(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
 
     else:
         user = request.session.get('user')
@@ -998,6 +1025,8 @@ def admin_vaccines(request):
     if not request.user.is_active or request.user.is_superuser:
 
         return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
     else:
         user = request.session.get('user')
         form = Vaccines.objects.all().filter(u_name=user)
@@ -1016,6 +1045,8 @@ def admin_vaccines(request):
 def admin_records(request):
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
     else:
         user = request.session.get('user')
         app_data = Appointment.objects.all().filter(u_name=user)
