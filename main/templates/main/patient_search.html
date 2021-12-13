@@ -1,13 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+	<link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAACspl0A////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEREQAAAAAREREREQAAARERAREREAARERAAARERABERAAAAEREBEREAAAAREREREAABAAEREREAAAABEBEREQAAAQAAEREQAAAAAAABEREAAAAAABEQEQAAEQAAEQARERERERERAAERERERERAAABERERERAAAAABEREQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" rel="icon" type="image/x-icon" />
+<style>
+body {
+	background-color: #5da6ac;
+	text-align: center;
+}
+form {
+	background-color: white;
+	width: 50%;
+	position: center;
+	padding: 30px;
+	border-radius: 10px;
+	display: inline-block;
+	margin-top: 30px;
+}
+h3 {
+	font-size: 50px;
+	color: black;
+}
+input {
+	font-size: 20px;
+	background-color: #D7DFDF;
+    border-radius: 10px;
+	width: 100%;
+	text-align: center;
+}
+button {
+	background-color: #F5F5F5;
+	text-decoration: none;
+	color: black;
+	font-size: 20px;
+	padding: 5px;
+	border-radius: 5px;
+	border-style: solid;
+	border-color: #5da6ac;
+	border-width: .5px;
+	margin-top: 20px;
+}
+button:hover {
+	background-color: #454545;
+	text-decoration: none;
+	color: black;
+	font-size: 20px;
+	border-radius: 5px;
+	border-style: solid;
+	border-color: #5da6ac;
+	border-width: .5px;
+}
+img.colorimg {
+	position: center;
+	margin-top: 20px;
+}
+</style>
 </head>
 <body>
     <form type="get" action="." style="margin: 0">
+	<img src="{% static 'images/text logo.png' %}" class="cedus" width = "200" height = "85">
+		<h3>Patient Search</h3>
         <input  id="search_box" type="text" name="search_box"  placeholder="Search" >
         <button id="search_submit" type="submit" >Submit</button>
     </form>
+		  <br>
+	  <img src="{% static 'images/Cedus Icon Whie.png' %}" title="colorimg" class="colorimg" width = "150" height = "150">
 </body>
 </html>
