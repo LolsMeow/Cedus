@@ -5,6 +5,7 @@
 {% load auth_extras %}
 {% load static %}
 <!-- html template for prescription information-->
+<h2>Prescriptions</h2><br>
  <div class="col-md-6">
       <form action="{% url 'main:rx' %}" method="post">
     {% csrf_token %}
@@ -13,6 +14,7 @@ To Date:<input type="date" name="todate">
     <input type="submit" value="Search"></h3>
     </form>
 <div>
+    <hr>
        <div class="col-md-12">
 
 

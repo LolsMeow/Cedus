@@ -5,6 +5,7 @@
 {% load auth_extras %}
 {% load static %}
 <!-- html template for physician's orders information-->
+<h2>Physician's Orders</h2><br>
  <div class="col-md-6">
 <form action="{% url 'main:phys' %}" method="post">
     {% csrf_token %}

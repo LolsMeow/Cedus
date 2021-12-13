@@ -1,3 +1,5 @@
+
+
 {% extends "main/admin_test.html" %}
 
 {% block content %}
@@ -5,46 +7,93 @@
 {% load auth_extras %}
 <!-- html template for vitals information-->
 {% load static %}
-{% if request.user|has_group:"Doctor" %}
-      <div class="plus">
-          <a href="{% url 'main:add_vitals' %}" role="button"></a>
-      </div>
-      <br>
-{% endif %}
-<table>
-    <tr>
-        <th>Date</th>
-        <th>Blood Type</th>
-        <th>BP (sys)</th>
-        <th>BP (dias)</th>
-        <th>WBC</th>
-        <th>RBC</th>
-        <th>Ht</th>
-        <th>Wt</th>
-        <th>Comments</th>
-    </tr>
-    {% for item in form %}
-    <tr>
-        <td>{{ item.vt_date }}</td>
-        <td>{{ item.vt_bloodgroup }}</td>
-        <td>{{ item.vt_bp_sys }}</td>
-        <td>{{ item.vt_bp_dia }}</td>
-        <td>{{ item.vt_wbc }}</td>
-        <td>{{ item.vt_rbc }}</td>
-        <td>{{ item.vt_height }}</td>
-        <td>{{ item.vt_weight }}</td>
-        <td>{{ item.vt_comments }}</td>
-        {% if request.user|has_group:"Patient" %}
-            <td>
-                <a href="{% url 'main:edit_vitals' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
-            </td>
+<h2>Vitals</h2><br>
+  <div class="col-md-6">
+<form action="{% url 'main:admin_vitals' %}" method="post">
+    {% csrf_token %}
+        <h3>From Date:<input type="date" name="fromdate">
+            To Date:<input type="date" name="todate">
+            <input type="submit" value="Search"></h3>
+ </form>
+        <div>
+            <hr>
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <h5>Search by Date(YYYY-MM-DD): <input class="form-control" type="text" placeholder=" Search" name="Search" id="searchField">
+                        </h5>
+                        {% csrf_token %}
+                        </div>
+                </div>
+				<div class="refresh">
+<a href="{%  url 'main:admin_vitals' %}"><img src="{% static 'images/refresh.png' %}" width = "30" height = "30"></a></div>
+            <hr>
+            <div id="apptable">
+                <table class="table table-bordered table-striped">
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Blood Type</th>
+                        <th>BP(sys)</th>
+                        <th>BP(dias)</th>
+                        <th>WBC</th>
+                        <th>RBC</th>
+                        <th>Height</th>
+                        <th>Weight</th>
+                        <th>Comments</th>
+                    </tr>
+                    {% for item in pag_obj %}
+
+                    <tr>
+
+                        <td>{{ item.vt_date|default:"--" }}</td>
+                        <td>{{ item.vt_bloodgroup|default:"" }}</td>
+                        <td>{{ item.vt_bp_sys|default:"" }}</td>
+                        <td>{{ item.vt_bp_dia|default:"" }}</td>
+                        <td>{{ item.vt_wbc|default:"" }}</td>
+                        <td>{{ item.vt_rbc|default:"" }}</td>
+                        <td>{{ item.vt_height|default:"" }}</td>
+                        <td>{{ item.vt_weight|default:"" }}</td>
+                        <td>{{ item.vt_comments|default:"" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>No Data Found</td>
+
+                    </tr>
+                    {% endfor %}
+                </table>
+
+</div>
+</div>
+
+<br>
+<div id="paginationcontainer">
+    <h3> Viewing Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}</h3>
+
+    {% if pag_obj.has_other_pages %}
+    <ul class="list">
+
+        {% if pag_obj.has_previous %}
+        <li><a class="paging" class="btn btn-dark" href="?page={{ pag_obj.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
         {% endif %}
-        {% if request.user|has_group:"Patient" %}
-            <td>
-                <a href="{% url 'main:delete_vitals' item.pk %}" role="button">Delete</a>
-            </td>
+        {% for i in pag_obj.paginator.page_range %}
+        {% if usepag_objrs.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a class="paging" href="?page={{ i }}">{{ i }}</a></li>
         {% endif %}
-    </tr>
-    {% endfor %}
-</table>
+        {% endfor %}
+        {% if pag_obj.has_next %}
+        <li><a class="paging" class="btn btn-dark" href="?page={{ pag_obj.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+    {% endif %}
+</div>
+
+<script src="{% static 'js/admin_search_vitals.js' %}"></script>
 {% endblock %}
+

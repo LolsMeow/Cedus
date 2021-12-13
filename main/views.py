@@ -1,6 +1,4 @@
 import json
-from collections import namedtuple
-from types import SimpleNamespace
 
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
@@ -9,7 +7,7 @@ from .forms import infoReg, PatientForm, register, updateInfo, userInfo, makeapp
     Diag_Forms, Po_Forms, Prescription_Forms, Vaccine_Forms, Records_Forms, Appointments_Forms
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
 from .models import *
 from .decorators import allowed_users
@@ -104,6 +102,135 @@ def search_billrecords(request):
 
 
 # =>SEARCH VIEWS ENDS HERE
+
+
+def admin_search_vitals(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            search_str = json.loads(request.body).get('searchText')
+            mydata = Vitals.objects.filter(
+                u_name=user, vt_bloodgroup__icontains=search_str) | Vitals.objects.filter(u_name=user,
+                                                                                                  vt_date__icontains=search_str)
+            data = mydata.values()
+            return JsonResponse(list(data), safe=False)
+
+
+# Search method for Diagnosis
+def admin_search_diag(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            search_str = json.loads(request.body).get('searchText')
+            mydata = Diagnosis.objects.filter(
+                u_name=user, diagnosis_date__icontains=search_str) | Diagnosis.objects.filter(
+                u_name=user, diagnosis_status__icontains=search_str)
+
+            data = mydata.values()
+            return JsonResponse(list(data), safe=False)
+
+
+# Search method for "Physician Orders"
+def admin_search_phyorders(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            search_str = json.loads(request.body).get('searchText')
+            mydata = Phys_Orders.objects.filter(
+                u_name=user, order_date__icontains=search_str) | Phys_Orders.objects.filter(
+                u_name=user, order_contents__icontains=search_str)
+
+            data = mydata.values()
+            return JsonResponse(list(data), safe=False)
+
+
+# Search method for "Prescriptions"
+def admin_search_rx(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            search_str = json.loads(request.body).get('searchText')
+            mydata = Prescription.objects.filter(
+                u_name=user, rx_date__icontains=search_str) | Prescription.objects.filter(
+                u_name=user, rx_name__icontains=search_str) | Prescription.objects.filter(
+                u_name=user, rx_dosage__icontains=search_str) | Prescription.objects.filter(
+                u_name=user, rx_sig__icontains=search_str)
+
+            data = mydata.values()
+            return JsonResponse(list(data), safe=False)
+
+
+# Search method for "Vaccine"
+def admin_search_vaccine(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            search_str = json.loads(request.body).get('searchText')
+            mydata = Vaccines.objects.filter(
+                u_name=user, vac_date__icontains=search_str) | Vaccines.objects.filter(
+                u_name=user, vac_type__icontains=search_str)
+
+            data = mydata.values()
+            return JsonResponse(list(data), safe=False)
+
+
+# Search method for "Appointments"
+def admin_search_appointments(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            search_str = json.loads(request.body).get('searchText')
+            mydata = Appointment.objects.filter(
+                u_name=user, appointment_date__icontains=search_str) | Appointment.objects.filter(
+                u_name=user, appointment_comments__icontains=search_str)
+
+            data = mydata.values()
+            return JsonResponse(list(data), safe=False)
+
+
+# Search method for "Record(Bills)"
+
+def admin_search_billrecords(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            search_str = json.loads(request.body).get('searchText')
+            mydata = Bills.objects.filter(
+                u_name=user, id__icontains=search_str) | Bills.objects.filter(
+                u_name=user, charge_date__icontains=search_str) | Bills.objects.filter(
+                u_name=user, pay_date__icontains=search_str)
+
+            data = mydata.values()
+            return JsonResponse(list(data), safe=False)
+
 
 def register_request(request):
     if request.method == "POST":
@@ -365,7 +492,7 @@ def phys_orders_view(request):
     else:
 
         if request.method == 'POST':
-            fromate = request.POST.get('fromdate')
+            fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
             print('physician date filter called')
             result = Phys_Orders.objects.filter(order_date__range=[fromdate, todate], u_name=request.user)
@@ -427,7 +554,8 @@ def records_view(request):
             fromdate = request.POST.get('billfromdate')
             todate = request.POST.get('billtodate')
             pag_obj_bill = Bills.objects.filter(charge_date__range=[fromdate, todate], u_name=request.user)
-            form = {'billData': pag_obj_bill}
+            form = {'pag_obj_pay': pag_obj_bill}
+            print(form)
             return render(request, 'main/records_test.html', form)
 
         bill_data = Bills.objects.all().filter(u_name=request.user)
@@ -436,6 +564,249 @@ def records_view(request):
         pag_obj = Paginator.get_page(page_nator, page_number)
         form = {'billData': bill_data, 'pag_obj_pay': pag_obj}
         return render(request, 'main/records_test.html', form)
+
+
+def patient_search(request):
+    if request.method == 'GET' and request.GET.get("search_box") != None:
+        search_text = request.GET.get("search_box")
+        request.session['user'] = search_text
+        return redirect('main:admin_dashboard')
+    else:
+        return render(request, 'main/patient_search.html')
+
+
+def admin_dashboard(request):
+    if is_patient(request.user):
+        return redirect('main:dashboard')
+    # if not request.user.is_active or request.user.is_superuser:
+    #     return redirect('main:login')
+    user = request.session.get('user')
+    u = User.objects.get(username=user)
+    userForm = userInfo(instance=u)
+    p = Patient.objects.get(user=u)
+    form = updateInfo(instance=p)
+
+    if request.method == 'POST':
+
+        u = User.objects.all().get(username=user)
+        userForm = userInfo(data=request.POST, instance=u)
+        p = Patient.objects.all().get(user=u)
+        form = updateInfo(data=request.POST, instance=p)
+        if form.is_valid() and (userForm.is_valid()):
+            u = userForm.save()
+            p = form.save()
+        else:
+            return render(request, 'main/admin_dashboard.html', locals())
+    return render(request, 'main/admin_dashboard.html', locals())
+
+
+def admin_makeappt(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            form = makeappointment(data=request.POST)
+            if form.is_valid():
+                appt = form.save(commit=False)
+                appt.u_name = user
+                appt.save()
+            else:
+                return render(request, 'main/admin_make.html', context={'appointment_form': form})
+        form = makeappointment()
+        return render(request, 'main/admin_make.html', context={'appointment_form': form})
+
+
+def admin_appt(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        form = Appointment.objects.all().filter(u_name=user)
+        form = {'form': form}
+        return render(request, 'main/admin_appointments.html', form)
+
+
+# def vitals_view_test(request, user_):
+#     if request.method == 'GET':
+#         vital_data = Vitals.objects.all().filter(u_name=user_)
+#         form = {'vitalData': vital_data}
+#         return render(request, 'main/vitals_test.html', form)
+
+def admin_vitals(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            result = Vitals.objects.filter(vt_date__range=[fromdate, todate], u_name=user)
+            form = {'pag_obj': result}
+            return render(request, 'main/admin_vitals.html', form)
+
+        data = Vitals.objects.filter(u_name=user).order_by('id')
+        page_nator = Paginator(data, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'form': data, 'pag_obj': pag_obj}
+        return render(request, 'main/admin_vitals.html', form)
+
+
+# def diag_view_test(request, user_):
+#     if request.method == 'GET':
+#         diag_data = Diagnosis.objects.all().filter(u_name=user_)
+#         form = {'diagData': diag_data}
+#         return render(request, 'main/diag_test.html', form)
+
+def admin_diagnosis(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print('diagnosis date filter called')
+            result = Diagnosis.objects.filter(diagnosis_date__range=[fromdate, todate], u_name=user)
+            form = {'pag_obj': result}
+            return render(request, 'main/admin_diag.html', form)
+
+        diag_data = Diagnosis.objects.all().filter(u_name=user)
+        page_nator = Paginator(diag_data, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'diag_data': diag_data, 'pag_obj': pag_obj}
+        return render(request, 'main/admin_diag.html', form)
+
+
+# def rx_view_test(request, user_):
+#     if request.method == 'GET':
+#         rx_data = Prescription.objects.all().filter(u_name=user_)
+#         form = {'rxData': rx_data}
+#         return render(request, 'main/rx_test.html', form)
+
+def admin_rx(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print('Prescription date filter called')
+            result = Prescription.objects.filter(rx_date__range=[fromdate, todate], u_name=user)
+            form = {'pag_obj': result}
+            return render(request, 'main/admin_rx.html', form)
+
+        pdata = Prescription.objects.all().filter(u_name=user)
+        page_nator = Paginator(pdata, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'pdata': pdata, 'pag_obj': pag_obj}
+        return render(request, 'main/admin_rx.html', form)
+
+
+# def phys_orders_view_test(request, user_):
+#     if request.method == 'GET':
+#         po_data = Phys_Orders.objects.all().filter(u_name=user_)
+#         form = {'poData': po_data}
+#         return render(request, 'main/po_test.html', form)
+
+def admin_phys(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print('physician date filter called')
+            result = Phys_Orders.objects.filter(order_date__range=[fromdate, todate], u_name=user)
+            form = {'pag_obj': result}
+            return render(request, 'main/admin_po.html', form)
+
+        physdata = Phys_Orders.objects.all().filter(u_name=user)
+        page_nator = Paginator(physdata, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'physdata': physdata, 'pag_obj': pag_obj}
+        return render(request, 'main/admin_po.html', form)
+
+
+# def vaccines_view_test(request, user_):
+#     if request.method == 'GET':
+#         vac_data = Vaccines.objects.all().filter(u_name=user_)
+#         form = {'vaxData': vac_data}
+#         return render(request, 'main/vax_test.html', form)
+
+def admin_vaccines(request):
+    if not request.user.is_active or request.user.is_superuser:
+
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            fromdate = request.POST.get('fromdate')
+            todate = request.POST.get('todate')
+            print('Vaccines date filter called')
+
+            result = Vaccines.objects.filter(vac_date__range=[fromdate, todate], u_name=user)
+            form = {'pag_obj': result}
+            return render(request, 'main/admin_vax.html', form)
+        form = Vaccines.objects.all().filter(u_name=user)
+        page_nator = Paginator(form, 6)
+        page_number = request.GET.get('page')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'form': form, 'pag_obj': pag_obj}
+        return render(request, 'main/admin_vax.html', form)
+
+
+# def records_view_test(request, user_):
+#     if request.method == 'GET':
+#         app_data = Appointment.objects.all().filter(u_name=user_)
+#         bill_data = Bills.objects.all().filter(u_name=user_)
+#         pay_data = Payment.objects.all().filter(u_name=user_)
+#         form = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
+#         return render(request, 'main/records_test.html', form)
+
+def admin_records(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
+    elif is_patient(request.user):
+        return redirect('main:dashboard')
+    else:
+        user = request.session.get('user')
+        if request.method == 'POST':
+            fromdate = request.POST.get('billfromdate')
+            todate = request.POST.get('billtodate')
+            pag_obj_bill = Bills.objects.filter(charge_date__range=[fromdate, todate], u_name=user)
+            form = {'pag_obj_pay': pag_obj_bill}
+            return render(request, 'main/admin_records.html', form)
+
+        bill_data = Bills.objects.all().filter(u_name=user)
+        page_nator = Paginator(bill_data, 6)
+        page_number = request.GET.get('page_pay')
+        pag_obj = Paginator.get_page(page_nator, page_number)
+        form = {'billData': bill_data, 'pag_obj_pay': pag_obj}
+        return render(request, 'main/admin_records.html', form)
 
 
 @allowed_users(allowed_roles=['Patient', 'Staff'])
@@ -874,183 +1245,4 @@ def delete_appointments(request, pk):
     return delete_items(request, pk, Appointment)
 
 
-def patient_search(request):
-    if request.method == 'GET' and request.GET.get("search_box") != None:
-        search_text = request.GET.get("search_box")
-        request.session['user'] = search_text
-        return redirect('main:admin_dashboard')
-    else:
-        return render(request, 'main/patient_search.html')
 
-
-def admin_dashboard(request):
-    if is_patient(request.user):
-        return redirect('main:dashboard')
-    # if not request.user.is_active or request.user.is_superuser:
-    #     return redirect('main:login')
-    user = request.session.get('user')
-    u = User.objects.get(username=user)
-    userForm = userInfo(instance=u)
-    p = Patient.objects.get(user=u)
-    form = updateInfo(instance=p)
-
-    if request.method == 'POST':
-
-        u = User.objects.all().get(username=user)
-        userForm = userInfo(data=request.POST, instance=u)
-        p = Patient.objects.all().get(user=u)
-        form = updateInfo(data=request.POST, instance=p)
-        if form.is_valid() and (userForm.is_valid()):
-            u = userForm.save()
-            p = form.save()
-        else:
-            return render(request, 'main/admin_dashboard.html', locals())
-    return render(request, 'main/admin_dashboard.html', locals())
-
-
-def admin_makeappt(request):
-    if not request.user.is_active or request.user.is_superuser:
-        return redirect('main:login')
-    elif is_patient(request.user):
-        return redirect('main:dashboard')
-    else:
-        user = request.session.get('user')
-        if request.method == 'POST':
-            form = makeappointment(data=request.POST)
-            if form.is_valid():
-                appt = form.save(commit=False)
-                appt.u_name = user
-                appt.save()
-            else:
-                return render(request, 'main/admin_make.html', context={'appointment_form': form})
-        form = makeappointment()
-        return render(request, 'main/admin_make.html', context={'appointment_form': form})
-
-
-def admin_appt(request):
-    if not request.user.is_active or request.user.is_superuser:
-        return redirect('main:login')
-    elif is_patient(request.user):
-        return redirect('main:dashboard')
-    else:
-        user = request.session.get('user')
-        form = Appointment.objects.all().filter(u_name=user)
-        form = {'form': form}
-        return render(request, 'main/admin_appointments.html', form)
-
-
-# def vitals_view_test(request, user_):
-#     if request.method == 'GET':
-#         vital_data = Vitals.objects.all().filter(u_name=user_)
-#         form = {'vitalData': vital_data}
-#         return render(request, 'main/vitals_test.html', form)
-
-def admin_vitals(request):
-    if not request.user.is_active or request.user.is_superuser:
-        return redirect('main:login')
-    elif is_patient(request.user):
-        return redirect('main:dashboard')
-
-    else:
-        user = request.session.get('user')
-        form = Vitals.objects.all().filter(u_name=user)
-        form = {'form': form}
-        return render(request, 'main/admin_vitals.html', form)
-
-
-# def diag_view_test(request, user_):
-#     if request.method == 'GET':
-#         diag_data = Diagnosis.objects.all().filter(u_name=user_)
-#         form = {'diagData': diag_data}
-#         return render(request, 'main/diag_test.html', form)
-
-def admin_diagnosis(request):
-    if not request.user.is_active or request.user.is_superuser:
-        return redirect('main:login')
-    elif is_patient(request.user):
-        return redirect('main:dashboard')
-
-    else:
-        user = request.session.get('user')
-        diag_data = Diagnosis.objects.all().filter(u_name=user)
-        form = {'diag_data': diag_data}
-        return render(request, 'main/admin_diag.html', form)
-
-
-# def rx_view_test(request, user_):
-#     if request.method == 'GET':
-#         rx_data = Prescription.objects.all().filter(u_name=user_)
-#         form = {'rxData': rx_data}
-#         return render(request, 'main/rx_test.html', form)
-
-def admin_rx(request):
-    if not request.user.is_active or request.user.is_superuser:
-        return redirect('main:login')
-    elif is_patient(request.user):
-        return redirect('main:dashboard')
-
-    else:
-        user = request.session.get('user')
-        pdata = Prescription.objects.all().filter(u_name=user)
-        form = {'pdata': pdata}
-        return render(request, 'main/admin_rx.html', form)
-
-
-# def phys_orders_view_test(request, user_):
-#     if request.method == 'GET':
-#         po_data = Phys_Orders.objects.all().filter(u_name=user_)
-#         form = {'poData': po_data}
-#         return render(request, 'main/po_test.html', form)
-
-def admin_phys(request):
-    if not request.user.is_active or request.user.is_superuser:
-        return redirect('main:login')
-    elif is_patient(request.user):
-        return redirect('main:dashboard')
-
-    else:
-        user = request.session.get('user')
-        physdata = Phys_Orders.objects.all().filter(u_name=user)
-        form = {'physdata': physdata}
-        return render(request, 'main/admin_po.html', form)
-
-
-# def vaccines_view_test(request, user_):
-#     if request.method == 'GET':
-#         vac_data = Vaccines.objects.all().filter(u_name=user_)
-#         form = {'vaxData': vac_data}
-#         return render(request, 'main/vax_test.html', form)
-
-def admin_vaccines(request):
-    if not request.user.is_active or request.user.is_superuser:
-
-        return redirect('main:login')
-    elif is_patient(request.user):
-        return redirect('main:dashboard')
-    else:
-        user = request.session.get('user')
-        form = Vaccines.objects.all().filter(u_name=user)
-        form = {'form': form}
-        return render(request, 'main/admin_vax.html', form)
-
-
-# def records_view_test(request, user_):
-#     if request.method == 'GET':
-#         app_data = Appointment.objects.all().filter(u_name=user_)
-#         bill_data = Bills.objects.all().filter(u_name=user_)
-#         pay_data = Payment.objects.all().filter(u_name=user_)
-#         form = {'appData': app_data, 'billData': bill_data, 'payData': pay_data}
-#         return render(request, 'main/records_test.html', form)
-
-def admin_records(request):
-    if not request.user.is_active or request.user.is_superuser:
-        return redirect('main:login')
-    elif is_patient(request.user):
-        return redirect('main:dashboard')
-    else:
-        user = request.session.get('user')
-        app_data = Appointment.objects.all().filter(u_name=user)
-        bill_data = Bills.objects.all().filter(u_name=user)
-        # pay_data = Payment.objects.all().filter(u_name=request.user)
-        form = {'app_data': app_data, 'billData': bill_data}
-        return render(request, 'main/admin_records.html', form)

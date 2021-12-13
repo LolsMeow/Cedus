@@ -4,6 +4,7 @@
 <!-- html template for diagnosis information-->
 {% load auth_extras %}
 {% load static %}
+<h2>Diagnosis</h2><br>
  <div class="col-md-6">
  <form action="{% url 'main:diagnosis' %}" method="post">
     {% csrf_token %}

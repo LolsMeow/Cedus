@@ -5,6 +5,7 @@
 {% load auth_extras %}
 <!-- html template for vitals information-->
 {% load static %}
+<h2>Vitals</h2><br>
   <div class="col-md-6">
 <form action="{% url 'main:vitals' %}" method="post">
     {% csrf_token %}
@@ -14,19 +15,12 @@
  </form>
         <div>
             <hr>
-
                 <div class="col-md-12">
-
-
-
-                        <div class="col-md-12">
-                            <h5>Search by Date(YYYY-MM-DD): <input class="form-control" type="text"
-                                   placeholder=" Search" name="Search"
-                                   id="searchField">
-                            </h5>
-                            {% csrf_token %}
+                    <div class="col-md-12">
+                        <h5>Search by Date(YYYY-MM-DD): <input class="form-control" type="text" placeholder=" Search" name="Search" id="searchField">
+                        </h5>
+                        {% csrf_token %}
                         </div>
-
                 </div>
 				<div class="refresh">
 <a href="{%  url 'main:vitals' %}"><img src="{% static 'images/refresh.png' %}" width = "30" height = "30"></a></div>

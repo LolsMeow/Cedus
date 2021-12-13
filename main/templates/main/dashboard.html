@@ -6,7 +6,7 @@
       <h6 style="text-decoration:#00a65a">{% include 'main/_messages.html' %}</h6>
 			<form method = 'POST'>{% csrf_token %}
 
-                <h3>Patient Details</h3>
+                <h2>Patient Details</h2>
 				<div class="page-content-wrapper">
 
 					<div class="grid-item"><label>First Name</label></br>{{ userForm.first_name }}</div>
@@ -28,7 +28,7 @@
 	</div>
 
 <div class="row">
-    <h3>Insurance Details</h3>
+    <h2>Insurance Details</h2><br>
 
                 <table class="table table-bordered table-sm">
                     <tbody>
@@ -68,7 +68,7 @@
 
                     </tbody>
                 </table>
-     <h3>Allergy Details</h3>
+     <h2>Allergy Details</h2><br>
 
                 <table class="table table-bordered table-sm">
                     </tbody>

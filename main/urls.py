@@ -74,4 +74,12 @@ urlpatterns = [
     path('admin_records/', views.admin_records, name='admin_records'),
     path('admin_makeappt/', views.admin_makeappt, name='admin_makeappt'),
     path('admin_appt/', views.admin_appt, name='admin_appt'),
+
+    path('admin_search_vitals', csrf_exempt(views.admin_search_vitals), name='admin_search_vitals'),
+    path('admin_search_diag', csrf_exempt(views.admin_search_diag), name='admin_search_diag'),
+    path('admin_search_phyorders', csrf_exempt(views.admin_search_phyorders), name='admin_search_phyorders'),
+    path('admin_search_rx', csrf_exempt(views.admin_search_rx), name='admin_search_rx'),
+    path('admin_search_vaccine', csrf_exempt(views.admin_search_vaccine), name='admin_search_vaccine'),
+    path('admin_search_appointments', csrf_exempt(views.admin_search_appointments), name='admin_search_appointments'),
+    path('admin_search_billrecords', csrf_exempt(views.admin_search_billrecords), name='admin_search_billrecords'),
 ]
