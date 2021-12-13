@@ -6,8 +6,9 @@
 {% load static %}
 {% if request.user|has_group:"Doctor" %}
       <div class="plus">
-          <a href="{% url 'main:add_vaccine' %}" role="button">Add</a>
+          <a href="{% url 'main:add_vaccine' %}" role="button"></a>
       </div>
+      <br>
 {% endif %}
 {% if request.user|has_group:"Pharmacist" %}
       <td>
