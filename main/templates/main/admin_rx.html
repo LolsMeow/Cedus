@@ -4,7 +4,7 @@
 
 {% load auth_extras %}
 {% load static %}
-{% if request.user|has_group:"Patient" %}
+{% if request.user|has_group:"Pharmacist" %}
       <td>
           <a href="{% url 'main:add_prescription' %}" role="button">Add</a>
       </td>

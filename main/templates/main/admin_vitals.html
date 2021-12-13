@@ -5,7 +5,7 @@
 {% load auth_extras %}
 <!-- html template for vitals information-->
 {% load static %}
-{% if request.user|has_group:"Patient" %}
+{% if request.user|has_group:"Doctor" %}
       <td>
           <a href="{% url 'main:add_vitals' %}" role="button">Add</a>
       </td>

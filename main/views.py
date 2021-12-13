@@ -13,7 +13,6 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import Group
 from .models import *
 from .decorators import allowed_users
-import requests
 
 
 # =>SEARCH VIEWS STARTS HERE
@@ -200,6 +199,8 @@ def auth_logout(request):
 
 
 def dashboard(request):
+    if is_staff(request.user):
+        return redirect('main:patient_search')
     if not request.user.is_active or request.user.is_superuser:
         return redirect('main:login')
 

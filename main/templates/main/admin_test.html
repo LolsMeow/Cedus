@@ -2,7 +2,7 @@
 <!-- main html page that holds the display of the navigation-sidebar when logged in. -->
 <html>
 {% load static %}
-
+{% load auth_extras %}
 <head>
     <title>Patient Home</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -200,7 +200,11 @@ img.colorimg {
                 <li> <a href="{% url 'main:admin_rx' %}"><i class="material-icons">healing&nbsp</i>Prescriptions</a></li>
                 <li> <a href="{% url 'main:admin_vaccines' %}"><i class="material-icons">health_and_safety&nbsp</i>Vaccines</a></li>
                 <li> <a href="{% url 'main:admin_records' %}"><i class="material-icons">history&nbsp</i>Records</a></li>
-                <li> <a href="{% url 'main:admin_makeappt' %}"><i class="material-icons">bookmark_add&nbsp</i>Make Appointments</a></li>
+                {% if request.user|has_group:"Pharmacist" %}
+
+                {% else %}
+                    <li> <a href="{% url 'main:admin_makeappt' %}"><i class="material-icons">bookmark_add&nbsp</i>Make Appointments</a></li>
+                {% endif %}
                 <li> <a href="{% url 'main:admin_appt' %}"><i class="material-icons">turned_in&nbsp</i>Appointments</a></li>
                 <li> <a href="{% url 'main:auth_logout' %}"><i class="material-icons">logout&nbsp</i>Logout</a></li>
             </ul>

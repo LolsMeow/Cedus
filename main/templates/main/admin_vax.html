@@ -4,7 +4,12 @@
 
 {% load auth_extras %}
 {% load static %}
-{% if request.user|has_group:"Patient" %}
+{% if request.user|has_group:"Doctor" %}
+      <td>
+          <a href="{% url 'main:add_vaccine' %}" role="button">Add</a>
+      </td>
+{% endif %}
+{% if request.user|has_group:"Pharmacist" %}
       <td>
           <a href="{% url 'main:add_vaccine' %}" role="button">Add</a>
       </td>
