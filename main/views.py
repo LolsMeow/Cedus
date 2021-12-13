@@ -650,22 +650,26 @@ def is_staff(user):
 
 
 def add_items(request, model, form):
+
     if request.method == "POST":
         form = form(request.POST)
         if form.is_valid():
             info = form.save(commit=False)
-            info.u_name = request.user
+            if is_staff(request.user):
+                user = request.session.get('user')
+                info.u_name = user
+            else:
+                info.u_name = request.user
             info.save()
-            print('working')
             if is_staff(request.user):
                 if model == Vitals:
                     return redirect('main:admin_vitals')
                 elif model == Diagnosis:
                     return redirect('main:admin_diagnosis')
                 elif model == Phys_Orders:
-                    return redirect('main:admin_rx')
-                elif model == Prescription:
                     return redirect('main:admin_phys')
+                elif model == Prescription:
+                    return redirect('main:admin_rx')
                 elif model == Vaccines:
                     return redirect('main:admin_vaccines')
                 elif model == Bills:
@@ -678,9 +682,9 @@ def add_items(request, model, form):
                 elif model == Diagnosis:
                     return redirect('main:diagnosis')
                 elif model == Phys_Orders:
-                    return redirect('main:rx')
-                elif model == Prescription:
                     return redirect('main:phys')
+                elif model == Prescription:
+                    return redirect('main:rx')
                 elif model == Vaccines:
                     return redirect('main:vaccines')
                 elif model == Bills:
@@ -730,16 +734,15 @@ def edit_items(request, pk, model, form):
         form = form(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            print(is_staff(request.user))
             if is_staff(request.user):
                 if model == Vitals:
                     return redirect('main:admin_vitals')
                 elif model == Diagnosis:
                     return redirect('main:admin_diagnosis')
                 elif model == Phys_Orders:
-                    return redirect('main:admin_rx')
-                elif model == Prescription:
                     return redirect('main:admin_phys')
+                elif model == Prescription:
+                    return redirect('main:admin_rx')
                 elif model == Vaccines:
                     return redirect('main:admin_vaccines')
                 elif model == Bills:
@@ -752,9 +755,9 @@ def edit_items(request, pk, model, form):
                 elif model == Diagnosis:
                     return redirect('main:diagnosis')
                 elif model == Phys_Orders:
-                    return redirect('main:rx')
-                elif model == Prescription:
                     return redirect('main:phys')
+                elif model == Prescription:
+                    return redirect('main:rx')
                 elif model == Vaccines:
                     return redirect('main:vaccines')
                 elif model == Bills:
@@ -795,7 +798,7 @@ def edit_appointments(request, pk):
     return edit_items(request, pk, Appointment, Appointments_Forms)
 
 
-def delete_items(pk, model):
+def delete_items(request, pk, model):
     model.objects.filter(id=pk).delete()
 
     if is_staff(request.user):
@@ -804,9 +807,9 @@ def delete_items(pk, model):
         elif model == Diagnosis:
             return redirect('main:admin_diagnosis')
         elif model == Phys_Orders:
-            return redirect('main:admin_rx')
-        elif model == Prescription:
             return redirect('main:admin_phys')
+        elif model == Prescription:
+            return redirect('main:admin_rx')
         elif model == Vaccines:
             return redirect('main:admin_vaccines')
         elif model == Bills:
@@ -819,9 +822,9 @@ def delete_items(pk, model):
         elif model == Diagnosis:
             return redirect('main:diagnosis')
         elif model == Phys_Orders:
-            return redirect('main:rx')
-        elif model == Prescription:
             return redirect('main:phys')
+        elif model == Prescription:
+            return redirect('main:rx')
         elif model == Vaccines:
             return redirect('main:vaccines')
         elif model == Bills:

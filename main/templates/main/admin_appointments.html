@@ -17,10 +17,11 @@
         <td>{{ item.appointment_time }}</td>
         <td>{{ item.doctor_name }}</td>
         <td>{{ item.appointment_comments }}</td>
-
-        <td>
+        {% if request.user|has_group:"Doctor" %}
+            <td>
             <a href="{% url 'main:edit_appointments' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
-        </td>
+            </td>
+        {% endif %}
         {% if request.user|has_group:"Patient" %}
             <td>
                 <a href="{% url 'main:delete_appointments' item.pk %}" role="button">Delete</a>
