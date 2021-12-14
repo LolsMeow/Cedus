@@ -1,0 +1,51 @@
+{% extends "main/test.html" %}
+
+{% block content %}
+<h5 style="text-decoration:#00a65a">{% include 'main/_messages.html' %}</h5>
+<form action="{% url 'main:insurance_Edit' data.id %}" METHOD="post">
+
+    {% csrf_token %}
+<h3>New Insurance Information</h3>
+    <div class="text-center">
+        <div >
+            <label for="name">Insurance Name:</label>
+            <input type="text"  id="name" name="name" required>
+        </div>
+<br>
+        <div >
+            <label for="plan">Plan:</label>
+            <input type="text" id="plan" name="plan" required>
+        </div>
+
+        <br>
+         <div >
+            <label for="Rx_bin">Rx BIN:</label>
+            <input type="text" id="Rx_bin" name="Rx_bin" required>
+        </div>
+        <br>
+         <div >
+            <label for="Rx_pcn">Rx PCN:</label>
+            <input type="text" id="Rx_pcn" name="Rx_pcn" required>
+        </div>
+         <br>
+         <div >
+            <label for="Rx_Group">Rx Group:</label>
+            <input type="text" id="Rx_Group" name="Rx_Group" required>
+        </div>
+        <br>
+        <div >
+            <label for="Coverage">Coverage:</label>
+            <input type="text" id="Coverage" name="Coverage" required>
+        </div>
+
+<br>
+        <div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+
+    </div>
+
+
+</form>
+{% endblock %}
+

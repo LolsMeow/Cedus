@@ -1,0 +1,32 @@
+{% extends "main/test.html" %}
+
+{% block content %}
+<h5 style="text-decoration:#00a65a">{% include 'main/_messages.html' %}</h5>
+<form action="{% url 'main:Allergy_Edit' allergy_data.id %}" METHOD="post">
+
+
+    {% csrf_token %}
+<h3>New Allergy Information</h3>
+    <div class="text-center">
+
+        <div >
+            <label for="drug">Drug:</label>
+            <input type="text"  id="drug" name="drug" required>
+        </div>
+<br>
+        <div >
+            <label for="severity">Level:</label>
+            <input type="text" id="severity" name="severity" required>
+        </div>
+
+<br>
+        <div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+
+    </div>
+
+
+</form>
+{% endblock %}
+
