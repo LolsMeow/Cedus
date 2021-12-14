@@ -29,8 +29,8 @@ h1 {
   background-color: white;
   list-style-type: none;
   display: inline;
-  font-size: 30px;
-  padding: 20px;
+  font-size: 20px;
+  padding: 10px;
   color: black;
 }
 .list a {
@@ -148,7 +148,9 @@ ul.sidebar-nav {
 	text-align: left;
 	border-radius: 5px;
 }
-
+.grid-item label {
+	font-size: 9px;
+}
 label {
 	font-size: 20px;
 }
@@ -251,7 +253,7 @@ img.colorimg {
     <div id="wrapper">
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
-		<img src="{% static 'images/text logo.png' %}" class="cedus" width = "200" height = "85">
+		<img src="{% static 'images/text logo.png' %}" class="cedus" width = "200" height = "77">
                 <li> <a href="{% url 'main:dashboard' %}"><i class="material-icons">dashboard&nbsp</i>Profile</a></li>
                 <li> <a href="{% url 'main:vitals' %}"><i class="material-icons">bloodtype&nbsp</i>Vitals</a></li>
                 <li> <a href="{% url 'main:diagnosis' %}"><i class="material-icons">assignment&nbsp</i>Diagnosis</a></li>
