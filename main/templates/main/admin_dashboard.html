@@ -51,11 +51,6 @@
                                 <tr>
                         <td>Coverage</td>
                         <td><b>{{ data.ins_coverage|default:"--" }}</b></td>
-                    </tr>
-                                 <tr>
-                                   <td><a href="{% url 'main:insurance_Edit' data.id %}"><button type="button">Update</button></a></td>
-                                   <td></td>
-                               </tr>
 
                    {% endfor %}
 
@@ -74,6 +69,11 @@
                         <td>Level</td>
                         <td><b>{{ data.aller_severity|default:"--" }}</b></td>
                     </tr>
+
+                               <tr>
+                                   <td><a href="{% url 'main:Allergy_Edit' data.id %}"><button type="button">Update</button></a></td>
+                                <td></td>
+                               </tr>
 
                    {% endfor %}
 
