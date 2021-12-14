@@ -38,7 +38,7 @@ To Date:<input type="date" name="todate">
             <hr>
      <div id="apptable">
          {% if request.user|has_group:"Doctor" %}
-             <a href="{% url 'main:add_diag' %}" role="button">Add</a>
+             <a href="{% url 'main:add_diag' %}" role="button"><img src="{% static 'images/add.png' %}" width = "50" height = "50"></a>
          {% endif %}
 <table>
     <tr>
