@@ -75,11 +75,6 @@
                         <td><b>{{ data.aller_severity|default:"--" }}</b></td>
                     </tr>
 
-                               <tr>
-                                   <td><a href="{% url 'main:Allergy_Edit' data.id %}"><button type="button">Update</button></a></td>
-                                <td></td>
-                               </tr>
-
                    {% endfor %}
 
                     </tbody>
