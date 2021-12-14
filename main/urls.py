@@ -65,6 +65,7 @@ urlpatterns = [
     # Admin Side
     path('admin_reg/', views.admin_reg, name='admin_reg'),
     path('patient_search/', views.patient_search, name='patient_search'),
+    path('patient_search_failed/', views.patient_search_failed, name='patient_search_failed'),
     path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('admin_vitals/', views.admin_vitals, name='admin_vitals'),
     path('admin_diagnosis/', views.admin_diagnosis, name='admin_diagnosis'),
