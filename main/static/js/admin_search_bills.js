@@ -17,7 +17,7 @@ searchField.addEventListener('keyup', (e) => {
         tbody.innerHTML='';
         paginationcontainer.style.display='none';
 
-		fetch('/search_rx',
+		fetch('/admin_search_billrecords',
 			{
 				method:"POST",
 
@@ -33,7 +33,7 @@ searchField.addEventListener('keyup', (e) => {
 			    console.log('data',data);
                 app_table.style.display='none';
                 table_output.style.display='block';
-                console.log(data.length)
+
                 if(data.length===0)
                 {
                     table_output.innerHTML='No record found';
@@ -46,14 +46,28 @@ searchField.addEventListener('keyup', (e) => {
                         {
                         tbody.innerHTML+=
                             `<tr>
-                                <td>${item.rx_date}</td>
-                                <td>${item.rx_name}</td>
+                                <td>${item.id}</td>
+                                <td>${item.charge_date}</td>
+                                <td>${item.doc_charges}</td>
+                                <td>${item.doc_charges}</td>
+                                <td>${item.medi_charges}</td>
+                                <td>${item.room_charges}</td>
+                                <td>${item.surgery_charges}</td>
+                                <td>${item.admission_days}</td>
+                                <td>${item.nursing_charges}</td>
+                                <td>${item.advance}</td>
+                                <td>${item.test_charges}</td>
+                                <td>${item.bill_amount}</td>
+                                <td>${item.pay_date}</td>
+                                <td>${item.pay_amount}</td>
+                                <td>${item.ins_copay}</td>
+                                <td>${item.balance}</td>
 
-                                <td>${item.rx_dosage}</td>
 
-                                <td>${item.rx_sig}</td>
-                                <td>${item.rx_comments}</td>
-                                
+
+
+
+
 
 
 

@@ -55,6 +55,21 @@ To Date:<input type="date" name="todate">
 </table>
 
 </div>
+    <div id="outputtable">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+             <th>Date</th>
+        <th>Rx Name</th>
+        <th>Rx Dosage</th>
+        <th>Rx Sig</th>
+        <th>Comments</th>
+        </tr>
+        </thead>
+        <tbody id="outputtablebody">
+        </tbody>
+    </table>
+</div>
 <br>
 <div  id="paginationcontainer">
    <h3> Viewing page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}</h3>

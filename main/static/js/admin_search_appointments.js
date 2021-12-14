@@ -17,7 +17,7 @@ searchField.addEventListener('keyup', (e) => {
         tbody.innerHTML='';
         paginationcontainer.style.display='none';
 
-		fetch('/search_rx',
+		fetch('/admin_search_appointments',
 			{
 				method:"POST",
 
@@ -33,7 +33,7 @@ searchField.addEventListener('keyup', (e) => {
 			    console.log('data',data);
                 app_table.style.display='none';
                 table_output.style.display='block';
-                console.log(data.length)
+
                 if(data.length===0)
                 {
                     table_output.innerHTML='No record found';
@@ -46,14 +46,14 @@ searchField.addEventListener('keyup', (e) => {
                         {
                         tbody.innerHTML+=
                             `<tr>
-                                <td>${item.rx_date}</td>
-                                <td>${item.rx_name}</td>
+                                <td>${item.appointment_date}</td>
+                                <td>${item.appointment_comments}</td>
+                                <td></td>
 
-                                <td>${item.rx_dosage}</td>
 
-                                <td>${item.rx_sig}</td>
-                                <td>${item.rx_comments}</td>
-                                
+
+
+
 
 
 

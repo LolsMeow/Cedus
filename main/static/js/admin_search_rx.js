@@ -17,7 +17,7 @@ searchField.addEventListener('keyup', (e) => {
         tbody.innerHTML='';
         paginationcontainer.style.display='none';
 
-		fetch('/search_rx',
+		fetch('/admin_search_rx',
 			{
 				method:"POST",
 
@@ -53,7 +53,7 @@ searchField.addEventListener('keyup', (e) => {
 
                                 <td>${item.rx_sig}</td>
                                 <td>${item.rx_comments}</td>
-                                
+
 
 
 

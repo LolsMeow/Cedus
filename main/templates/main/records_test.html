@@ -88,6 +88,32 @@
 </table>
 
 </div>
+<div id="outputtable">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Bill ID</th>
+            <th>Charge Date</th>
+            <th>Doctor Charge</th>
+            <th>Medical Charge</th>
+            <th>Room Charge</th>
+            <th>Surgery Charge</th>
+            <th>Admission Days</th>
+            <th>Nursing Charges</th>
+            <th>Advance</th>
+            <th>Test Charges</th>
+            <th>TOTAL AMOUNT</th>
+            <th>Payment Date</th>
+            <th>Payment Amount</th>
+            <th>Insurance Co-Pay</th>
+            <th>BALANCE</th>
+        </tr>
+        </thead>
+        <tbody id="outputtablebody">
+        </tbody>
+    </table>
+</div>
+</div>
 <br>
 <div  id="paginationcontainer">
    <h3> Viewing Page {{ pag_obj_pay.number }} of {{ pag_obj_pay.paginator.num_pages }}</h3>
@@ -114,7 +140,7 @@
   </ul>
 {% endif %}
 </div>
-<script src="{% static 'js/search_billrecords.js' %}"></script>
+<script src="{% static 'js/search_bills.js' %}"></script>
 
 <!--</br><h2>Payments</h2></br>
 <table>

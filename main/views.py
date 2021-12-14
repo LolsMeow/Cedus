@@ -58,7 +58,6 @@ def search_rx(request):
             u_name=request.user, rx_name__icontains=search_str) | Prescription.objects.filter(
             u_name=request.user, rx_dosage__icontains=search_str) | Prescription.objects.filter(
             u_name=request.user, rx_sig__icontains=search_str)
-
         data = mydata.values()
         return JsonResponse(list(data), safe=False)
 
@@ -91,6 +90,7 @@ def search_appointments(request):
 
 def search_billrecords(request):
     if request.method == 'POST':
+        print('working')
         search_str = json.loads(request.body).get('searchText')
         mydata = Bills.objects.filter(
             u_name=request.user, id__icontains=search_str) | Bills.objects.filter(
@@ -153,6 +153,7 @@ def admin_search_phyorders(request):
                 u_name=user, order_contents__icontains=search_str)
 
             data = mydata.values()
+            print(data)
             return JsonResponse(list(data), safe=False)
 
 

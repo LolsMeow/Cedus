@@ -51,6 +51,21 @@
     {% endfor %}
 </table>
 </div>
+<div id="outputtable">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Appointment Date</th>
+            <th>Appointment Time</th>
+            <th>Doctor Name</th>
+            <th>Comments</th>
+        </tr>
+        </thead>
+        <tbody id="outputtablebody">
+        </tbody>
+    </table>
+</div>
+    </div>
         <br>
 <div id="paginationcontainer">
     <h3> Viewing Page {{ pag_obj.number }} of {{ pag_obj.paginator.num_pages }}</h3>

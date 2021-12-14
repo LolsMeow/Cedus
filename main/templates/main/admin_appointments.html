@@ -42,15 +42,26 @@
         <td>
             <a href="{% url 'main:edit_appointments' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
             </td>
-        {% endif %}
-        {% if request.user|has_group:"Patient" %}
             <td>
                 <a href="{% url 'main:delete_appointments' item.pk %}" role="button"><img src="{% static 'images/delete.png' %}" width = "20" height = "20"></a>
             </td>
-        {% endif %}
     </tr>
     {% endfor %}
 </table>
+</div>
+        <div id="outputtable">
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Appointment Date</th>
+            <th>Appointment Time</th>
+            <th>Doctor Name</th>
+            <th>Comments</th>
+        </tr>
+        </thead>
+        <tbody id="outputtablebody">
+        </tbody>
+    </table>
 </div>
         <br>
 <div id="paginationcontainer">
