@@ -20,4 +20,71 @@
 				</div>
 			</form>
 
+<div class="row">
+    <h2>Insurance Details</h2><br>
+
+                <table class="table table-bordered table-sm">
+                    <tbody>
+                    		    {% for data in data %}
+                    <tr>
+                        <td>Insurance Name</td>
+                        <td><b>{{ data.ins_name|default:"--" }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Plan</td>
+                        <td><b>{{ data.ins_plan|default:"--" }}</b></td>
+                    </tr>
+
+                    <tr>
+                        <td>Rx Bin</td>
+                         <td><b>{{ data.ins_rx_bin|default:"--"  }}</b></td>
+                    </tr>
+
+                    <tr>
+                        <td>Rx Pcn</td>
+                        <td><b>{{ data.ins_rx_pcn|default:"--" }}</b></td>
+                    </tr>
+                                 <tr>
+                        <td>Rx Group</td>
+                        <td><b>{{ data.ins_rx_group|default:"--" }}</b></td>
+                    </tr>
+                                <tr>
+                        <td>Coverage</td>
+                        <td><b>{{ data.ins_coverage|default:"--" }}</b></td>
+                    </tr>
+                                 <tr>
+                                   <td><a href="{% url 'main:insurance_Edit' data.id %}"><button type="button">Update</button></a></td>
+                                   <td></td>
+                               </tr>
+
+                   {% endfor %}
+
+                    </tbody>
+                </table>
+     <h2>Allergy Details</h2><br>
+
+                <table class="table table-bordered table-sm">
+                    </tbody>
+                    		    {% for data in allergies_data %}
+                    <tr>
+                        <td>Drug</td>
+                        <td><b>{{ data.aller_drug|default:"--" }}</b></td>
+                    </tr>
+                    <tr>
+                        <td>Level</td>
+                        <td><b>{{ data.aller_severity|default:"--" }}</b></td>
+                    </tr>
+
+                               <tr>
+                                   <td><a href="{% url 'main:Allergy_Edit' data.id %}"><button type="button">Update</button></a></td>
+                                <td></td>
+                               </tr>
+
+                   {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
 {% endblock %}

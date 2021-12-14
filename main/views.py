@@ -642,6 +642,9 @@ def admin_dashboard(request):
         userForm = userInfo(instance=u)
         p = Patient.objects.get(user=u)
         form = updateInfo(instance=p)
+        data = Insurance.objects.filter(u_name=user)
+        allergies_data = Allergies.objects.filter(u_name=user)
+        context = {'data': data, 'allergies_data': allergies_data}
         if request.method == 'POST':
             u = User.objects.all().get(username=user)
             userForm = userInfo(data=request.POST, instance=u)
