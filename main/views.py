@@ -611,6 +611,8 @@ def records_view(request):
 
 
 def patient_search(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
     if request.method == 'GET' and request.GET.get("search_box") != None:
         search_text = request.GET.get("search_box")
         if Patient.objects.filter(user__username=search_text).exists():
@@ -632,6 +634,8 @@ def patient_search_failed(request):
         return render(request, 'main/patient_search_failed.html')
 
 def admin_dashboard(request):
+    if not request.user.is_active or request.user.is_superuser:
+        return redirect('main:login')
     if is_patient(request.user):
         return redirect('main:dashboard')
     # if not request.user.is_active or request.user.is_superuser:

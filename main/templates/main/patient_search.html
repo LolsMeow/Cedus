@@ -57,6 +57,14 @@ img.colorimg {
 	position: center;
 	margin-top: 20px;
 }
+a {
+  background-color: white;
+  list-style-type: none;
+  display: inline;
+  text-decoration: none;
+  color: black;
+  padding:10px;
+}
 </style>
 </head>
 <body>
@@ -73,5 +81,8 @@ img.colorimg {
             {% endfor %}
 		  <br>
 	  <img src="{% static 'images/Cedus Icon Whie.png' %}" title="colorimg" class="colorimg" width = "150" height = "150">
+        <br>
+    <br>
+        <a href="{% url 'main:auth_logout' %}">Logout</a>
 </body>
 </html>
