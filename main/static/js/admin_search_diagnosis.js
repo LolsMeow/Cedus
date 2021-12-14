@@ -50,13 +50,8 @@ searchField.addEventListener('keyup', (e) => {
                                 <td>${item.diagnosis_status}</td>
                                 <td>${item.diagnosis_comment}</td>
 
-
-
-
-
-
                             </tr>`;
-
+                            console.log(tbody.innerHTML);
                         });
                 }
 
