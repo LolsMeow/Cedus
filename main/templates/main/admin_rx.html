@@ -14,6 +14,11 @@ To Date:<input type="date" name="todate">
     <input type="submit" value="Search"></h3>
     </form>
 <div>
+    {% for message in messages %}
+            <h3 class="{{ message.tags }}">
+            {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+            </h3>
+            {% endfor %}
        <div class="col-md-12">
 <hr>
 
@@ -27,9 +32,14 @@ To Date:<input type="date" name="todate">
 
                 </div>
    <div class="refresh">
-<a href="{%  url 'main:admin_rx' %}"><img src="{% static 'images/refresh.png' %}" width = "30" height = "30"></a></div>
+<a href="{%  url 'main:admin_rx' %}"><img src="{% static 'images/refresh.png' %}" width = "30" height = "30"></a>
+   </div>
 <hr>
      <div id="apptable">
+        {% if request.user|has_group:"Pharmacist" %}
+             <a href="{% url 'main:add_prescription' %}" role="button">Add</a>
+        <br>
+        {% endif %}
 <table>
     <tr>
         <th>Date</th>
@@ -45,6 +55,16 @@ To Date:<input type="date" name="todate">
         <td>{{ item.rx_dosage }}</td>
         <td>{{ item.rx_sig }}</td>
         <td>{{ item.rx_comments }}</td>
+        {% if request.user|has_group:"Pharmacist" %}
+        <td>
+                <a href="{% url 'main:edit_prescription' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
+        </td>
+        {% endif %}
+        {% if request.user|has_group:"Pharmacist" %}
+        <td>
+                <a href="{% url 'main:delete_prescription' item.pk %}" role="button"><img src="{% static 'images/delete.png' %}" width = "20" height = "20"></a>
+        </td>
+        {% endif %}
     </tr>
         {% empty %}
     <tr>

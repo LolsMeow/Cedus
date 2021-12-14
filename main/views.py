@@ -385,11 +385,15 @@ def appointments_view(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print(fromdate)
-            print(todate)
-            result = Appointment.objects.filter(appointment_date__range=[fromdate, todate], u_name=request.user)
-            form = {'pag_obj': result}
-            return render(request, 'main/appointments.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/appointments.html')
+            else:
+                print(fromdate)
+                print(todate)
+                result = Appointment.objects.filter(appointment_date__range=[fromdate, todate], u_name=request.user)
+                form = {'pag_obj': result}
+                return render(request, 'main/appointments.html', form)
 
         data = Appointment.objects.filter(u_name=request.user).order_by('id')
         page_nator = Paginator(data, 6)
@@ -419,11 +423,15 @@ def vitals_view(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print(fromdate)
-            print(todate)
-            result = Vitals.objects.filter(vt_date__range=[fromdate, todate], u_name=request.user)
-            form = {'pag_obj': result}
-            return render(request, 'main/vitals_test.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/vitals_test.html')
+            else:
+                print(fromdate)
+                print(todate)
+                result = Vitals.objects.filter(vt_date__range=[fromdate, todate], u_name=request.user)
+                form = {'pag_obj': result}
+                return render(request, 'main/vitals_test.html', form)
 
         data = Vitals.objects.filter(u_name=request.user).order_by('id')
         page_nator = Paginator(data, 6)
@@ -450,10 +458,14 @@ def diag_view(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print('diagnosis date filter called')
-            result = Diagnosis.objects.filter(diagnosis_date__range=[fromdate, todate], u_name=request.user)
-            form = {'pag_obj': result}
-            return render(request, 'main/diag_test.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/diag_test.html')
+            else:
+                print('diagnosis date filter called')
+                result = Diagnosis.objects.filter(diagnosis_date__range=[fromdate, todate], u_name=request.user)
+                form = {'pag_obj': result}
+                return render(request, 'main/diag_test.html', form)
 
         diag_data = Diagnosis.objects.all().filter(u_name=request.user)
         page_nator = Paginator(diag_data, 6)
@@ -480,10 +492,14 @@ def rx_view(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print('Prescription date filter called')
-            result = Prescription.objects.filter(rx_date__range=[fromdate, todate], u_name=request.user)
-            form = {'pag_obj': result}
-            return render(request, 'main/rx_test.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/rx_test.html')
+            else:
+                print('Prescription date filter called')
+                result = Prescription.objects.filter(rx_date__range=[fromdate, todate], u_name=request.user)
+                form = {'pag_obj': result}
+                return render(request, 'main/rx_test.html', form)
 
         pdata = Prescription.objects.all().filter(u_name=request.user)
         page_nator = Paginator(pdata, 6)
@@ -510,10 +526,14 @@ def phys_orders_view(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print('physician date filter called')
-            result = Phys_Orders.objects.filter(order_date__range=[fromdate, todate], u_name=request.user)
-            form = {'pag_obj': result}
-            return render(request, 'main/po_test.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/po_test.html')
+            else:
+                print('physician date filter called')
+                result = Phys_Orders.objects.filter(order_date__range=[fromdate, todate], u_name=request.user)
+                form = {'pag_obj': result}
+                return render(request, 'main/po_test.html', form)
 
         physdata = Phys_Orders.objects.all().filter(u_name=request.user)
         page_nator = Paginator(physdata, 6)
@@ -538,11 +558,15 @@ def vaccines_view(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print('Vaccines date filter called')
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/vax_test.html')
+            else:
+                print('Vaccines date filter called')
 
-            result = Vaccines.objects.filter(vac_date__range=[fromdate, todate], u_name=request.user)
-            form = {'pag_obj': result}
-            return render(request, 'main/vax_test.html', form)
+                result = Vaccines.objects.filter(vac_date__range=[fromdate, todate], u_name=request.user)
+                form = {'pag_obj': result}
+                return render(request, 'main/vax_test.html', form)
         form = Vaccines.objects.all().filter(u_name=request.user)
         page_nator = Paginator(form, 6)
         page_number = request.GET.get('page')
@@ -569,10 +593,14 @@ def records_view(request):
         if request.method == 'POST':
             fromdate = request.POST.get('billfromdate')
             todate = request.POST.get('billtodate')
-            pag_obj_bill = Bills.objects.filter(charge_date__range=[fromdate, todate], u_name=request.user)
-            form = {'pag_obj_pay': pag_obj_bill}
-            print(form)
-            return render(request, 'main/records_test.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/records_test.html')
+            else:
+                pag_obj_bill = Bills.objects.filter(charge_date__range=[fromdate, todate], u_name=request.user)
+                form = {'pag_obj_pay': pag_obj_bill}
+                print(form)
+                return render(request, 'main/records_test.html', form)
 
         bill_data = Bills.objects.all().filter(u_name=request.user)
         page_nator = Paginator(bill_data, 6)
@@ -658,11 +686,15 @@ def admin_appt(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print(fromdate)
-            print(todate)
-            result = Appointment.objects.filter(appointment_date__range=[fromdate, todate], u_name=user)
-            form = {'pag_obj': result}
-            return render(request, 'main/admin_appointments.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/admin_appointments.html')
+            else:
+                print(fromdate)
+                print(todate)
+                result = Appointment.objects.filter(appointment_date__range=[fromdate, todate], u_name=user)
+                form = {'pag_obj': result}
+                return render(request, 'main/admin_appointments.html', form)
 
         data = Appointment.objects.filter(u_name=user).order_by('id')
         page_nator = Paginator(data, 6)
@@ -691,9 +723,13 @@ def admin_vitals(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            result = Vitals.objects.filter(vt_date__range=[fromdate, todate], u_name=user)
-            form = {'pag_obj': result}
-            return render(request, 'main/admin_vitals.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/admin_vitals.html')
+            else:
+                result = Vitals.objects.filter(vt_date__range=[fromdate, todate], u_name=user)
+                form = {'pag_obj': result}
+                return render(request, 'main/admin_vitals.html', form)
 
         data = Vitals.objects.filter(u_name=user).order_by('id')
         page_nator = Paginator(data, 6)
@@ -720,10 +756,14 @@ def admin_diagnosis(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print('diagnosis date filter called')
-            result = Diagnosis.objects.filter(diagnosis_date__range=[fromdate, todate], u_name=user)
-            form = {'pag_obj': result}
-            return render(request, 'main/admin_diag.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/admin_diag.html')
+            else:
+                print('diagnosis date filter called')
+                result = Diagnosis.objects.filter(diagnosis_date__range=[fromdate, todate], u_name=user)
+                form = {'pag_obj': result}
+                return render(request, 'main/admin_diag.html', form)
 
         diag_data = Diagnosis.objects.all().filter(u_name=user)
         page_nator = Paginator(diag_data, 6)
@@ -750,10 +790,14 @@ def admin_rx(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print('Prescription date filter called')
-            result = Prescription.objects.filter(rx_date__range=[fromdate, todate], u_name=user)
-            form = {'pag_obj': result}
-            return render(request, 'main/admin_rx.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/admin_rx.html')
+            else:
+                print('Prescription date filter called')
+                result = Prescription.objects.filter(rx_date__range=[fromdate, todate], u_name=user)
+                form = {'pag_obj': result}
+                return render(request, 'main/admin_rx.html', form)
 
         pdata = Prescription.objects.all().filter(u_name=user)
         page_nator = Paginator(pdata, 6)
@@ -780,10 +824,14 @@ def admin_phys(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print('physician date filter called')
-            result = Phys_Orders.objects.filter(order_date__range=[fromdate, todate], u_name=user)
-            form = {'pag_obj': result}
-            return render(request, 'main/admin_po.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/admin_po.html')
+            else:
+                print('physician date filter called')
+                result = Phys_Orders.objects.filter(order_date__range=[fromdate, todate], u_name=user)
+                form = {'pag_obj': result}
+                return render(request, 'main/admin_po.html', form)
 
         physdata = Phys_Orders.objects.all().filter(u_name=user)
         page_nator = Paginator(physdata, 6)
@@ -810,11 +858,15 @@ def admin_vaccines(request):
         if request.method == 'POST':
             fromdate = request.POST.get('fromdate')
             todate = request.POST.get('todate')
-            print('Vaccines date filter called')
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/admin_vax.html')
+            else:
+                print('Vaccines date filter called')
 
-            result = Vaccines.objects.filter(vac_date__range=[fromdate, todate], u_name=user)
-            form = {'pag_obj': result}
-            return render(request, 'main/admin_vax.html', form)
+                result = Vaccines.objects.filter(vac_date__range=[fromdate, todate], u_name=user)
+                form = {'pag_obj': result}
+                return render(request, 'main/admin_vax.html', form)
         form = Vaccines.objects.all().filter(u_name=user)
         page_nator = Paginator(form, 6)
         page_number = request.GET.get('page')
@@ -841,9 +893,13 @@ def admin_records(request):
         if request.method == 'POST':
             fromdate = request.POST.get('billfromdate')
             todate = request.POST.get('billtodate')
-            pag_obj_bill = Bills.objects.filter(charge_date__range=[fromdate, todate], u_name=user)
-            form = {'pag_obj_pay': pag_obj_bill}
-            return render(request, 'main/admin_records.html', form)
+            if fromdate == '' or todate == '':
+                messages.error(request, 'Dates can not be blank')
+                return render(request, 'main/admin_records.html')
+            else:
+                pag_obj_bill = Bills.objects.filter(charge_date__range=[fromdate, todate], u_name=user)
+                form = {'pag_obj_pay': pag_obj_bill}
+                return render(request, 'main/admin_records.html', form)
 
         bill_data = Bills.objects.all().filter(u_name=user)
         page_nator = Paginator(bill_data, 6)

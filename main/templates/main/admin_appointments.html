@@ -12,6 +12,11 @@
             To Date:<input type="date" name="todate">
             <input type="submit" value="Search"></h3>
  </form>
+    {% for message in messages %}
+            <h3 class="{{ message.tags }}">
+            {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+            </h3>
+            {% endfor %}
     <div>
             <hr>
                 <div class="col-md-12">

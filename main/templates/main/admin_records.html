@@ -30,6 +30,11 @@
             <input class="recsearch" type="submit" value="Search"></h3>
 </form>
         <div>
+            {% for message in messages %}
+            <h3 class="{{ message.tags }}">
+            {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+            </h3>
+            {% endfor %}
 <hr>
             <div class="col-md-12">
 

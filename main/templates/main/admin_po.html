@@ -14,6 +14,11 @@ To Date:<input type="date" name="todate">
     <input type="submit" value="Search"></h3>
  </form>
 <div>
+    {% for message in messages %}
+            <h3 class="{{ message.tags }}">
+            {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+            </h3>
+            {% endfor %}
 <hr>
                     <div class="col-md-12">
 
@@ -32,6 +37,10 @@ To Date:<input type="date" name="todate">
 <a href="{%  url 'main:admin_phys' %}"><img src="{% static 'images/refresh.png' %}" width = "30" height = "30"></a></div>
             <hr>
      <div id="apptable">
+         {% if request.user|has_group:"Doctor" %}
+             <a href="{% url 'main:add_po' %}" role="button">Add</a>
+         <br>
+         {% endif %}
 <table>
     <tr>
         <th>Date</th>
@@ -41,6 +50,16 @@ To Date:<input type="date" name="todate">
     <tr>
         <td>{{ item.order_date }}</td>
         <td>{{ item.order_contents }}</td>
+        {% if request.user|has_group:"Doctor" %}
+        <td>
+                <a href="{% url 'main:edit_po' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
+        </td>
+        {% endif %}
+        {% if request.user|has_group:"Doctor" %}
+        <td>
+                <a href="{% url 'main:delete_po' item.pk %}" role="button"><img src="{% static 'images/delete.png' %}" width = "20" height = "20"></a>
+        </td>
+        {% endif %}
     </tr>
         {% empty %}
     <tr>

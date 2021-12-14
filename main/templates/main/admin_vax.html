@@ -14,6 +14,11 @@ To Date:<input type="date" name="todate">
     <input type="submit" value="Search"></h3>
     </form>
 <div>
+    {% for message in messages %}
+            <h3 class="{{ message.tags }}">
+            {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+            </h3>
+            {% endfor %}
     <hr>
            <div class="col-md-12">
 
@@ -31,6 +36,12 @@ To Date:<input type="date" name="todate">
 <a href="{%  url 'main:admin_vaccines' %}"><img src="{% static 'images/refresh.png' %}" width = "30" height = "30"></a></div>
             <hr>
      <div id="apptable">
+         {% if request.user|has_group:"Pharmacist" %}
+             <a href="{% url 'main:add_vaccine' %}" role="button">Add</a>
+        {% endif %}
+         {% if request.user|has_group:"Doctor" %}
+             <a href="{% url 'main:add_vaccine' %}" role="button">Add</a>
+         {% endif %}
 <table class="table table-bordered table-striped">
     <tr>
         <th>Date</th>
@@ -42,6 +53,26 @@ To Date:<input type="date" name="todate">
         <td>{{ item.vac_date }}</td>
         <td>{{ item.vac_type }}</td>
         <td>{{ item.vac_comment }}</td>
+        {% if request.user|has_group:"Doctor" %}
+             <td>
+                <a href="{% url 'main:edit_vaccine' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
+            </td>
+        {% endif %}
+        {% if request.user|has_group:"Pharmacist" %}
+             <td>
+                <a href="{% url 'main:edit_vaccine' item.pk %}" role="button"><img src="{% static 'images/edit.png' %}" width = "20" height = "20"></a>
+            </td>
+        {% endif %}
+        {% if request.user|has_group:"Doctor" %}
+             <td>
+                <a href="{% url 'main:delete_vaccine' item.pk %}" role="button"><img src="{% static 'images/delete.png' %}" width = "20" height = "20"></a>
+            </td>
+        {% endif %}
+        {% if request.user|has_group:"Pharmacist" %}
+             <td>
+                <a href="{% url 'main:delete_vaccine' item.pk %}" role="button"><img src="{% static 'images/delete.png' %}" width = "20" height = "20"></a>
+            </td>
+        {% endif %}
     </tr>
                  {% empty %}
     <tr>
