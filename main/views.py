@@ -933,6 +933,8 @@ def Allergy_Edit(request, id):
         allergy_data.aller_drug = aller_to
         allergy_data.aller_severity = remarks
         allergy_data.save()
+        if is_staff(request.user):
+            return redirect('main:admin_dashboard')
         messages.success(request, 'Record Updated Successfully')
         return redirect('main:dashboard')
     return HttpResponse('Patient and Staff are Allowed to Edit Data')
